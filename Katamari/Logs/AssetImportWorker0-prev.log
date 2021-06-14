@@ -1,0 +1,185 @@
+Using pre-set license
+Built from '2021.1/staging' branch; Version is '2021.1.6f1 (c0fade0cc7e9) revision 12647134'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10 Pro; OS build 19041.985; Version 2004; 64bit' Language: 'en' Physical Memory: 16264 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2021.1.6f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/Users/Allen/Documents/Unity/Katamari
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+53492
+Successfully changed project path to: C:/Users/Allen/Documents/Unity/Katamari
+C:/Users/Allen/Documents/Unity/Katamari
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 339.58 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2021.1.6f1 (c0fade0cc7e9)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.1.6f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Allen/Documents/Unity/Katamari/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: Intel(R) HD Graphics 520 (ID=0x1916)
+    Vendor:   Intel
+    VRAM:     8132 MB
+    Driver:   27.20.100.8854
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.1.6f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.1.6f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.1.6f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56496
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.1.6f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.1.6f1/Editor/Data/PlaybackEngines/MacStandaloneSupport/UnityEditor.OSXStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.1.6f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.1.6f1/Editor/Data/PlaybackEngines/LinuxStandaloneSupport/UnityEditor.LinuxStandalone.Extensions.dll
+Registered in 0.015918 seconds.
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 281.14 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  6.592 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.007733 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for LinuxStandalone target not found
+Native extension for WindowsStandalone target not found
+Native extension for OSXStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 0.89 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Mono: successfully reloaded assembly
+- Completed reload, in  5.733 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.20 seconds
+Refreshing native plugins compatible for Editor in 1.23 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 2721 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 102.2 MB.
+System memory in use after: 102.4 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 3175.
+Total: 5.122700 ms (FindLiveObjects: 0.398100 ms CreateObjectMapping: 0.439500 ms MarkObjects: 3.835600 ms  DeleteObjects: 0.446400 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/Standard Assets/Characters/ThirdPersonCharacter
+  artifactKey: Guid(8912f13e18e67bc478684ec30d73bc64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/Characters/ThirdPersonCharacter using Guid(8912f13e18e67bc478684ec30d73bc64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '194589bfc5cc82cc861e2f4dd562a0b7') in 0.051580 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 44.511004 seconds.
+  path: Assets/Standard Assets/Utility/ForcedReset.cs
+  artifactKey: Guid(9b886447cba80f74e820adb3c9e70c76) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/Utility/ForcedReset.cs using Guid(9b886447cba80f74e820adb3c9e70c76) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '19b0bfb192abe52c3c015890f6a5906c') in 0.152971 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 15.133454 seconds.
+  path: Assets/Standard Assets/Utility/SimpleActivatorMenu.cs
+  artifactKey: Guid(69b69a5b0e0a85b4aa97a7edc40c37d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/Utility/SimpleActivatorMenu.cs using Guid(69b69a5b0e0a85b4aa97a7edc40c37d1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2aba4097b46933acfbebe42a5484a6a4') in 0.052797 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 31.047147 seconds.
+  path: Assets/Standard Assets/Cameras/Scripts/TargetFieldOfView.cs
+  artifactKey: Guid(a62942d9af3f36d448094c6ed1f214dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/Cameras/Scripts/TargetFieldOfView.cs using Guid(a62942d9af3f36d448094c6ed1f214dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e5a1fe92ec6f4219a990b328e53c99c5') in 0.035889 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 4.704987 seconds.
+  path: Assets/Standard Assets/Cameras
+  artifactKey: Guid(604bd9e7358cf48c0969f5b515a8c51c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/Cameras using Guid(604bd9e7358cf48c0969f5b515a8c51c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '01b3a82b76795776a4dae49350d1e1f5') in 0.042995 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 59.939249 seconds.
+  path: Assets/Box lg.prefab
+  artifactKey: Guid(2140429257a6088449e067e688678804) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Box lg.prefab using Guid(2140429257a6088449e067e688678804) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5ca5aba00bc785b1ffb2a1b2a58f7dd0') in 0.426343 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.320284 seconds.
+  path: Assets/Box md.prefab
+  artifactKey: Guid(8bf1c298a9be92342a665ed02ea72995) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Box md.prefab using Guid(8bf1c298a9be92342a665ed02ea72995) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '63530e9b57678923275ea4d84ffafe40') in 0.081277 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.535536 seconds.
+  path: Assets/Box sm.prefab
+  artifactKey: Guid(273949a9b83de0146b607aa9e56a9b60) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Box sm.prefab using Guid(273949a9b83de0146b607aa9e56a9b60) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7128fd521380158db11a02ab63f9a44e') in 0.077231 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 0.401939 seconds.
+  path: Assets/Box xl.prefab
+  artifactKey: Guid(fbf34e86c0030cc46818769aa94a9216) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Box xl.prefab using Guid(fbf34e86c0030cc46818769aa94a9216) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '91ccc66236bae35cbe21b32d17970dfa') in 0.075744 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.272018 seconds.
+  path: Assets/Katamari.cs
+  artifactKey: Guid(4a1354b3dcdfc7e40896b8452a0b8cac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Katamari.cs using Guid(4a1354b3dcdfc7e40896b8452a0b8cac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f73f40d5e5e6a987e0a8bb6229d796f4') in 0.034965 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.486411 seconds.
+  path: Assets/PlaceRandObjects.cs
+  artifactKey: Guid(4a9dccdb60a78854e8cc112c5abbf53f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/PlaceRandObjects.cs using Guid(4a9dccdb60a78854e8cc112c5abbf53f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5f5a4e3e3197b3ab6fb8e1b8b198879b') in 0.033586 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1.115059 seconds.
+  path: Assets/Thingy.cs
+  artifactKey: Guid(9e854ce9771a77f49a617a424d2c15e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Thingy.cs using Guid(9e854ce9771a77f49a617a424d2c15e2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '60becde11b65e2f13f8ee40ecd214dd2') in 0.045681 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 547.185733 seconds.
+  path: Assets/katamari.obj
+  artifactKey: Guid(8645ba274e940e8459c69054b577939f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/katamari.obj using Guid(8645ba274e940e8459c69054b577939f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'bab139ffcbe3d69bd703a87ae27ddebc') in 0.713542 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 2.031754 seconds.
+  path: Assets/Katamari.prefab
+  artifactKey: Guid(aabc7d4404e2d9b4dafd17397f6c77dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Katamari.prefab using Guid(aabc7d4404e2d9b4dafd17397f6c77dd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '58f9e15cc9eddd23c5d30c834868c971') in 0.100667 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 1914.325962 seconds.
+  path: Assets/Standard Assets/CrossPlatformInput
+  artifactKey: Guid(710bc43f80d178548bd226c252c8e65b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/CrossPlatformInput using Guid(710bc43f80d178548bd226c252c8e65b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f0440b75555e41a3dfc5c595b03e89f7') in 0.013277 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 25.502764 seconds.
+  path: Assets/Standard Assets/Cameras/Prefabs/FreeLookCameraRig.prefab
+  artifactKey: Guid(49a0e923d39ec3c4c8bb97699e2f2903) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/Cameras/Prefabs/FreeLookCameraRig.prefab using Guid(49a0e923d39ec3c4c8bb97699e2f2903) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c728700bad02e5fe9d79a57753f4315') in 0.028527 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 7.249155 seconds.
+  path: Assets/Standard Assets/Cameras/Scripts/FreeLookCam.cs
+  artifactKey: Guid(e44af8091779fcb40801d5b284353dbe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/Cameras/Scripts/FreeLookCam.cs using Guid(e44af8091779fcb40801d5b284353dbe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2312e6d61297b412a25a96b12794fe33') in 0.025800 seconds 
+========================================================================
+Received Import Request.
+  Time since last request: 11.857649 seconds.
+  path: Assets/Standard Assets/Characters/FirstPersonCharacter
+  artifactKey: Guid(943e057eaae705e43b9e9b2e53d6adb0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Standard Assets/Characters/FirstPersonCharacter using Guid(943e057eaae705e43b9e9b2e53d6adb0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e76d2a5c6af3c4e2140c7adf1ce08441') in 0.013098 seconds 
