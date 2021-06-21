@@ -20,22 +20,37 @@ public class Katamari : MonoBehaviour {
 	public Transform camPos;
 	
 	public Text sizeDisplay;
+	public Text birdDisplay;
+	public RawImage birdui;
 	
 	private SphereCollider collide;
 	private Thingy lastAssimilated;
+	private bool fullscreen = false;
 	
 	void Start () {
 		collide = gameObject.GetComponent<SphereCollider>();
-		volume = 10;
+		Texture2D texture = Resources.Load(BirdDetails.birdimg) as Texture2D;
+		birdui.texture = texture;
+		volume = 1;
 		trueVolume = 28888;
-		percentPossible = 0.57f;
+		percentPossible = 0.40f; // old number 0.57f
 	}
 
 	// Update is called once per frame
 	void Update () {
+		if (!fullscreen && Input.anyKeyDown) {
+			fullscreen = true;
+			Screen.fullScreen = true;
+			Cursor.lockState = CursorLockMode.Locked;
+		}
+		if (fullscreen && Input.GetKeyDown(KeyCode.Escape)) {
+			Screen.fullScreen = false;
+			Cursor.lockState = CursorLockMode.None;
+		}
 		if (transform.position.y < -15) SceneManager.LoadScene(SceneManager.GetActiveScene().name) ;
 		AdjustCameraPosition();
-		sizeDisplay.text = "Size: " + volume;
+		birdDisplay.text = BirdDetails.birdname;
+		sizeDisplay.text = "Mass: "+volume;
 		if (volume < trueVolume) volume += Mathf.Round((trueVolume - volume) / 10);
 	}
 	
@@ -48,8 +63,8 @@ public class Katamari : MonoBehaviour {
 			Transform tt = thingy.gameObject.transform;
 			tt.parent = gameObject.transform;
 			tt.localPosition = new Vector3 (tt.localPosition.x * 0.8f, tt.localPosition.y * 0.8f, tt.localPosition.z * 0.8f);
-			volume += (thingy.volume / 40f);
-			collide.radius += (thingy.volume / 5000000f); 
+			volume += (thingy.GetVolume() / 40f);
+			collide.radius += (thingy.volume / 2500000f); //5000000 old number
 			lastAssimilated = thingy;
 		}
 	}
@@ -62,6 +77,7 @@ public class Katamari : MonoBehaviour {
 		float i = collide.radius * 0.8f;
 		Vector3 v = new Vector3 (0, i, i * -1.9f);
 		camPos.localPosition = v;
+		camPos.LookAt(this.transform);
 	}
 	
 }

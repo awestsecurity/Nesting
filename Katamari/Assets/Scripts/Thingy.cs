@@ -6,8 +6,11 @@ using System.Collections;
 public class Thingy : MonoBehaviour {
 
 	public string thingyName;
-	public float volume;
+	public float volume; //cm3 can use blender to get measurement
 	public bool randomize;
+	public bool rotate;
+	public bool keepRatio;
+	public float minScale = 0.1f;
 	public float maxScale;
 	
 	
@@ -17,16 +20,31 @@ public class Thingy : MonoBehaviour {
 	MeshCollider meshcollide;
 	Rigidbody body;
 	
-	public bool assimilated = false;
+	public bool assimilated {get;set;}
 	private Transform katamariParent;
 	private bool delay = false;
+	private float actualVolume;
 
 	// Use this for initialization
 	void Start () {
-		if (randomize) gameObject.transform.localScale = new Vector3 (Random.Range(0.1f,maxScale),Random.Range(0.1f,maxScale),Random.Range(0.1f,maxScale));
+		if (randomize) {
+			float x, y, z;
+			if (keepRatio) { 
+				x = y = z = Random.Range(minScale,maxScale); 
+			}
+			else { 
+				x = Random.Range(minScale,maxScale); 
+				y = Random.Range(minScale,maxScale);
+				z = Random.Range(minScale,maxScale);
+			}
+			gameObject.transform.localScale = new Vector3 (x,y,z);
+		}
+		if (rotate){
+			transform.rotation = Random.rotation;
+		}
 		mesh = GetComponent<MeshFilter>().mesh;
         vertices = mesh.vertices;
-		if ( volume <= 0 ) volume = GetVolume();
+		actualVolume = GetVolume();
 		boxcollide = gameObject.GetComponent<BoxCollider>();
 		meshcollide = gameObject.GetComponent<MeshCollider>();
 		body = gameObject.GetComponent<Rigidbody>();
@@ -39,7 +57,7 @@ public class Thingy : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (delay && !assimilated && !IsTrigger() && volume < (Katamari.volumeCheck * 0.95f)) {
+		if (delay && !assimilated && !IsTrigger() && actualVolume < (Katamari.volumeCheck * 0.95f)) {
 			if (boxcollide) boxcollide.isTrigger = true;
 			if (meshcollide) meshcollide.isTrigger = true;
 			body.isKinematic = true;
@@ -57,29 +75,8 @@ public class Thingy : MonoBehaviour {
 		else {return meshcollide.isTrigger;}		
 	}
 	
-	float GetVolume() {
-		float xMin = 9999;
-		float xMax = -9999;
-		float yMin = 9999;
-		float yMax = -9999;
-		float zMin = 9999;
-		float zMax = -9999;
-		
-		foreach (Vector3 v in vertices) {
-			Vector3 point = transform.TransformPoint(v);
-			xMin = (point.x < xMin)? point.x : xMin ;
-			xMax = (point.x > xMax)? point.x : xMax ;
-			yMin = (point.y < xMin)? point.y : yMin ;
-			yMax = (point.y > xMax)? point.y : yMax ;
-			zMin = (point.z < zMin)? point.z : zMin ;
-			zMax = (point.z > zMax)? point.z : zMax ;
-		}
-		
-		float a = 1 + Mathf.Abs(xMax - xMin);
-		float b = 1 + Mathf.Abs(yMax - yMin);
-		float c = 1 + Mathf.Abs(zMax - zMin);
-
-		return ( a*b*c );
+	public float GetVolume() {
+		return volume * (transform.localScale.x * transform.localScale.y * transform.localScale.z / 3f);
 	}
 	
 	// Step toward center of katamari
