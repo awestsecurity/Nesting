@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using UnityStandardAssets.Vehicles.Ball;
 
 public class Katamari : MonoBehaviour {
 
@@ -16,7 +17,6 @@ public class Katamari : MonoBehaviour {
 	}
 
 	public float radius; // Where is the edge to attach things.
-	public float temp;
 	public Transform camPos;
 	
 	public Text sizeDisplay;
@@ -25,10 +25,12 @@ public class Katamari : MonoBehaviour {
 	
 	private SphereCollider collide;
 	private Thingy lastAssimilated;
+	private Ball ballController;
 	private bool fullscreen = false;
 	
 	void Start () {
 		collide = gameObject.GetComponent<SphereCollider>();
+		ballController = gameObject.GetComponent<Ball>();
 		Texture2D texture = Resources.Load(BirdDetails.birdimg) as Texture2D;
 		birdui.texture = texture;
 		volume = 1;
@@ -67,6 +69,7 @@ public class Katamari : MonoBehaviour {
 			tt.localPosition = new Vector3 (tt.localPosition.x * 0.8f, tt.localPosition.y * 0.8f, tt.localPosition.z * 0.8f);
 			volume += (thingy.GetVolume() / 40f);
 			collide.radius += (thingy.volume / 2500000f); //5000000 old number
+			ballController.m_MovePower += (thingy.volume / 2500000f);
 			lastAssimilated = thingy;
 		}
 	}
