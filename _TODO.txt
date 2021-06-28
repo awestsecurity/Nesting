@@ -1,0 +1,6 @@
+.Title screen
+.Time limit
+.End screen
+.Sound track
+.Object List
+.Sound Effects

@@ -6,133 +6,133 @@
 		},
 		"93840" : {
 			"name" : "Bobolink",
-			"status" : "LC"
+			"status" : "LC",
 			"image" : "Bobolink"
 		},
 		"93847" : {
 			"name" : "Bachman's Sparrow",
-			"status" : "NT"
+			"status" : "NT",
 			"image" : "BachmansSparrow"
 		},
 		"93873" : {
 			"name" : "Black Rail",
-			"status" : "EN"
-			"image" : "BlackRail",
+			"status" : "EN",
+			"image" : "BlackRail"
 		},
 		"95058" : {
 			"name" : "Loggerhead Shrike",
-			"status" : "NT"
-			"image" : "LoggerheadShrike",
+			"status" : "NT",
+			"image" : "LoggerheadShrike"
 		},
 		"104678" : {
 			"name" : "Marianne White-eye",
-			"status" : "EX"
-			"image" : "MarianneWhite-eye",
+			"status" : "EX",
+			"image" : "MarianneWhite-eye"
 		},
 		"104679" : {
 			"name" : "Bachman's Warbler",
-			"status" : "CR"
-			"image" : "BachmansWarbler",
+			"status" : "CR",
+			"image" : "BachmansWarbler"
 		},
 		"104687" : {
 			"name" : "House Finch",
-			"status" : "LC"
-			"image" : "HouseFinch",
+			"status" : "LC",
+			"image" : "HouseFinch"
 		},
 		"104688" : {
 			"name" : "Louisiana Waterthrush",
-			"status" : "LC"
-			"image" : "LouisianaWaterthrush",
+			"status" : "LC",
+			"image" : "LouisianaWaterthrush"
 		},
 		"104697" : {
 			"name" : "Piping Plover",
-			"status" : "NT"
-			"image" : "PipingPlover",
+			"status" : "NT",
+			"image" : "PipingPlover"
 		},
 		"104699" : {
 			"name" : "White-plumed Antbird",
-			"status" : "LC"
-			"image" : "White-plumedAntbird",
+			"status" : "LC",
+			"image" : "White-plumedAntbird"
 		},
 		"104707" : {
 			"name" : "Ascension Frigatebird",
-			"status" : "VU"
-			"image" : "AscensionFrigatebird",
+			"status" : "VU",
+			"image" : "AscensionFrigatebird"
 		},
 		"104713" : {
 			"name" : "Guam Kingfisher",
-			"status" : "EW"
-			"image" : "GuamKingfisher",
+			"status" : "EW",
+			"image" : "GuamKingfisher"
 		},
 		"104714" : {
 			"name" : "Canada Warbler",
-			"status" : "LC"
-			"image" : "CanadaWarbler",
+			"status" : "LC",
+			"image" : "CanadaWarbler"
 		},
 		"104715" : {
 			"name" : "Javan Hawk-eagle",
-			"status" : "EN"
-			"image" : "JavanHawk-eagle",
+			"status" : "EN",
+			"image" : "JavanHawk-eagle"
 		},
 		"104718" : {
 			"name" : "American Goldfinch",
-			"status" : "LC"
-			"image" : "AmericanGoldfinch",
+			"status" : "LC",
+			"image" : "AmericanGoldfinch"
 		},
 		"109276" : {
 			"name" : "Red-bellied Woodpecker",
-			"status" : "LC"
-			"image" : "Red-belliedWoodpecker",
+			"status" : "LC",
+			"image" : "Red-belliedWoodpecker"
 		},
 		"109277" : {
 			"name" : "Common Starling",
-			"status" : "LC"
-			"image" : "CommonStarling",
+			"status" : "LC",
+			"image" : "CommonStarling"
 		},
 		"109280" : {
 			"name" : "Saint Helena Plover",
-			"status" : "VU"
-			"image" : "SaintHelenaPlover",
+			"status" : "VU",
+			"image" : "SaintHelenaPlover"
 		},
 		"109281" : {
 			"name" : "Sedge Wren",
-			"status" : "LC"
-			"image" : "SedgeWren",
+			"status" : "LC",
+			"image" : "SedgeWren"
 		},
 		"109283" : {
 			"name" : "Spix's Macaw",
-			"status" : "EW"
-			"image" : "SpixsMacaw",
+			"status" : "EW",
+			"image" : "SpixsMacaw"
 		},
 		"118985" : {
 			"name" : "Little Woodstar",
-			"status" : "VU"
-			"image" : "LittleWoodstar",
+			"status" : "VU",
+			"image" : "LittleWoodstar"
 		},
 		"119034" : {
 			"name" : "Mystery Bird",
-			"status" : "VU"
-			"image" : "LittleWoodstar",
+			"status" : "VU",
+			"image" : "LittleWoodstar"
 		},
 		"143869" : {
 			"name" : "Jerdon's Courser",
-			"status" : "CR"
-			"image" : "JerdonsCourser",
+			"status" : "CR",
+			"image" : "JerdonsCourser"
 		},
 		"143873" : {
 			"name" : "Stitchbird",
-			"status" : "VU"
-			"image" : "Stitchbird",
+			"status" : "VU",
+			"image" : "Stitchbird"
 		},
 		"143883" : {
 			"name" : "Red-headed Vulture",
-			"status" : "CR"
-			"image" : "Red-headedVulture",
+			"status" : "CR",
+			"image" : "Red-headedVulture"
 		},
 		"143889" : {
 			"name" : "Tahiti Monarch",
-			"status" : "CR"
-			"image" : "TahitiMonarch",
+			"status" : "CR",
+			"image" : "TahitiMonarch"
 		}
 	}
 	

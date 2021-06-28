@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.SceneManagement;
 using SimpleJSON;
 using UnityEngine.UI;
 
@@ -10,7 +9,8 @@ using UnityEngine.UI;
 public class NetworkRequest : MonoBehaviour
 {
 	public string account_name;
-	public Text text;
+	public Popup popup;
+	public SceneControl sceneCon;
 	private readonly string collection_name = "1forthebirds";
 	private string request_owned_templates;
 	private string request_template_info;
@@ -25,10 +25,18 @@ public class NetworkRequest : MonoBehaviour
 		}
 	}
 
+	void Update() {
+		if (Input.anyKey && account_name == "") {
+			account_name = "fuqqw.wam";
+			SetLogin(account_name);
+		}
+	}
+
 	// To be called from the outside.
     void SetLogin(string a) {
 		account_name = a;
-		text.text = $"Loading {account_name}'s birds.";
+		popup.AddMessage($"Loading {account_name}'s birds.");
+		popup.LaunchMessagePanel();
 		request_owned_templates = $"https://wax.api.atomicassets.io/atomicassets/v1/accounts/{account_name}/{collection_name}";
 		StartCoroutine(GetAssets());
 	}
@@ -67,12 +75,13 @@ public class NetworkRequest : MonoBehaviour
 		BirdDetails.birdname = birds[bird.ToString()]["name"].Value;
 		BirdDetails.birdstatus = birds[bird.ToString()]["status"].Value;
 		BirdDetails.birdimg = birds[bird.ToString()]["image"].Value;
+		Debug.Log($"Bird: {BirdDetails.birdname} - Status: {BirdDetails.birdstatus} - IMG: {BirdDetails.birdimg} - ID:{BirdDetails.birdid}");
 		string name = BirdDetails.birdname;
 		string status = BirdDetails.birdstatus;
-		text.text = $"Chosen Bird is {name} - {status}";
+		//text.text = $"Chosen Bird is {name} - {status}";
 		Random.InitState(bird);
-		yield return new WaitForSeconds(3);
-		SceneManager.LoadScene(1);
+		yield return new WaitForSeconds(1.5f);
+		sceneCon.StartLoad(1);
 	}
 	
 }

@@ -7,6 +7,7 @@ public class TerrainShaping : MonoBehaviour
 {
 	private int xScale, yScale;
 	public float resolution = 1f;
+	public GameObject fence;
 	private float height = 0.5f;
 	public float wallmargin = 3.5f;
 	public Material material;
@@ -76,29 +77,33 @@ public class TerrainShaping : MonoBehaviour
 		GameObject northwall = new GameObject();
 		northwall.name = "Northwall";
 		northwall.transform.parent = this.transform;
-		northwall.transform.position = new Vector3(xScale*resolution/2f, height/2f, yScale*resolution-margin);
-		BoxCollider ncollider = northwall.AddComponent<BoxCollider>() as BoxCollider;
-		ncollider.size = new Vector3(xScale*resolution, height*2, 0.5f);
+		for (int i=0; i <= ((xScale-(margin))/6.5f); i++) {
+			GameObject go = Instantiate(fence, new Vector3(margin+(i*6.5f), -2.5f, yScale-margin), Quaternion.identity) as GameObject;
+			go.transform.parent = northwall.transform;
+		}
 		
 		GameObject southwall = new GameObject();
 		southwall.name = "Southwall";
 		southwall.transform.parent = this.transform;
-		southwall.transform.position = new Vector3(xScale*resolution/2f, height/2f, margin);
-		BoxCollider scollider = southwall.AddComponent<BoxCollider>() as BoxCollider;
-		scollider.size = new Vector3(xScale*resolution, height*2, 0.5f);
+		for (int i=0; i <= ((xScale-(margin))/6.5f); i++) {
+			GameObject go = Instantiate(fence, new Vector3(margin+(i*6.5f), -2.5f, margin), Quaternion.identity) as GameObject;
+			go.transform.parent = southwall.transform;
+		}
 		
 		GameObject eastwall = new GameObject();
 		eastwall.name = "Eastwall";
 		eastwall.transform.parent = this.transform;
-		eastwall.transform.position = new Vector3(xScale*resolution-margin, height/2f, yScale*resolution/2f);
-		BoxCollider ecollider = eastwall.AddComponent<BoxCollider>() as BoxCollider;
-		ecollider.size = new Vector3(0.5f, height*2, yScale*resolution);		
+		for (int i=0; i <= ((yScale-(margin))/6.5f); i++) {
+			GameObject go = Instantiate(fence, new Vector3(xScale-margin, -2.5f, margin+(i*6.5f)), Quaternion.Euler(0, 90, 0)) as GameObject;
+			go.transform.parent = eastwall.transform;
+		}	
 		
 		GameObject westwall = new GameObject();
 		westwall.name = "Westwall";
 		westwall.transform.parent = this.transform;
-		westwall.transform.position = new Vector3(margin, height/2f, yScale*resolution/2f);
-		BoxCollider wcollider = westwall.AddComponent<BoxCollider>() as BoxCollider;
-		wcollider.size = new Vector3(0.5f, height*2, yScale*resolution);
+		for (int i=0; i <= ((yScale-(margin))/6.5f); i++) {
+			GameObject go = Instantiate(fence, new Vector3(margin, -2.5f, margin+(i*6.5f)), Quaternion.Euler(0, 90, 0)) as GameObject;
+			go.transform.parent = westwall.transform;
+		}	
 	}
 }

@@ -2,11 +2,12 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using UnityStandardAssets.Vehicles.Ball;
 
 public class Katamari : MonoBehaviour {
 
-	
+	public GameObject HUDPrefab;
 	private static float volume; // How big we are / What we can pick up.
 	private float trueVolume;
 	private static float percentPossible;  // How big we are / What we can pick up.
@@ -19,16 +20,19 @@ public class Katamari : MonoBehaviour {
 	public float radius; // Where is the edge to attach things.
 	public Transform camPos;
 	
-	public Text sizeDisplay;
-	public Text birdDisplay;
-	public RawImage birdui;
+	private GameObject hud;
+	private Text sizeDisplay;
+	private Text birdDisplay;
+	private RawImage birdui;
 	
 	private SphereCollider collide;
 	private Thingy lastAssimilated;
+	private List<string> collected = new List<string>();
 	private Ball ballController;
 	private bool fullscreen = false;
 	
 	void Start () {
+		ConnectUI();
 		collide = gameObject.GetComponent<SphereCollider>();
 		ballController = gameObject.GetComponent<Ball>();
 		Texture2D texture = Resources.Load(BirdDetails.birdimg) as Texture2D;
@@ -36,6 +40,7 @@ public class Katamari : MonoBehaviour {
 		volume = 1;
 		trueVolume = 28888;
 		percentPossible = 0.40f; // old number 0.57f
+		StartCoroutine(GravityDelay());
 	}
 
 	// Update is called once per frame
@@ -56,8 +61,27 @@ public class Katamari : MonoBehaviour {
 		birdDisplay.text = BirdDetails.birdname;
 		sizeDisplay.text = "Mass: "+volume;
 		if (volume < trueVolume) volume += Mathf.Round((trueVolume - volume) / 10);
+		if (this.transform.childCount > 144) {
+			Destroy(this.transform.GetChild(1).gameObject);
+		}
 	}
 	
+	IEnumerator GravityDelay() {
+		yield return new WaitForSeconds(2);
+		Rigidbody r = this.GetComponent<Rigidbody>();
+		r.isKinematic = false;
+	}
+	
+	void ConnectUI() {
+		hud = GameObject.Find("HUD");
+		if (hud == null) {
+			hud = Instantiate(HUDPrefab);
+		}
+		hud.transform.GetChild(0).gameObject.SetActive(true);
+		sizeDisplay = hud.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
+		birdDisplay = hud.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>();
+		birdui = hud.transform.GetChild(0).GetChild(0).GetComponent<RawImage>();
+	}
 	
 	void OnTriggerEnter (Collider collision) {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
@@ -71,6 +95,7 @@ public class Katamari : MonoBehaviour {
 			collide.radius += (thingy.volume / 2500000f); //5000000 old number
 			ballController.m_MovePower += (thingy.volume / 2500000f);
 			lastAssimilated = thingy;
+			collected.Add(thingy.name);
 		}
 	}
 	
