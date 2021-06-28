@@ -86,8 +86,8 @@ public class Katamari : MonoBehaviour {
 	void OnTriggerEnter (Collider collision) {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
 		if (thingy != null && SmallEnoughToGrab(thingy)) {
-			thingy.DisableCollider();
-			thingy.assimilated = true;
+			//thingy.DisableCollider();
+			//thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;
 			tt.parent = gameObject.transform;
 			tt.localPosition = new Vector3 (tt.localPosition.x * 0.8f, tt.localPosition.y * 0.8f, tt.localPosition.z * 0.8f);
@@ -96,7 +96,18 @@ public class Katamari : MonoBehaviour {
 			ballController.m_MovePower += (thingy.volume / 2500000f);
 			lastAssimilated = thingy;
 			collected.Add(thingy.name);
+			StripThingyOfComponents(thingy.gameObject);
 		}
+	}
+	
+	void StripThingyOfComponents(GameObject o) {
+		Destroy(o.GetComponent<Thingy>());
+		Rigidbody rbody = o.GetComponent<Rigidbody>();
+		if (rbody) { Destroy(rbody); }
+		BoxCollider bcollider = o.GetComponent<BoxCollider>();
+		if (rbody) { Destroy(bcollider); }
+		MeshCollider mcollider = o.GetComponent<MeshCollider>();
+		if (rbody) { Destroy(mcollider); }
 	}
 	
 	bool SmallEnoughToGrab (Thingy t) {

@@ -45,7 +45,7 @@ public class NetworkRequest : MonoBehaviour
 		Debug.Log($"Getting Assets for Account {account_name}");
 		UnityWebRequest www = UnityWebRequest.Get(request_owned_templates);
         yield return www.SendWebRequest();
-        if(www.isNetworkError || www.isHttpError) {
+        if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ProtocolError) {
             Debug.Log(www.error);
         }
 		else {
