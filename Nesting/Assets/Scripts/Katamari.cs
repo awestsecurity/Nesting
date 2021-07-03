@@ -9,13 +9,14 @@ public class Katamari : MonoBehaviour {
 
 	public GameObject HUDPrefab;
 	private static float volume; // How big we are / What we can pick up.
-	private float trueVolume;
+	private float trueVolume; // Display Volume
 	private static float percentPossible;  // How big we are / What we can pick up.
 	
 	public static float volumeCheck {
 		get { return (volume * percentPossible); } 
 		private set { percentPossible = value; }
 	}
+	public string mostCommonChild { get {return GetMostCommonChild(); } private set{} }
 
 	public float radius; // Where is the edge to attach things.
 	public Transform camPos;
@@ -95,7 +96,7 @@ public class Katamari : MonoBehaviour {
 			collide.radius += (thingy.volume / 2500000f); //5000000 old number
 			ballController.m_MovePower += (thingy.volume / 2500000f);
 			lastAssimilated = thingy;
-			collected.Add(thingy.name);
+			collected.Add(thingy.thingyName);
 		}
 	}
 	
@@ -110,4 +111,32 @@ public class Katamari : MonoBehaviour {
 		camPos.LookAt(this.transform);
 	}
 	
+	string GetMostCommonChild() {
+		var cnt = new Dictionary<string, int>();
+		foreach (string value in collected) {
+		   if (cnt.ContainsKey(value)) {
+			  cnt[value]++;
+		   } else {
+			  cnt.Add(value, 1);
+		   }
+		}
+		string mostCommonValue = "whoops";
+		int highestCount = 0;
+		foreach (KeyValuePair<string, int> pair in cnt) {
+		   if (pair.Value > highestCount) {
+			  mostCommonValue = pair.Key;
+			  highestCount = pair.Value;
+		   }
+		}
+		return mostCommonValue;
+	}
+	
+}
+
+public class KatamariData {
+	//THings to include
+	//list of objects
+	//total size
+	//Most common object (tag?)
+	//Largest object
 }

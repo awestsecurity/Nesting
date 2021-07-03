@@ -43,7 +43,7 @@ public class SceneControl : MonoBehaviour
 			timeremaining = timeremaining - Time.deltaTime; 
 			int min = (int)Mathf.Floor(timeremaining / 60);
 			int sec = (int)timeremaining % 60;
-			timeDisplay.text = $"{min}:{sec}";
+			timeDisplay.text = $"{min}:{sec.ToString("00")}";
 		}
 		if (playing && timeremaining <= 0) {
 			EndPlay();
@@ -52,12 +52,14 @@ public class SceneControl : MonoBehaviour
 	}
 	
 	private void EndPlay() {
-		Time.timeScale = 0.1f;
+		//Time.timeScale = 0.1f;
 		Debug.Log("TimeOver");
 		playing = false;
+		StartCoroutine(PreLoadScene(2));
 	}
 	
 	IEnumerator PreLoadScene(int sceneindex, float delay = 1.25f) {
+		float minTime = 5f;
 		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(sceneindex);
 		isLoading = true;
 		background.SetActive(true);
@@ -65,11 +67,13 @@ public class SceneControl : MonoBehaviour
 		textbox.text = $"Loading...   Did you know, {randfact}";
 		while (!loadingOperation.isDone)
         {
+			minTime -= Time.deltaTime;
             yield return null;
         }
 		ready = true;
 		float t = Time.realtimeSinceStartup+delay;
-		while (Time.realtimeSinceStartup < t) {
+		while (Time.realtimeSinceStartup < t && minTime > 0) {
+			minTime -= Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
 		StartCoroutine(FadeScreen());
@@ -103,12 +107,15 @@ public class SceneControl : MonoBehaviour
 			else { c.a = Mathf.Clamp01(elapsedTime / fadeTime); }
 			img.color = c;
 		}
+		background.SetActive(false);
+		c.a = 1.0f;
+		img.color = c;
 	}
 	
 	private float GetPlaytime() {
 		switch(BirdDetails.birdstatus) {
 			case "LC":
-				return 120;
+				return 180;
 			case "NT":
 				return 240;
 			case "VU":

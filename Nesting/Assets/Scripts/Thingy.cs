@@ -21,7 +21,6 @@ public class Thingy : MonoBehaviour {
 	Rigidbody body;
 	
 	public bool assimilated {get;set;}
-	private Transform katamariParent;
 	private bool delay = false;
 	private float actualVolume;
 
@@ -52,7 +51,7 @@ public class Thingy : MonoBehaviour {
 	}
 	
 	IEnumerator Delay() {
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(2);
 		delay = true;
 	}
 	
@@ -81,7 +80,7 @@ public class Thingy : MonoBehaviour {
 	
 	// Step toward center of katamari
 	void MoveToParent () {
-		transform.position = Vector3.MoveTowards(transform.position, katamariParent.position, Time.deltaTime);
+		transform.position = Vector3.MoveTowards(transform.position, this.transform.parent.position, Time.deltaTime);
 	}
 	
 }
