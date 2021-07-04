@@ -58,7 +58,7 @@ public class Katamari : MonoBehaviour {
 		//Fallen through ground somehow
 		if (transform.position.y < -15) SceneManager.LoadScene(SceneManager.GetActiveScene().name) ;
 		
-		AdjustCameraPosition();
+		//AdjustCameraPosition();
 		birdDisplay.text = BirdDetails.birdname;
 		sizeDisplay.text = "Mass: "+volume;
 		if (volume < trueVolume) volume += Mathf.Round((trueVolume - volume) / 10);
