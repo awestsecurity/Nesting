@@ -1,6 +1,6 @@
 .Title screen
-.Time limit
-.End screen
 .Sound track
-.Object List
+.more detailed Object List
+.Diverse closing remarks
 .Sound Effects
+.Bird selection menu
