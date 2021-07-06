@@ -11,42 +11,55 @@ public class MakeNestSwirl : MonoBehaviour
 	private Transform birdamari;
 	private GameObject ui;
 	private Popup popup; 
+	private bool restarting = false;
 
 	private string mostlyThis;
-	private List<Transform> innerRing = new List<Transform>();
+	private List<Transform> ring = new List<Transform>();
 	private List<Transform> middleRing = new List<Transform>();
 	private List<Transform> outerRing = new List<Transform>();
+	private float[] speeds;
 
 	public Vector3 center;
 	public float swirlSpeed;
-	public float katamariWidth;
+	public float katamariWidth = 1;
+	public float height = 0.5f;
 	
     // Start is called before the first frame update
     void Start()
     {
+		
         if (katamari == null) { katamari = GameObject.Find("Katamari"); }
 		if (ui == null) { ui = GameObject.Find("HUD"); }
 		ui.transform.GetChild(1).gameObject.SetActive(false); //hide announcement
-		ui.transform.GetChild(3).gameObject.SetActive(false); //hide timer
+		ui.transform.GetChild(2).gameObject.SetActive(false); //hide timer
 		katamari.transform.position = Vector3.zero;
+		katamari.transform.rotation = Quaternion.identity;
 		RemoveKatamriControl();
 		SplitKatamari();
-		popup = ui.transform.GetChild(1).GetComponent<Popup>();
+		popup = UIObjects.popup;
 		popup.AddMessage($"It's awefully {mostlyThis}y. I don't know. It's your nest, but maybe you should work on that for the next one.");
+		popup.AddMessage($"Why not give it another go? Hit 'r' to restart.");
 		popup.LaunchMessagePanel();
+		//Debug.Log($"Children: {katamari.transform.childCount} Ring:{ring.Count}");
     }
 
     // Update is called once per frame
     void Update()
-    {
-        foreach ( Transform t in innerRing ){
-			t.RotateAround(center, Vector3.up, Time.deltaTime * swirlSpeed);
+    {	
+		if (!restarting) {
+			for (int i = 0; i < ring.Count; i++) {
+				ring[i].RotateAround(center, new Vector3(0,1,-0.2f), speeds[i]*Time.deltaTime);
+			}
 		}
-        foreach ( Transform t in middleRing ){
-			t.RotateAround(center, Vector3.up, Time.deltaTime * (swirlSpeed / 1.25f));
-		}
-        foreach ( Transform t in outerRing ){
-			t.RotateAround(center, Vector3.up, Time.deltaTime * (swirlSpeed / 1.5f));
+		if (Input.GetKeyDown("r") && !restarting) {
+			bool b = UIObjects.sceneCon.StartLoad(1);
+			Destroy(katamari);
+			if (b) {
+				restarting = true;
+				Debug.Log("Restart.");
+			} else {
+				Debug.Log("Not Restarting.");	
+			}
 		}
     }
 	
@@ -63,29 +76,18 @@ public class MakeNestSwirl : MonoBehaviour
 	void SplitKatamari() {
 		birdamari = katamari.transform.GetChild(0);
 		birdamari.parent = this.transform;
-		birdamari.position = new Vector3(0,2,-2.5f);
-		int numchilds = katamari.transform.childCount - 1;
-		int step = numchilds /3;
-		float innerRingWidth = katamariWidth/3f;
-		float middleRingWidth = (katamariWidth/3f)*2;
-		float outerRingWidth = katamariWidth;
-		for (int i = 0; i < step; i++) {
-			Vector3 randomDirection = new Vector3(Random.Range(-0.5f,0.5f)*innerRingWidth,Random.Range(-0.5f,0.5f),Random.Range(-0.5f,0.5f)*innerRingWidth);
+		birdamari.position = new Vector3(0,1,-2.5f);
+		int numchilds = katamari.transform.childCount;
+		speeds = new float[numchilds];
+		for (int i = 0; i < numchilds; i++) {
+			Vector3 randomDirection = new Vector3(Random.Range(-katamariWidth, katamariWidth),0,Random.Range(-katamariWidth, katamariWidth));
 			Transform child = katamari.transform.GetChild(i);
+			float dist = Vector3.Distance(center,randomDirection);
+			float h = height / dist;
+			randomDirection.y = Random.Range(-h,h);
 			child.position = randomDirection; 
-			innerRing.Add(child);
-		}
-		for (int i = step; i < step*2; i++) {
-			Vector3 randomDirection = new Vector3(Random.Range(-0.5f,0.5f)*middleRingWidth,Random.Range(-0.25f,0.25f),Random.Range(-0.5f,0.5f)*middleRingWidth);
-			Transform child = katamari.transform.GetChild(i);
-			child.position = randomDirection; 
-			middleRing.Add(child);
-		}
-		for (int i = step*2; i < numchilds; i++) {
-			Vector3 randomDirection = new Vector3(Random.Range(-0.5f,0.5f)*outerRingWidth,0,Random.Range(-0.5f,0.5f)*outerRingWidth);
-			Transform child = katamari.transform.GetChild(i);
-			child.position = randomDirection; 
-			outerRing.Add(child);
+			speeds[i] = swirlSpeed / dist;
+			ring.Add(child);
 		}
 	}
 }

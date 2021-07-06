@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class NetworkRequest : MonoBehaviour
 {
 	public string account_name;
+	public bool AirplaneMode; // no network, skip for play testing
 	public Popup popup;
 	public SceneControl sceneCon;
 	private readonly string collection_name = "1forthebirds";
@@ -20,25 +21,27 @@ public class NetworkRequest : MonoBehaviour
 	private int[] owned_templates;
 	
 	void Start() {
-		if (account_name == "fuqqw.wam") {
+		UIObjects.popup = popup;
+		UIObjects.sceneCon = sceneCon;
+		if (account_name == "fuqqw.wam" && !AirplaneMode) {
 			SetLogin(account_name);
+		} else if (AirplaneMode) {
+			StartCoroutine(SkipLogin());
 		}
 	}
 
-	void Update() {
-		if (Input.anyKey && account_name == "") {
-			account_name = "fuqqw.wam";
-			SetLogin(account_name);
-		}
-	}
-
-	// To be called from the outside.
+	// To be called from the outside js code.
     void SetLogin(string a) {
 		account_name = a;
 		popup.AddMessage($"Loading {account_name}'s birds.");
 		popup.LaunchMessagePanel();
 		request_owned_templates = $"https://wax.api.atomicassets.io/atomicassets/v1/accounts/{account_name}/{collection_name}";
 		StartCoroutine(GetAssets());
+	}
+	
+	IEnumerator SkipLogin() {
+		yield return new WaitForSeconds(3);
+		sceneCon.StartLoad(1);
 	}
 	
 	IEnumerator GetAssets() {
@@ -78,8 +81,6 @@ public class NetworkRequest : MonoBehaviour
 		Debug.Log($"Bird: {BirdDetails.birdname} - Status: {BirdDetails.birdstatus} - IMG: {BirdDetails.birdimg} - ID:{BirdDetails.birdid}");
 		string name = BirdDetails.birdname;
 		string status = BirdDetails.birdstatus;
-		//text.text = $"Chosen Bird is {name} - {status}";
-		Random.InitState(bird);
 		yield return new WaitForSeconds(1.5f);
 		sceneCon.StartLoad(1);
 	}

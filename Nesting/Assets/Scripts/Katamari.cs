@@ -20,6 +20,8 @@ public class Katamari : MonoBehaviour {
 
 	public float radius; // Where is the edge to attach things.
 	public Transform camPos;
+	public CamFollow camFollow;
+	public int maxChildren = 200;
 	
 	private GameObject hud;
 	private Text sizeDisplay;
@@ -40,7 +42,7 @@ public class Katamari : MonoBehaviour {
 		birdui.texture = texture;
 		volume = 1;
 		trueVolume = 28888;
-		percentPossible = 0.40f; // old number 0.57f
+		percentPossible = 0.52f; // old number 0.57f
 		StartCoroutine(GravityDelay());
 	}
 
@@ -62,9 +64,6 @@ public class Katamari : MonoBehaviour {
 		birdDisplay.text = BirdDetails.birdname;
 		sizeDisplay.text = "Mass: "+volume;
 		if (volume < trueVolume) volume += Mathf.Round((trueVolume - volume) / 10);
-		if (this.transform.childCount > 144) {
-			Destroy(this.transform.GetChild(1).gameObject);
-		}
 	}
 	
 	IEnumerator GravityDelay() {
@@ -91,13 +90,22 @@ public class Katamari : MonoBehaviour {
 			thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;
 			tt.parent = gameObject.transform;
-			tt.localPosition = new Vector3 (tt.localPosition.x * 0.8f, tt.localPosition.y * 0.8f, tt.localPosition.z * 0.8f);
+			tt.localPosition = new Vector3 (tt.localPosition.x * 0.85f, tt.localPosition.y * 0.85f, tt.localPosition.z * 0.85f);
 			volume += (thingy.GetVolume() / 40f);
-			collide.radius += (thingy.volume / 2500000f); //5000000 old number
-			ballController.m_MovePower += (thingy.volume / 2500000f);
+			float adjust = thingy.volume / 2500000f;  //5000000 old number
+			collide.radius += adjust;
+			ballController.m_MovePower += adjust;
+			camFollow.spacer += adjust;
 			lastAssimilated = thingy;
 			collected.Add(thingy.thingyName);
+			RemoveOldChildrenAfterMax();
 		}
+	}
+	
+	void RemoveOldChildrenAfterMax() {
+		if (this.transform.childCount > maxChildren) {
+			Destroy(this.transform.GetChild(1).gameObject);
+		}		
 	}
 	
 	bool SmallEnoughToGrab (Thingy t) {
@@ -131,12 +139,4 @@ public class Katamari : MonoBehaviour {
 		return mostCommonValue;
 	}
 	
-}
-
-public class KatamariData {
-	//THings to include
-	//list of objects
-	//total size
-	//Most common object (tag?)
-	//Largest object
 }

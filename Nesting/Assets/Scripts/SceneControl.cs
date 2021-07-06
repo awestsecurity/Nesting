@@ -10,14 +10,13 @@ public class SceneControl : MonoBehaviour
     
 	private bool isLoading;
 
-	public bool ready;
 	public GameObject background;
 	public Popup popup;
+	public GameObject timerDisplay;
 	public Text textbox;
 	public string message;
 	
 	private string[] facts;
-	private bool tutorial = true;
 	private bool playing = false;
 	
 	public float timeremaining {get; private set;}
@@ -30,7 +29,7 @@ public class SceneControl : MonoBehaviour
 	}
 	
 	public bool StartLoad(int sceneindex) {
-		if (isLoading || ready) {
+		if (isLoading) {
 			return false;
 		} else {
 			StartCoroutine(PreLoadScene(sceneindex));
@@ -55,11 +54,12 @@ public class SceneControl : MonoBehaviour
 		//Time.timeScale = 0.1f;
 		Debug.Log("TimeOver");
 		playing = false;
-		StartCoroutine(PreLoadScene(2));
+		StartLoad(2);
 	}
 	
 	IEnumerator PreLoadScene(int sceneindex, float delay = 1.25f) {
 		float minTime = 5f;
+		popup.Reset();
 		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(sceneindex);
 		isLoading = true;
 		background.SetActive(true);
@@ -70,32 +70,24 @@ public class SceneControl : MonoBehaviour
 			minTime -= Time.deltaTime;
             yield return null;
         }
-		ready = true;
 		float t = Time.realtimeSinceStartup+delay;
-		while (Time.realtimeSinceStartup < t && minTime > 0) {
+		while (Time.realtimeSinceStartup < t || minTime > 0) {
 			minTime -= Time.deltaTime;
+			t -= Time.deltaTime;
 			yield return new WaitForEndOfFrame();
 		}
 		StartCoroutine(FadeScreen());
+		isLoading = false;
 		textbox.text = "";
-		popup.Reset();
-		if (tutorial && sceneindex == 1) {
-			popup.AddMessage("Oh good, you're here. Go gather things for the nest.");
-			popup.AddMessage("No time waste! Go go go gogogogogogogog");
-			popup.LaunchMessagePanel();
-			tutorial = false;
+		if (sceneindex == 1) {
+			Random.InitState(BirdDetails.birdid);
 			timeremaining = GetPlaytime();
-			playing = true;
-		} else if (sceneindex == 1) {
-			popup.AddMessage("No time waste! We need more nests.");
-			popup.AddMessage("Try harder tis time.");
-			popup.LaunchMessagePanel();	
-			timeremaining = GetPlaytime();
+			timerDisplay.SetActive(true); //enable timer
 			playing = true;
 		}
 	}
 	
-	IEnumerator FadeScreen(bool fadeout = true, float fadeTime = 0.75f) {
+	IEnumerator FadeScreen(bool fadeout = true, float fadeTime = 0.85f) {
 		Image img = background.GetComponent<Image>();
 		Color c = img.color;
 	    float elapsedTime = 0.0f;
@@ -117,17 +109,17 @@ public class SceneControl : MonoBehaviour
 			case "LC":
 				return 180;
 			case "NT":
-				return 240;
+				return 300;
 			case "VU":
-				return 360;	
+				return 400;	
 			case "EN":
-				return 480;
+				return 550;
 			case "CR":
-				return 600;
+				return 750;
 			case "EW":
-				return 720;
+				return 900;
 			case "EX":
-				return 840;
+				return 999;
 			default:
 				return 60;
 		}

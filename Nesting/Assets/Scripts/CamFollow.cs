@@ -24,7 +24,7 @@ public class CamFollow : MonoBehaviour
 			target_vect = new Vector3(target.position.x, target.position.y + height, target.position.z);
 			movePosition = Vector3.Lerp(transform.position, target_vect, Time.deltaTime*speed);
 			this.transform.position = movePosition;
-			Debug.Log($"Distance from cam to kat: {distance}");
+			//Debug.Log($"Distance from cam to kat: {distance}");
 		} else if ( distance < spacer && distance > -spacer ) {
 			Vector3 dir = CalculateNormal(transform.position, target.position, Vector3.up);
 			dir.y = 0;

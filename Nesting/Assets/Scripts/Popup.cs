@@ -11,53 +11,56 @@ public class Popup : MonoBehaviour
 	private List<string> messages = new List<string>();
 	private bool complete = true;
 	
-	void Start() {
+	public float typeDelay = 0.05f;
+	public float messageEndDelay = 0.75f;
+	
+	void Awake() {
 		panel = this.gameObject;
 		text = panel.transform.GetChild(0).GetComponent<Text>();
+		panel.SetActive(false);
 	}
 	
 	void Update() {
+		//Debug.Log($"complete? {complete}");
 		if (complete && Input.anyKey) {
-			ClearMessage();
 			Disable();
 		}
 	}
 
-    public void LaunchMessagePanel()
-    {
-		if (!complete) { return; }
+    public bool LaunchMessagePanel() {
+		if (!complete) { return false; }
 		panel.SetActive(true);
         StartCoroutine(TypeText());
+		return true;
     }
 	
-	IEnumerator TypeText(float delay = 0.05f) {
+	IEnumerator TypeText() {
 		complete = false;
-		text.text = "";
-		for (int i = 0; i < messages.Count; i++) {
-			foreach (char letter in messages[i]) {
+		ClearMessage();
+		string[] tmpMessages = messages.ToArray();
+		messages.Clear();
+		// Do for each message in the queue
+		for (int i = 0; i < tmpMessages.Length; i++) {
+			// Do for each letter in the message
+			foreach (char letter in tmpMessages[i]) {
 				text.text += letter;
 				if (letter.ToString() == ".") {
-					yield return new WaitForSeconds(delay*2);
+					yield return new WaitForSeconds(typeDelay*2);
 				}
-				yield return new WaitForSeconds(delay);
+				yield return new WaitForSeconds(typeDelay);
 			}
-			yield return new WaitForSeconds(delay*3);
+			yield return new WaitForSeconds(messageEndDelay);
 			while (!Input.anyKey) {
 				yield return new WaitForEndOfFrame();
 			}
 			ClearMessage();
 		}
-		yield return new WaitForSeconds(delay*2);
+		yield return new WaitForSeconds(typeDelay*2);
 		complete = true;
-		messages.Clear();
 	}
 	
 	public void AddMessage(string s = "you forgot the message. :/") {
-		if (!complete) {
-			Debug.LogError("Cannot add message while messages in progress. ");
-		} else {
-			messages.Add(s);
-		}
+		messages.Add(s);
 	}
 	
 	void ClearMessage() {
