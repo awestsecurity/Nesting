@@ -18,6 +18,7 @@ public class SceneControl : MonoBehaviour
 	
 	private string[] facts;
 	private bool playing = false;
+	private bool paused = false;
 	
 	public float timeremaining {get; private set;}
 	public Text timeDisplay;
@@ -38,6 +39,7 @@ public class SceneControl : MonoBehaviour
 	}
 	
 	void Update() {
+		//PLAY TIMER
 		if (playing) {	
 			timeremaining = timeremaining - Time.deltaTime; 
 			int min = (int)Mathf.Floor(timeremaining / 60);
@@ -47,6 +49,20 @@ public class SceneControl : MonoBehaviour
 		if (playing && timeremaining <= 0) {
 			EndPlay();
 			//move to endgame scene
+		}
+		
+		//PAUSING
+		if (Input.GetKeyDown("p")) {
+			paused = !paused;
+			if (paused) {
+				UIObjects.pauseMenu.SetActive(true);
+				Cursor.lockState = CursorLockMode.None;
+				Time.timeScale = 0;
+			} else {
+				UIObjects.pauseMenu.SetActive(false);
+				Cursor.lockState = CursorLockMode.Locked;
+				Time.timeScale = 1;
+			}
 		}
 	}
 	
@@ -79,10 +95,13 @@ public class SceneControl : MonoBehaviour
 		StartCoroutine(FadeScreen());
 		isLoading = false;
 		textbox.text = "";
+		
+		// IF WE ARE LOADING THE GAME PLAY SCENE
 		if (sceneindex == 1) {
 			Random.InitState(BirdDetails.birdid);
 			timeremaining = GetPlaytime();
 			timerDisplay.SetActive(true); //enable timer
+			Cursor.lockState = CursorLockMode.Locked;
 			playing = true;
 		}
 	}
@@ -107,19 +126,19 @@ public class SceneControl : MonoBehaviour
 	private float GetPlaytime() {
 		switch(BirdDetails.birdstatus) {
 			case "LC":
-				return 180;
+				return 250;
 			case "NT":
-				return 300;
+				return 350;
 			case "VU":
-				return 400;	
+				return 450;	
 			case "EN":
-				return 550;
+				return 600;
 			case "CR":
-				return 750;
+				return 800;
 			case "EW":
-				return 900;
-			case "EX":
 				return 999;
+			case "EX":
+				return 9999;
 			default:
 				return 60;
 		}

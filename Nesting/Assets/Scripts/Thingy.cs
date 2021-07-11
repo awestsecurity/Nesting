@@ -19,6 +19,7 @@ public class Thingy : MonoBehaviour {
 	BoxCollider boxcollide;
 	MeshCollider meshcollide;
 	Rigidbody body;
+	Transform t;
 	
 	public bool assimilated {get;set;}
 	private bool delay = false;
@@ -26,6 +27,7 @@ public class Thingy : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		t = transform;
 		if (randomize) {
 			float x, y, z;
 			if (keepRatio) { 
@@ -36,10 +38,10 @@ public class Thingy : MonoBehaviour {
 				y = Random.Range(minScale,maxScale);
 				z = Random.Range(minScale,maxScale);
 			}
-			gameObject.transform.localScale = new Vector3 (x,y,z);
+			t.localScale = new Vector3 (x,y,z);
 		}
 		if (rotate){
-			transform.rotation = Random.rotation;
+			t.rotation = Random.rotation;
 		}
 		mesh = GetComponent<MeshFilter>().mesh;
         vertices = mesh.vertices;
@@ -56,7 +58,7 @@ public class Thingy : MonoBehaviour {
 	}
 	
 	void Update () {
-		if (delay && !assimilated && !IsTrigger() && actualVolume < (Katamari.volumeCheck * 0.95f)) {
+		if (delay && !assimilated && !IsTrigger() && actualVolume < (Katamari.volumeCheck)) {
 			if (boxcollide) boxcollide.isTrigger = true;
 			if (meshcollide) meshcollide.isTrigger = true;
 			body.isKinematic = true;
@@ -75,12 +77,12 @@ public class Thingy : MonoBehaviour {
 	}
 	
 	public float GetVolume() {
-		return volume * (transform.localScale.x * transform.localScale.y * transform.localScale.z / 3f);
+		return volume * ((t.localScale.x + t.localScale.y + t.localScale.z) / 3.0f);
 	}
 	
 	// Step toward center of katamari
 	void MoveToParent () {
-		transform.position = Vector3.MoveTowards(transform.position, this.transform.parent.position, Time.deltaTime);
+		t.position = Vector3.MoveTowards(t.position, this.transform.parent.position, Time.deltaTime);
 	}
 	
 }

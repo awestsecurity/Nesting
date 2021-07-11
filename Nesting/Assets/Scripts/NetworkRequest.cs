@@ -12,21 +12,35 @@ public class NetworkRequest : MonoBehaviour
 	public bool AirplaneMode; // no network, skip for play testing
 	public Popup popup;
 	public SceneControl sceneCon;
+	public GameObject pause;
+	public BirdMenu menu;
 	private readonly string collection_name = "1forthebirds";
 	private string request_owned_templates;
 	private string request_template_info;
+	private bool menuActive = false;
 //	private string waxLogin = "https://all-access.wax.io/cloud-wallet/login";
 //	private string waxAccess = "https://api-idm.wax.io/v1/accounts/auto-accept/";
 //  private string getAllAssets = "https://wax.api.atomicassets.io/atomicassets/v1/assets?owner=fuqqw.wam&collection_name=1forthebirds&page=1&limit=100&order=desc&sort=asset_id";
-	private int[] owned_templates;
 	
 	void Start() {
 		UIObjects.popup = popup;
 		UIObjects.sceneCon = sceneCon;
+		UIObjects.pauseMenu = pause;
+		UIObjects.birdMenu = menu;
 		if (account_name == "fuqqw.wam" && !AirplaneMode) {
 			SetLogin(account_name);
 		} else if (AirplaneMode) {
 			StartCoroutine(SkipLogin());
+		}
+	}
+	
+	void Update() {
+		if (BirdDetails.ownedBirds != null && !menuActive) {
+			menu.MakeBirdMenu();
+			menu.gameObject.SetActive(true);
+			if (BirdDetails.ownedBirds.Length > 1) {
+				menuActive = true;
+			}
 		}
 	}
 
@@ -40,7 +54,7 @@ public class NetworkRequest : MonoBehaviour
 	}
 	
 	IEnumerator SkipLogin() {
-		yield return new WaitForSeconds(3);
+		yield return new WaitForSeconds(2);
 		sceneCon.StartLoad(1);
 	}
 	
@@ -60,29 +74,35 @@ public class NetworkRequest : MonoBehaviour
 			if (t) {
 				Debug.Log("Success");
 				var templates = data["data"]["templates"];
-				owned_templates = new int[templates.Count];
+				BirdDetails.ownedBirds = new int[templates.Count];
 				for (int i=0;i<templates.Count;i++) {
 					int template = data["data"]["templates"][i]["template_id"].AsInt;
-					owned_templates[i] = template;
+					BirdDetails.ownedBirds[i] = template;
 				}
 			} else {
 				//No Inventory
 				Debug.Log("Found No Birds");
 			}
 		}
-		int bird = owned_templates[Random.Range(0,owned_templates.Length)];
-		TextAsset birdData = (TextAsset)Resources.Load("birds");
-		var birds = JSON.Parse(birdData.text);
-		Debug.Log(bird.ToString());
-		BirdDetails.birdid = bird;
-		BirdDetails.birdname = birds[bird.ToString()]["name"].Value;
-		BirdDetails.birdstatus = birds[bird.ToString()]["status"].Value;
-		BirdDetails.birdimg = birds[bird.ToString()]["image"].Value;
-		Debug.Log($"Bird: {BirdDetails.birdname} - Status: {BirdDetails.birdstatus} - IMG: {BirdDetails.birdimg} - ID:{BirdDetails.birdid}");
-		string name = BirdDetails.birdname;
-		string status = BirdDetails.birdstatus;
-		yield return new WaitForSeconds(1.5f);
-		sceneCon.StartLoad(1);
+		
+		if ( BirdDetails.ownedBirds.Length <= 0 ) {
+			Debug.Log("User has no birds.");
+			popup.Reset();
+			popup.AddMessage($"{account_name} doesn't appear to have any birds.");
+			popup.LaunchMessagePanel();
+		} else if ( BirdDetails.ownedBirds.Length == 1 ) {
+			Debug.Log("User has one bird.");
+			BirdDetails.SetBird(BirdDetails.ownedBirds[0]);
+			yield return new WaitForSeconds(1.5f);
+			sceneCon.StartLoad(1);
+		} else {
+			Debug.Log("User has more birds. Let them choose.");
+			yield return new WaitForEndOfFrame();
+			//int bird = BirdDetails.ownedBirds[Random.Range(0,BirdDetails.ownedBirds.Length)];
+			//BirdDetails.SetBird(bird);
+			//yield return new WaitForSeconds(1.5f);
+			//sceneCon.StartLoad(1);
+		}
 	}
 	
 }

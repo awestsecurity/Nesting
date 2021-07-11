@@ -38,7 +38,7 @@ public class MakeNestSwirl : MonoBehaviour
 		SplitKatamari();
 		popup = UIObjects.popup;
 		popup.AddMessage($"It's quite {mostlyThis}y. How exciting!");
-		popup.AddMessage($"Why not give it another go? Hit 'r' to restart.");
+		popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
 		popup.LaunchMessagePanel();
 		//Debug.Log($"Children: {katamari.transform.childCount} Ring:{ring.Count}");
     }
@@ -60,6 +60,11 @@ public class MakeNestSwirl : MonoBehaviour
 			} else {
 				Debug.Log("Not Restarting.");	
 			}
+		} else if (Input.GetKeyDown("m") && !restarting) {
+			UIObjects.birdMenu.gameObject.SetActive(true);
+			Cursor.lockState = CursorLockMode.None;
+			Destroy(katamari);
+			restarting = true;
 		}
     }
 	

@@ -10,7 +10,7 @@ public class Katamari : MonoBehaviour {
 	public GameObject HUDPrefab;
 	private static float volume; // How big we are / What we can pick up.
 	private float trueVolume; // Display Volume
-	private static float percentPossible;  // How big we are / What we can pick up.
+	private static float percentPossible = 0.57f;  // How big we are / What we can pick up.
 	
 	public static float volumeCheck {
 		get { return (volume * percentPossible); } 
@@ -36,13 +36,13 @@ public class Katamari : MonoBehaviour {
 	
 	void Start () {
 		ConnectUI();
+
 		collide = gameObject.GetComponent<SphereCollider>();
 		ballController = gameObject.GetComponent<Ball>();
 		Texture2D texture = Resources.Load(BirdDetails.birdimg) as Texture2D;
 		birdui.texture = texture;
 		volume = 1;
-		trueVolume = 28888;
-		percentPossible = 0.52f; // old number 0.57f
+		trueVolume = 48888;
 		StartCoroutine(GravityDelay());
 	}
 
@@ -63,7 +63,7 @@ public class Katamari : MonoBehaviour {
 		//AdjustCameraPosition();
 		birdDisplay.text = BirdDetails.birdname;
 		sizeDisplay.text = "Mass: "+volume;
-		if (volume < trueVolume) volume += Mathf.Round((trueVolume - volume) / 10);
+		if (volume < trueVolume) volume += Mathf.Round((trueVolume - volume) / 30f);
 	}
 	
 	IEnumerator GravityDelay() {
@@ -76,8 +76,12 @@ public class Katamari : MonoBehaviour {
 		hud = GameObject.Find("HUD");
 		if (hud == null) {
 			hud = Instantiate(HUDPrefab);
+			hud.transform.GetChild(3).gameObject.SetActive(false);
+			hud.transform.GetChild(4).gameObject.SetActive(false);
+			hud.transform.GetChild(5).gameObject.SetActive(false);
 		}
 		hud.transform.GetChild(0).gameObject.SetActive(true);
+
 		sizeDisplay = hud.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
 		birdDisplay = hud.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>();
 		birdui = hud.transform.GetChild(0).GetChild(0).GetComponent<RawImage>();
@@ -86,16 +90,17 @@ public class Katamari : MonoBehaviour {
 	void OnTriggerEnter (Collider collision) {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
 		if (thingy != null && SmallEnoughToGrab(thingy)) {
+			Debug.Log($"Picking up: {thingy.thingyName} with {thingy.GetVolume()}g");
 			thingy.DisableCollider();
 			thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;
 			tt.parent = gameObject.transform;
 			tt.localPosition = new Vector3 (tt.localPosition.x * 0.85f, tt.localPosition.y * 0.85f, tt.localPosition.z * 0.85f);
 			volume += (thingy.GetVolume() / 40f);
-			float adjust = thingy.volume / 2500000f;  //5000000 old number
+			float adjust = thingy.volume / 5000000f;  //5000000 old number
 			collide.radius += adjust;
-			ballController.m_MovePower += adjust;
-			camFollow.spacer += adjust;
+			ballController.m_MovePower += adjust*2;
+			camFollow.spacer += adjust*2;
 			lastAssimilated = thingy;
 			collected.Add(thingy.thingyName);
 			RemoveOldChildrenAfterMax();
