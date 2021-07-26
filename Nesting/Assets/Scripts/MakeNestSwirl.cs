@@ -38,6 +38,7 @@ public class MakeNestSwirl : MonoBehaviour
 		SplitKatamari();
 		popup = UIObjects.popup;
 		popup.AddMessage($"It's quite {mostlyThis}y. How exciting!");
+		popup.AddMessage(BirdDetails.highscores);
 		popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
 		popup.LaunchMessagePanel();
 		//Debug.Log($"Children: {katamari.transform.childCount} Ring:{ring.Count}");

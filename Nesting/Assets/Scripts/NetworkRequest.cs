@@ -27,9 +27,11 @@ public class NetworkRequest : MonoBehaviour
 		UIObjects.sceneCon = sceneCon;
 		UIObjects.pauseMenu = pause;
 		UIObjects.birdMenu = menu;
+		UIObjects.network = gameObject.GetComponent<NetworkRequest>();
 		if (account_name == "fuqqw.wam" && !AirplaneMode) {
 			SetLogin(account_name);
 		} else if (AirplaneMode) {
+			account_name = "Anonymous";
 			StartCoroutine(SkipLogin());
 		}
 	}
@@ -41,6 +43,9 @@ public class NetworkRequest : MonoBehaviour
 			if (BirdDetails.ownedBirds.Length > 1) {
 				menuActive = true;
 			}
+		}
+		if (Input.GetKeyDown("g")) {
+			StartCoroutine(GetHighScores());
 		}
 	}
 
@@ -103,6 +108,68 @@ public class NetworkRequest : MonoBehaviour
 			//yield return new WaitForSeconds(1.5f);
 			//sceneCon.StartLoad(1);
 		}
+	}
+
+	public void PostHighScore() {
+		int score = (int)BirdDetails.score;
+		StartCoroutine(SendHighScore(score));
+	}
+
+	IEnumerator SendHighScore(int score) {
+		
+		string secret = "greycatbird";
+		string url = "https://www.forthebirds.space/play/api/add.php";
+		string hash = Md5Sum($"{BirdDetails.birdname}{score}{secret}");
+
+		WWWForm form = new WWWForm();
+        form.AddField("bird", BirdDetails.birdname);
+        form.AddField("size", score);
+        form.AddField("account", account_name);
+        form.AddField("name", account_name);
+        form.AddField("hash", hash);
+		
+		UnityWebRequest www = UnityWebRequest.Post(url,form);
+        yield return www.SendWebRequest();
+        if(www.isNetworkError || www.isHttpError) {
+            Debug.Log(www.error);
+        }
+		else {
+            string response = www.downloadHandler.text;
+			Debug.Log($"score sent. {response}");
+		}
+	}
+	
+	public IEnumerator GetHighScores() {
+		string url = "https://www.forthebirds.space/play/api/get.php";
+		string get_url = $"{url}?bird={BirdDetails.birdname}";
+		
+		UnityWebRequest www = UnityWebRequest.Get(get_url);
+        yield return www.SendWebRequest();
+        if(www.isNetworkError || www.isHttpError) {
+            Debug.Log(www.error);
+        } else {
+            string response = www.downloadHandler.text;
+			BirdDetails.highscores = response;
+		}
+	}
+
+	public string Md5Sum(string strToEncrypt) {
+		System.Text.UTF8Encoding ue = new System.Text.UTF8Encoding();
+		byte[] bytes = ue.GetBytes(strToEncrypt);
+	 
+		// encrypt bytes
+		System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+		byte[] hashBytes = md5.ComputeHash(bytes);
+	 
+		// Convert the encrypted bytes back to a string (base 16)
+		string hashString = "";
+	 
+		for (int i = 0; i < hashBytes.Length; i++)
+		{
+			hashString += System.Convert.ToString(hashBytes[i], 16).PadLeft(2, '0');
+		}
+	 
+		return hashString.PadLeft(32, '0');
 	}
 	
 }

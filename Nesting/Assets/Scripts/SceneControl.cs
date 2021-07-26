@@ -70,6 +70,7 @@ public class SceneControl : MonoBehaviour
 		//Time.timeScale = 0.1f;
 		Debug.Log("TimeOver");
 		playing = false;
+		UIObjects.network.PostHighScore();
 		StartLoad(2);
 	}
 	
@@ -103,6 +104,9 @@ public class SceneControl : MonoBehaviour
 			timerDisplay.SetActive(true); //enable timer
 			Cursor.lockState = CursorLockMode.Locked;
 			playing = true;
+			StartCoroutine(UIObjects.network.GetHighScores());
+		} else if (sceneindex == 2) {
+			//End Scene
 		}
 	}
 	

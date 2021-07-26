@@ -8,14 +8,11 @@ using UnityStandardAssets.Vehicles.Ball;
 public class Katamari : MonoBehaviour {
 
 	public GameObject HUDPrefab;
-	private static float volume; // How big we are / What we can pick up.
+	private static float displayVolume; // How big we are / What we can pick up.
 	private float trueVolume; // Display Volume
 	private static float percentPossible = 0.57f;  // How big we are / What we can pick up.
 	
-	public static float volumeCheck {
-		get { return (volume * percentPossible); } 
-		private set { percentPossible = value; }
-	}
+	public static float volumeCheck;
 	public string mostCommonChild { get {return GetMostCommonChild(); } private set{} }
 
 	public float radius; // Where is the edge to attach things.
@@ -36,18 +33,21 @@ public class Katamari : MonoBehaviour {
 	
 	void Start () {
 		ConnectUI();
+		volumeCheck = trueVolume * percentPossible;
 
 		collide = gameObject.GetComponent<SphereCollider>();
 		ballController = gameObject.GetComponent<Ball>();
 		Texture2D texture = Resources.Load(BirdDetails.birdimg) as Texture2D;
 		birdui.texture = texture;
-		volume = 1;
-		trueVolume = 48888;
+		displayVolume = 1;
+		trueVolume = 4888;
 		StartCoroutine(GravityDelay());
+		BirdDetails.score = trueVolume;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		volumeCheck = trueVolume * percentPossible;
 		if (!fullscreen && Input.anyKeyDown) {
 			fullscreen = true;
 			Screen.fullScreen = true;
@@ -62,8 +62,11 @@ public class Katamari : MonoBehaviour {
 		
 		//AdjustCameraPosition();
 		birdDisplay.text = BirdDetails.birdname;
-		sizeDisplay.text = "Mass: "+volume;
-		if (volume < trueVolume) volume += Mathf.Round((trueVolume - volume) / 30f);
+		sizeDisplay.text = "Mass: "+displayVolume;
+		if (displayVolume < trueVolume) displayVolume += Mathf.Round((trueVolume - displayVolume) / 30f);
+		if (trueVolume > BirdDetails.score && trueVolume < (BirdDetails.score*1.5f)) {
+			BirdDetails.score = trueVolume;
+		}
 	}
 	
 	IEnumerator GravityDelay() {
@@ -96,8 +99,8 @@ public class Katamari : MonoBehaviour {
 			Transform tt = thingy.gameObject.transform;
 			tt.parent = gameObject.transform;
 			tt.localPosition = new Vector3 (tt.localPosition.x * 0.85f, tt.localPosition.y * 0.85f, tt.localPosition.z * 0.85f);
-			volume += (thingy.GetVolume() / 40f);
-			float adjust = thingy.volume / 5000000f;  //5000000 old number
+			trueVolume += (thingy.GetVolume() / 40f);
+			float adjust = thingy.volume / 350000f;  //5000000 old number
 			collide.radius += adjust;
 			ballController.m_MovePower += adjust*2;
 			camFollow.spacer += adjust*2;
@@ -114,7 +117,7 @@ public class Katamari : MonoBehaviour {
 	}
 	
 	bool SmallEnoughToGrab (Thingy t) {
-		return (t.volume < (volume*percentPossible)) ? true : false ;
+		return (t.volume < (trueVolume * percentPossible)) ? true : false ;
 	}
 	
 	void AdjustCameraPosition () {
