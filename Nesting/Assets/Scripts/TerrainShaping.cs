@@ -6,9 +6,9 @@ using UnityEngine;
 public class TerrainShaping : MonoBehaviour
 {
 	private int xScale, yScale;
-	public float resolution = 1f;
+	private float resolution = 0.88f;
 	public GameObject fence;
-	private float height = 0.5f;
+	private float height = 1.75f;
 	public float wallmargin = 3.5f;
 	public Material material;
 	
@@ -23,7 +23,7 @@ public class TerrainShaping : MonoBehaviour
 		Random.InitState(BirdDetails.birdid);
 		BirdDetails.mapx = Random.Range(115,240);
 		BirdDetails.mapy = Random.Range(125,250);
-		BirdDetails.mapz = Random.Range(0.75f,2f);
+		BirdDetails.mapz = Random.Range(0.75f,5.5f);
 		xScale = BirdDetails.mapx;
 		yScale = BirdDetails.mapy;
 		height = BirdDetails.mapz;
@@ -39,15 +39,17 @@ public class TerrainShaping : MonoBehaviour
 	Mesh FormMesh() {
 		Mesh tempMesh = new Mesh();
 		tempMesh.name = "Terrain";
-		Vector3[] verts = new Vector3[(xScale+1)*(yScale+1)];
+		int truexScale = xScale+1;
+		int trueyScale = yScale+1;
+		Vector3[] verts = new Vector3[truexScale*trueyScale];
 		Vector2[] uv = new Vector2[verts.Length];
 		int[] tris = new int[xScale * yScale * 6];
 		
 		//Create vertices with perlin noise heightmap
 		float yf = 0;
 		float perlinOffset = Random.value;
-		for (int i = 0; yf <= yScale; yf += resolution) {
-			for (float xf = 0; xf <= xScale; xf += resolution, i++) {
+		for (int i = 0; yf <= yScale; yf += 1) {
+			for (float xf = 0; xf <= xScale; xf += 1, i++) {
 				float noisex = perlinOffset + xf / ((float)xScale * (resolution/3f));
 				float noisey = perlinOffset + yf / ((float)yScale * (resolution/3f));
 				float h = Mathf.PerlinNoise(noisex,noisey)*height - (height/2f);

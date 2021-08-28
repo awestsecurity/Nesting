@@ -31,16 +31,19 @@ public class Katamari : MonoBehaviour {
 	private Ball ballController;
 	private bool fullscreen = false;
 	
+	private int cheatVolume = 9999999;
+	private float prevvolume;
+	
 	void Start () {
 		ConnectUI();
 		volumeCheck = trueVolume * percentPossible;
-
 		collide = gameObject.GetComponent<SphereCollider>();
 		ballController = gameObject.GetComponent<Ball>();
 		Texture2D texture = Resources.Load(BirdDetails.birdimg) as Texture2D;
 		birdui.texture = texture;
 		displayVolume = 1;
 		trueVolume = 4888;
+		prevvolume = trueVolume;
 		StartCoroutine(GravityDelay());
 		BirdDetails.score = trueVolume;
 	}
@@ -67,6 +70,11 @@ public class Katamari : MonoBehaviour {
 		if (trueVolume > BirdDetails.score && trueVolume < (BirdDetails.score*1.5f)) {
 			BirdDetails.score = trueVolume;
 		}
+		
+		//Cheat Detection
+		if (trueVolume > prevvolume * 1.5f) BirdDetails.cheat = true;
+		prevvolume = trueVolume;
+		if ( trueVolume >= cheatVolume ) BirdDetails.cheat = true;
 	}
 	
 	IEnumerator GravityDelay() {
@@ -85,15 +93,15 @@ public class Katamari : MonoBehaviour {
 		}
 		hud.transform.GetChild(0).gameObject.SetActive(true);
 
-		sizeDisplay = hud.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
-		birdDisplay = hud.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Text>();
-		birdui = hud.transform.GetChild(0).GetChild(0).GetComponent<RawImage>();
+		sizeDisplay = hud.transform.GetChild(0).GetChild(1).GetComponent<Text>();
+		birdDisplay = hud.transform.GetChild(0).GetChild(0).GetComponent<Text>();
+		birdui = hud.transform.GetChild(3).GetChild(1).GetComponent<RawImage>();
 	}
 	
 	void OnTriggerEnter (Collider collision) {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
 		if (thingy != null && SmallEnoughToGrab(thingy)) {
-			Debug.Log($"Picking up: {thingy.thingyName} with {thingy.GetVolume()}g");
+			//Debug.Log($"Picking up: {thingy.thingyName} with {thingy.GetVolume()}g");
 			thingy.DisableCollider();
 			thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;

@@ -20,6 +20,7 @@ public static class BirdDetails {
 	
 	public static float score = 0;
 	public static string highscores;
+	public static bool cheat = false;
 	
 	public static void SetBird(int templateID) {
 		if (birdsfile == null) { 

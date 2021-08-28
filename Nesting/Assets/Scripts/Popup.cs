@@ -71,6 +71,7 @@ public class Popup : MonoBehaviour
 		StopCoroutine(TypeText());
 		complete = true;
 		messages.Clear();
+		Disable();
 	}
 	
 	void Disable() {

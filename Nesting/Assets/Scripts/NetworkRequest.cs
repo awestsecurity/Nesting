@@ -18,6 +18,7 @@ public class NetworkRequest : MonoBehaviour
 	private string request_owned_templates;
 	private string request_template_info;
 	private bool menuActive = false;
+	private bool birdsLoaded = false;
 //	private string waxLogin = "https://all-access.wax.io/cloud-wallet/login";
 //	private string waxAccess = "https://api-idm.wax.io/v1/accounts/auto-accept/";
 //  private string getAllAssets = "https://wax.api.atomicassets.io/atomicassets/v1/assets?owner=fuqqw.wam&collection_name=1forthebirds&page=1&limit=100&order=desc&sort=asset_id";
@@ -28,27 +29,18 @@ public class NetworkRequest : MonoBehaviour
 		UIObjects.pauseMenu = pause;
 		UIObjects.birdMenu = menu;
 		UIObjects.network = gameObject.GetComponent<NetworkRequest>();
-		if (account_name == "fuqqw.wam" && !AirplaneMode) {
-			SetLogin(account_name);
-		} else if (AirplaneMode) {
+		if (Debug.isDebugBuild) {
+			if (AirplaneMode) {
 			account_name = "Anonymous";
 			StartCoroutine(SkipLogin());
+			} else if ( account_name == null ) {
+				account_name = "fuqqw.wam";
+			} else {
+				SetLogin(account_name);
+			}
 		}
 	}
 	
-	void Update() {
-		if (BirdDetails.ownedBirds != null && !menuActive) {
-			menu.MakeBirdMenu();
-			menu.gameObject.SetActive(true);
-			if (BirdDetails.ownedBirds.Length > 1) {
-				menuActive = true;
-			}
-		}
-		if (Input.GetKeyDown("g")) {
-			StartCoroutine(GetHighScores());
-		}
-	}
-
 	// To be called from the outside js code.
     void SetLogin(string a) {
 		account_name = a;
@@ -77,17 +69,19 @@ public class NetworkRequest : MonoBehaviour
 			var data = JSON.Parse(response);
 			bool t = data["success"].AsBool;
 			if (t) {
-				Debug.Log("Success");
 				var templates = data["data"]["templates"];
 				BirdDetails.ownedBirds = new int[templates.Count];
 				for (int i=0;i<templates.Count;i++) {
 					int template = data["data"]["templates"][i]["template_id"].AsInt;
 					BirdDetails.ownedBirds[i] = template;
 				}
+				menu.MakeBirdMenu();
+				popup.Reset();
 			} else {
 				//No Inventory
 				Debug.Log("Found No Birds");
 			}
+			birdsLoaded = true;
 		}
 		
 		if ( BirdDetails.ownedBirds.Length <= 0 ) {
@@ -96,18 +90,27 @@ public class NetworkRequest : MonoBehaviour
 			popup.AddMessage($"{account_name} doesn't appear to have any birds.");
 			popup.LaunchMessagePanel();
 		} else if ( BirdDetails.ownedBirds.Length == 1 ) {
-			Debug.Log("User has one bird.");
 			BirdDetails.SetBird(BirdDetails.ownedBirds[0]);
-			yield return new WaitForSeconds(1.5f);
-			sceneCon.StartLoad(1);
-		} else {
-			Debug.Log("User has more birds. Let them choose.");
+			//Debug.Log($"User has one bird. Playing as {BirdDetails.birdname}");
 			yield return new WaitForEndOfFrame();
-			//int bird = BirdDetails.ownedBirds[Random.Range(0,BirdDetails.ownedBirds.Length)];
-			//BirdDetails.SetBird(bird);
-			//yield return new WaitForSeconds(1.5f);
 			//sceneCon.StartLoad(1);
+		} else {
+			//Debug.Log("User has more birds. Let them choose.");
+			yield return new WaitForEndOfFrame();
 		}
+	}
+	
+	public void ChooseRandomBird() {
+		if (BirdDetails.ownedBirds.Length >= 1) {
+			int bird = BirdDetails.ownedBirds[Random.Range(0,BirdDetails.ownedBirds.Length)];
+			BirdDetails.SetBird(bird);
+			sceneCon.StartLoad(1);
+		}
+	}
+	
+	public void PopBirdMenu() {
+		menu.gameObject.SetActive(true);
+		menuActive = true;
 	}
 
 	public void PostHighScore() {
@@ -119,29 +122,33 @@ public class NetworkRequest : MonoBehaviour
 		
 		string secret = "greycatbird";
 		string url = "https://www.forthebirds.space/play/api/add.php";
-		string hash = Md5Sum($"{BirdDetails.birdname}{score}{secret}");
+		string safename = BirdDetails.birdname.Replace("'",string.Empty);
+		string hash = Md5Sum($"{safename}{score}{secret}");
 
 		WWWForm form = new WWWForm();
-        form.AddField("bird", BirdDetails.birdname);
+        form.AddField("bird", safename);
         form.AddField("size", score);
         form.AddField("account", account_name);
         form.AddField("name", account_name);
         form.AddField("hash", hash);
 		
-		UnityWebRequest www = UnityWebRequest.Post(url,form);
-        yield return www.SendWebRequest();
-        if(www.isNetworkError || www.isHttpError) {
-            Debug.Log(www.error);
-        }
-		else {
-            string response = www.downloadHandler.text;
-			Debug.Log($"score sent. {response}");
+		if (!BirdDetails.cheat) {
+			UnityWebRequest www = UnityWebRequest.Post(url,form);
+			yield return www.SendWebRequest();
+			if(www.isNetworkError || www.isHttpError) {
+				Debug.Log(www.error);
+			}
+			else {
+				string response = www.downloadHandler.text;
+				Debug.Log($"score sent. {response}");
+			}
 		}
 	}
 	
 	public IEnumerator GetHighScores() {
 		string url = "https://www.forthebirds.space/play/api/get.php";
-		string get_url = $"{url}?bird={BirdDetails.birdname}";
+		string safename = BirdDetails.birdname.Replace("'",string.Empty);
+		string get_url = $"{url}?bird={safename}";
 		
 		UnityWebRequest www = UnityWebRequest.Get(get_url);
         yield return www.SendWebRequest();

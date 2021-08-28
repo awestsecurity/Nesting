@@ -14,13 +14,16 @@ public class SceneControl : MonoBehaviour
 	public Popup popup;
 	public GameObject timerDisplay;
 	public Text textbox;
-	public string message;
+	public Text highscore;
+	public GameObject titleScreen;
 	
 	private string[] facts;
 	private bool playing = false;
 	private bool paused = false;
 	
 	public float timeremaining {get; private set;}
+	private float lastTimeStamp = 0;
+	private bool cheatDetected = false;
 	public Text timeDisplay;
 	
 	void Start() {
@@ -42,11 +45,16 @@ public class SceneControl : MonoBehaviour
 		//PLAY TIMER
 		if (playing) {	
 			timeremaining = timeremaining - Time.deltaTime; 
+			if (lastTimeStamp <= timeremaining) {
+				cheatDetected = true;
+				BirdDetails.cheat = true;
+			}
 			int min = (int)Mathf.Floor(timeremaining / 60);
 			int sec = (int)timeremaining % 60;
 			timeDisplay.text = $"{min}:{sec.ToString("00")}";
+			lastTimeStamp = timeremaining;
 		}
-		if (playing && timeremaining <= 0) {
+		if (playing && (timeremaining <= 0 || cheatDetected)) {
 			EndPlay();
 			//move to endgame scene
 		}
@@ -55,10 +63,15 @@ public class SceneControl : MonoBehaviour
 		if (Input.GetKeyDown("p")) {
 			paused = !paused;
 			if (paused) {
+				playing = false;
 				UIObjects.pauseMenu.SetActive(true);
+				if (BirdDetails.highscores != null) {
+					highscore.text = $"Best {BirdDetails.birdname}s \n {BirdDetails.highscores}";
+				}
 				Cursor.lockState = CursorLockMode.None;
 				Time.timeScale = 0;
 			} else {
+				playing = true;
 				UIObjects.pauseMenu.SetActive(false);
 				Cursor.lockState = CursorLockMode.Locked;
 				Time.timeScale = 1;
@@ -80,6 +93,7 @@ public class SceneControl : MonoBehaviour
 		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(sceneindex);
 		isLoading = true;
 		background.SetActive(true);
+		titleScreen.SetActive(false);
 		string randfact = facts[Random.Range(0,facts.Length)];
 		textbox.text = $"Loading...   Did you know, {randfact}";
 		while (!loadingOperation.isDone)
@@ -101,6 +115,7 @@ public class SceneControl : MonoBehaviour
 		if (sceneindex == 1) {
 			Random.InitState(BirdDetails.birdid);
 			timeremaining = GetPlaytime();
+			lastTimeStamp = timeremaining + 0.1f;
 			timerDisplay.SetActive(true); //enable timer
 			Cursor.lockState = CursorLockMode.Locked;
 			playing = true;
