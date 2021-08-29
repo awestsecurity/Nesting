@@ -1,16 +1,11 @@
 fileFormatVersion: 2
-guid: c156b864c422fc546ad35fc97fc65be8
+guid: 4b5ea7d54d9ea4b478ba9e346b7a7e76
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: birdamari
-    second: {fileID: 2100000, guid: e411c2a835e924b4299a35e39e226c59, type: 2}
+  externalObjects: {}
   materials:
-    materialImportMode: 1
+    materialImportMode: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -36,7 +31,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -46,9 +41,9 @@ ModelImporter:
     sortHierarchyByName: 1
     importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
-    fileIdsGeneration: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1

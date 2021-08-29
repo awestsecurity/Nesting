@@ -10,8 +10,9 @@ public class QualityButtons : MonoBehaviour
 	private Button b;
 	private Text t;
 	private string[] shadowOptions = {" Best ", " Minimal ", " None "};
+	private string[] qualityOptions = {" Poor ", " Okey Dokey ", " Great "};
 	private string[] viewDistance = {" Far ", "Middle", "Close"};
-	private int i = 0;
+	private int i = 1;
 	private Camera cam;
 	
     void Start()
@@ -20,7 +21,7 @@ public class QualityButtons : MonoBehaviour
         t = this.gameObject.transform.GetChild(0).GetComponent<Text>();
 		switch(settingID) {
 			case 0:
-				b.onClick.AddListener(delegate {ChangeShadowSetting(); });
+				b.onClick.AddListener(delegate {ChangeQuality(); });
 				break;
 			case 1:
 				b.onClick.AddListener(delegate {ChangeViewDistance(); });
@@ -29,6 +30,25 @@ public class QualityButtons : MonoBehaviour
 				break;
 		}
     }
+	
+	void ChangeQuality() {
+		i = (i < qualityOptions.Length - 1) ? (i+1) : 0 ;
+		t.text = $"Quality: {qualityOptions[i]}";
+		switch (i) {
+			case 0:
+				QualitySettings.SetQualityLevel(1, true);
+				break;
+			case 1:
+				QualitySettings.SetQualityLevel(3, true);
+				break;
+			case 2:
+				QualitySettings.SetQualityLevel(5, true);
+				break;
+			default:
+				break;
+		}		
+		
+	}
 
 	void ChangeShadowSetting(){
 		i = (i < shadowOptions.Length - 1) ? (i+1) : 0 ;
