@@ -61,7 +61,7 @@ public class Katamari : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.None;
 		}
 		//Fallen through ground somehow
-		if (transform.position.y < -15) SceneManager.LoadScene(SceneManager.GetActiveScene().name) ;
+		//if (transform.position.y < -15) SceneManager.LoadScene(SceneManager.GetActiveScene().name) ;
 		
 		//AdjustCameraPosition();
 		birdDisplay.text = BirdDetails.birdname;

@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+//Handle scene transitions
+//Keep play time
+//Manage Loading screen
+//Set random seed
 
 public class SceneControl : MonoBehaviour
 {
@@ -88,6 +92,9 @@ public class SceneControl : MonoBehaviour
 	}
 	
 	IEnumerator PreLoadScene(int sceneindex, float delay = 1.25f) {
+		if (sceneindex != 1) {
+			Random.InitState(Mathf.RoundToInt(Time.deltaTime));
+		}
 		float minTime = 5f;
 		popup.Reset();
 		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(sceneindex);
@@ -113,7 +120,6 @@ public class SceneControl : MonoBehaviour
 		
 		// IF WE ARE LOADING THE GAME PLAY SCENE
 		if (sceneindex == 1) {
-			Random.InitState(BirdDetails.birdid);
 			timeremaining = GetPlaytime();
 			lastTimeStamp = timeremaining + 0.1f;
 			timerDisplay.SetActive(true); //enable timer

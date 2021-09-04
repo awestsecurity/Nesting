@@ -9,7 +9,7 @@ public class PlaceObjects : MonoBehaviour {
 		public bool ground;
 		public GameObject prefab;
 	}	
-
+	private float hexBuffer = 45f;
 	private float min = 1f;
 	private RaycastHit hit;
 	
@@ -19,7 +19,7 @@ public class PlaceObjects : MonoBehaviour {
 	void Start () {
 		foreach (LevelObject thing in PlaceSetting) {
 			for (int i = 0; i < thing.amount; i++) {
-				Vector3 pos = new Vector3(Random.Range(min,BirdDetails.mapx),3f,Random.Range(min,BirdDetails.mapy));
+				Vector3 pos = new Vector3(Random.Range(-hexBuffer,BirdDetails.mapx + hexBuffer),3f,Random.Range(min,BirdDetails.mapy));
 				if (thing.ground) {
 					if (Physics.Raycast(pos, -Vector3.up, out hit, 10, 1 << 8)) {
 						pos = new Vector3(hit.point.x, hit.point.y, hit.point.z);

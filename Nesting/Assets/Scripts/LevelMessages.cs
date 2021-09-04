@@ -11,10 +11,13 @@ public class LevelMessages : MonoBehaviour
     {
         popup = UIObjects.popup;
 		if (popup == null) {
-			Debug.LogError("Couldn't find announcement object in globals.");
-			popup = GameObject.Find("Announcement").GetComponent<Popup>();
-			if (popup == null) {
+			Debug.LogWarning("Couldn't find announcement object in globals.");
+			GameObject popupO = GameObject.Find("Announcement");
+			if (popupO == null) {
+				Debug.LogWarning("Couldn't find announcement object in scene.");
 				return;
+			} else {
+				popup = popupO.GetComponent<Popup>();
 			}
 		} 
 		foreach ( string m in messages ) {

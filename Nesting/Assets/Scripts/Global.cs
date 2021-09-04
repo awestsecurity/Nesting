@@ -9,7 +9,7 @@ public class Global : MonoBehaviour {}
 public static class BirdDetails {
 	public static TextAsset birdsfile;
 	public static int[] ownedBirds;
-	public static int birdid = 12457;
+	public static int birdid = 1111;
 	public static string birdname = "The Vulgar Seagull";
 	public static string birdstatus = "LC";
 	public static string birdimg = "AmericanRobin";

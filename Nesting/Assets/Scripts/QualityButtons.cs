@@ -12,11 +12,13 @@ public class QualityButtons : MonoBehaviour
 	private string[] shadowOptions = {" Best ", " Minimal ", " None "};
 	private string[] qualityOptions = {" Poor ", " Okey Dokey ", " Great "};
 	private string[] viewDistance = {" Far ", "Middle", "Close"};
+	private string[] booleanOptions = {" ON ", " OFF "};
 	private int i = 1;
 	private Camera cam;
 	
     void Start()
     {
+		AudioListener.volume = 0f;
         b = this.gameObject.GetComponent<Button>();
         t = this.gameObject.transform.GetChild(0).GetComponent<Text>();
 		switch(settingID) {
@@ -25,6 +27,9 @@ public class QualityButtons : MonoBehaviour
 				break;
 			case 1:
 				b.onClick.AddListener(delegate {ChangeViewDistance(); });
+				break;
+			case 2:
+				b.onClick.AddListener(delegate {ChangeSFX(); });
 				break;
 			default:
 				break;
@@ -48,6 +53,21 @@ public class QualityButtons : MonoBehaviour
 				break;
 		}		
 		
+	}
+	
+	void ChangeSFX() {
+		i = (i < booleanOptions.Length - 1) ? (i+1) : 0 ;
+		t.text = $"Sound: {booleanOptions[i]}";
+		switch (i) {
+			case 0:
+				AudioListener.volume = 0.8f;
+				break;
+			case 1:
+				AudioListener.volume = 0f;
+				break;
+			default:
+				break;
+		}		
 	}
 
 	void ChangeShadowSetting(){
