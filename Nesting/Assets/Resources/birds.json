@@ -134,6 +134,16 @@
 			"status" : "CR",
 			"image" : "TahitiMonarch"
 		}
+		"244778" : {
+			"name" : "Macaroni Penguin",
+			"status" : "VU",
+			"image" : "MacaroniPenguin"
+		}
+		"279598" : {
+			"name" : "Rock Pigeon",
+			"status" : "LC",
+			"image" : "RockPigeon"
+		}
 	}
 	
 	//93834 - Northern Mockingbird - LC
