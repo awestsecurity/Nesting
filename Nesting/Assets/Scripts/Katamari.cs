@@ -77,27 +77,31 @@ public class Katamari : MonoBehaviour {
 		if ( trueVolume >= cheatVolume ) BirdDetails.cheat = true;
 	}
 	
+	//Hold off on the gravity to allow easy settling
 	IEnumerator GravityDelay() {
 		yield return new WaitForSeconds(2);
 		Rigidbody r = this.GetComponent<Rigidbody>();
 		r.isKinematic = false;
 	}
 	
+	//Get UI for displaying stats
+	//Create if there isn't one
 	void ConnectUI() {
 		hud = GameObject.Find("HUD");
 		if (hud == null) {
 			hud = Instantiate(HUDPrefab);
-			hud.transform.GetChild(3).gameObject.SetActive(false);
-			hud.transform.GetChild(4).gameObject.SetActive(false);
-			hud.transform.GetChild(5).gameObject.SetActive(false);
+			hud.transform.GetChild(2).gameObject.SetActive(false); //Deactivate titlescreen
+			//hud.transform.GetChild(3).gameObject.SetActive(false); //Deactivate announcment
+			hud.transform.GetChild(4).gameObject.SetActive(false); //Deactivate Loading Screen
+			hud.transform.GetChild(5).gameObject.SetActive(false); //Bird Menu
 		}
-		hud.transform.GetChild(0).gameObject.SetActive(true);
-
+		hud.transform.GetChild(0).gameObject.SetActive(true); //Activate Stat Panel
 		sizeDisplay = hud.transform.GetChild(0).GetChild(1).GetComponent<Text>();
 		birdDisplay = hud.transform.GetChild(0).GetChild(0).GetComponent<Text>();
 		birdui = hud.transform.GetChild(3).GetChild(1).GetComponent<RawImage>();
 	}
 	
+	//Collided with something. We only care if it is a "Thingy" (can be picked up)
 	void OnTriggerEnter (Collider collision) {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
 		if (thingy != null && SmallEnoughToGrab(thingy)) {
@@ -107,25 +111,33 @@ public class Katamari : MonoBehaviour {
 			Transform tt = thingy.gameObject.transform;
 			tt.parent = gameObject.transform;
 			tt.localPosition = new Vector3 (tt.localPosition.x * 0.85f, tt.localPosition.y * 0.85f, tt.localPosition.z * 0.85f);
-			trueVolume += (thingy.GetVolume() / 40f);
-			float adjust = thingy.volume / 350000f;  //5000000 old number
-			collide.radius += adjust;
-			ballController.m_MovePower += adjust*2;
-			camFollow.spacer += adjust*2;
+			float volume = thingy.GetVolume();
+			AddVolumeToKatamari(volume, thingy.modifier);
 			lastAssimilated = thingy;
 			collected.Add(thingy.thingyName);
 			RemoveOldChildrenAfterMax();
-		}
+		} 
 	}
 	
+	//Handle the expansion given the thingy volume and modifier
+	void AddVolumeToKatamari(float v, float m = 1) {
+		trueVolume += (v*m / 40f);
+		float adjust = v / 350000f;  //5000000 old number
+		collide.radius += adjust;
+		ballController.m_MovePower += adjust*2;
+		camFollow.spacer += adjust*2;
+	}
+	
+	//Remove the oldest attached object when we have too many
 	void RemoveOldChildrenAfterMax() {
 		if (this.transform.childCount > maxChildren) {
 			Destroy(this.transform.GetChild(1).gameObject);
 		}		
 	}
 	
+	
 	bool SmallEnoughToGrab (Thingy t) {
-		return (t.volume < (trueVolume * percentPossible)) ? true : false ;
+		return (t.GetVolume() < (trueVolume * percentPossible)) ? true : false ;
 	}
 	
 	void AdjustCameraPosition () {

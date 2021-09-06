@@ -7,11 +7,13 @@ public class Thingy : MonoBehaviour {
 
 	public string thingyName;
 	public float volume; //cm3 can use blender to get measurement
+	[Range(0.5f, 10.0f)]
+	public float modifier = 1f; //Multiply the volume added
 	public bool randomize;
 	public bool rotate;
 	public bool keepRatio;
-	public float minScale = 0.1f;
-	public float maxScale;
+	public float minScale = 0.8f;
+	public float maxScale = 1.2f;
 	
 	
 	Mesh mesh;
