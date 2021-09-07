@@ -31,8 +31,8 @@ public class NetworkRequest : MonoBehaviour
 		UIObjects.network = gameObject.GetComponent<NetworkRequest>();
 		if (Debug.isDebugBuild) {
 			if (AirplaneMode) {
-			account_name = "Anonymous";
-			StartCoroutine(SkipLogin());
+				account_name = "Anonymous";
+				StartCoroutine(SkipLogin());
 			} else if ( account_name == null ) {
 				account_name = "fuqqw.wam";
 			} else {
