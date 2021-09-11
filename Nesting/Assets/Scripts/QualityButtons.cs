@@ -18,7 +18,6 @@ public class QualityButtons : MonoBehaviour
 	
     void Start()
     {
-		AudioListener.volume = 0f;
         b = this.gameObject.GetComponent<Button>();
         t = this.gameObject.transform.GetChild(0).GetComponent<Text>();
 		switch(settingID) {

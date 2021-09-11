@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityStandardAssets.Vehicles.Ball;
 
+[RequireComponent(typeof(AudioSource))]
 public class Katamari : MonoBehaviour {
 
 	public GameObject HUDPrefab;
@@ -34,11 +35,15 @@ public class Katamari : MonoBehaviour {
 	private int cheatVolume = 9999999;
 	private float prevvolume;
 	
+	private AudioSource speaker;
+	public AudioClip[] basePickupSounds;
+	
 	void Start () {
 		ConnectUI();
 		volumeCheck = trueVolume * percentPossible;
 		collide = gameObject.GetComponent<SphereCollider>();
 		ballController = gameObject.GetComponent<Ball>();
+		speaker = gameObject.GetComponent<AudioSource>();
 		Texture2D texture = Resources.Load(BirdDetails.birdimg) as Texture2D;
 		birdui.texture = texture;
 		displayVolume = 1;
@@ -106,6 +111,7 @@ public class Katamari : MonoBehaviour {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
 		if (thingy != null && SmallEnoughToGrab(thingy)) {
 			//Debug.Log($"Picking up: {thingy.thingyName} with {thingy.GetVolume()}g");
+			speaker.PlayOneShot(basePickupSounds[Random.Range(0,basePickupSounds.Length)]);
 			thingy.DisableCollider();
 			thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;

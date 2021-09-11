@@ -6,7 +6,8 @@ using System.Collections;
 public class Thingy : MonoBehaviour {
 
 	public string thingyName;
-	public float volume; //cm3 can use blender to get measurement
+	
+	public float volume = 300; //cm3 can use blender to get measurement
 	[Range(0.5f, 10.0f)]
 	public float modifier = 1f; //Multiply the volume added
 	public bool randomize;

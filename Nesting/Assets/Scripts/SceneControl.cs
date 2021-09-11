@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.CrossPlatformInput;
+
 
 //Handle scene transitions
 //Keep play time
@@ -32,6 +34,7 @@ public class SceneControl : MonoBehaviour
 	
 	void Start() {
 		timeremaining = 555;
+		AudioListener.volume = 0f;
 		TextAsset file = (TextAsset)Resources.Load("BirdFacts");
 		facts = file.text.Split('\n');
 	}
@@ -64,8 +67,10 @@ public class SceneControl : MonoBehaviour
 		}
 		
 		//PAUSING
-		if (Input.GetKeyDown("p")) {
+
+		if (CrossPlatformInputManager.GetButtonDown("Pause")) {
 			paused = !paused;
+			bool priorState = playing;
 			if (paused) {
 				playing = false;
 				UIObjects.pauseMenu.SetActive(true);
@@ -75,7 +80,7 @@ public class SceneControl : MonoBehaviour
 				Cursor.lockState = CursorLockMode.None;
 				Time.timeScale = 0;
 			} else {
-				playing = true;
+				playing = priorState;
 				UIObjects.pauseMenu.SetActive(false);
 				Cursor.lockState = CursorLockMode.Locked;
 				Time.timeScale = 1;
