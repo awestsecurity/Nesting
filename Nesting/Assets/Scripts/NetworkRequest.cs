@@ -59,8 +59,8 @@ public class NetworkRequest : MonoBehaviour
 		Debug.Log($"Getting Assets for Account {account_name}");
 		UnityWebRequest www = UnityWebRequest.Get(request_owned_templates);
         yield return www.SendWebRequest();
-        if(www.isNetworkError || www.isHttpError) {
-            Debug.Log(www.error);
+        if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
+            Debug.Log(www.result);
         }
 		else {
             // Show results as text
@@ -135,8 +135,8 @@ public class NetworkRequest : MonoBehaviour
 		if (!BirdDetails.cheat) {
 			UnityWebRequest www = UnityWebRequest.Post(url,form);
 			yield return www.SendWebRequest();
-			if(www.isNetworkError || www.isHttpError) {
-				Debug.Log(www.error);
+			if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
+				Debug.Log(www.result);
 			}
 			else {
 				string response = www.downloadHandler.text;
@@ -152,8 +152,8 @@ public class NetworkRequest : MonoBehaviour
 		
 		UnityWebRequest www = UnityWebRequest.Get(get_url);
         yield return www.SendWebRequest();
-        if(www.isNetworkError || www.isHttpError) {
-            Debug.Log(www.error);
+        if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
+            Debug.Log(www.result);
         } else {
             string response = www.downloadHandler.text;
 			BirdDetails.highscores = response;

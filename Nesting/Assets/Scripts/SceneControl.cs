@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityStandardAssets.CrossPlatformInput;
 
 
@@ -32,11 +33,15 @@ public class SceneControl : MonoBehaviour
 	private bool cheatDetected = false;
 	public Text timeDisplay;
 	
+	public GameObject firstUIElemOnPause;
+	private EventSystem events;
+	
 	void Start() {
 		timeremaining = 555;
 		AudioListener.volume = 0f;
 		TextAsset file = (TextAsset)Resources.Load("BirdFacts");
 		facts = file.text.Split('\n');
+		events = EventSystem.current;
 	}
 	
 	public bool StartLoad(int sceneindex) {
@@ -74,6 +79,7 @@ public class SceneControl : MonoBehaviour
 			if (paused) {
 				playing = false;
 				UIObjects.pauseMenu.SetActive(true);
+		        events.SetSelectedGameObject(firstUIElemOnPause);
 				if (BirdDetails.highscores != null) {
 					highscore.text = $"Best {BirdDetails.birdname}s \n {BirdDetails.highscores}";
 				}
