@@ -27,6 +27,7 @@ public class SceneControl : MonoBehaviour
 	private string[] facts;
 	private bool playing = false;
 	private bool paused = false;
+	private bool priorState;
 	
 	public float timeremaining {get; private set;}
 	private float lastTimeStamp = 0;
@@ -74,8 +75,8 @@ public class SceneControl : MonoBehaviour
 		//PAUSING
 
 		if (CrossPlatformInputManager.GetButtonDown("Pause")) {
+			if (!paused) priorState = playing;
 			paused = !paused;
-			bool priorState = playing;
 			if (paused) {
 				playing = false;
 				UIObjects.pauseMenu.SetActive(true);

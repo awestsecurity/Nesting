@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>For The Bird | {{{ PRODUCT_NAME }}} - {{{ PRODUCT_VERSION }}}</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+  </head>
+  
+  <script src='waxjs.js'></script>
+  <script>
+      function customProgress(unityInstance, progress) {
+      if (progress === 1) {
+         WaitForUnity();
+      }
+    }
+	</script>
+  
+  <body>
+  <div id="loading" ><p id="wait">...loading...</p></div>
+
+	<div class="webgl-content">
+	  <div id="logindiv" ></div>
+	  
+		<canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px; background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"></canvas>
+		<script src="Build/{{{ LOADER_FILENAME }}}"></script>
+		<script>
+		  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+			// Mobile device style: fill the whole browser client area with the game canvas:
+			var meta = document.createElement('meta');
+			meta.name = 'viewport';
+			meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+			document.getElementsByTagName('head')[0].appendChild(meta);
+		  }
+
+		  unityInstance = createUnityInstance(document.querySelector("#unity-canvas"), {
+			dataUrl: "Build/{{{ DATA_FILENAME }}}",
+			frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
+			codeUrl: "Build/{{{ CODE_FILENAME }}}",
+#if MEMORY_FILENAME
+			memoryUrl: "Build/{{{ MEMORY_FILENAME }}}",
+#endif
+#if SYMBOLS_FILENAME
+			symbolsUrl: "Build/{{{ SYMBOLS_FILENAME }}}",
+#endif
+			streamingAssetsUrl: "StreamingAssets",
+			companyName: "{{{ COMPANY_NAME }}}",
+			productName: "{{{ PRODUCT_NAME }}}",
+			productVersion: "{{{ PRODUCT_VERSION }}}",
+			// matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+			// devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+		  }, { onProgress: customProgress }
+		  );
+		</script>
+		<div class="footer">
+	  	   <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+	    </div>
+	  
+	</div>
+	
+	<script>
+
+  const wax = new waxjs.WaxJS('https://wax.greymass.com');
+    // Run on loading player
+    function customProgress(unityInstance, progress) {
+      if (progress === 1) {
+         WaitForUnity();
+      }
+    }
+  screen = document.getElementById('loading');
+  log = document.getElementById('response'); //Gone for now
+  login = document.getElementById('logindiv');
+
+  async function WaitForUnity() {
+ 	  console.log("Game is loaded");
+	  //Add login button
+	  var button = document.createElement("button");
+	  button.id = "login_button";
+	  button.innerHTML = "Login";
+	  button.onclick = Login;
+	  login.appendChild(button);
+	  //remove loading screen
+	  screen.style.display = "none";
+  }
+
+  async function Login() {
+    try {
+      const userAccount = await wax.login();
+	  login.style.display = "none";
+      //log.append(wax.pubKeys);
+      //log.append("\n");
+      //log.append(userAccount);
+	  unityInstance.SendMessage("Networker", "SetLogin", userAccount);
+    } catch(e) {
+      console.log(e.message);
+    }
+  }
+</script>
+
+  </body>
+</html>
