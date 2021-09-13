@@ -9,13 +9,6 @@
   </head>
   
   <script src='waxjs.js'></script>
-  <script>
-      function customProgress(unityInstance, progress) {
-      if (progress === 1) {
-         WaitForUnity();
-      }
-    }
-	</script>
   
   <body>
   <div id="loading" ><p id="wait">...loading...</p></div>
@@ -34,7 +27,7 @@
 			document.getElementsByTagName('head')[0].appendChild(meta);
 		  }
 
-		  unityInstance = createUnityInstance(document.querySelector("#unity-canvas"), {
+		  var gameInstance = createUnityInstance(document.querySelector("#unity-canvas"), {
 			dataUrl: "Build/{{{ DATA_FILENAME }}}",
 			frameworkUrl: "Build/{{{ FRAMEWORK_FILENAME }}}",
 			codeUrl: "Build/{{{ CODE_FILENAME }}}",
@@ -50,11 +43,11 @@
 			productVersion: "{{{ PRODUCT_VERSION }}}",
 			// matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
 			// devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-		  }, { onProgress: customProgress }
+		  }, (progress) => { if (progress === 1) {WaitForUnity();} }
 		  );
 		</script>
 		<div class="footer">
-	  	   <div class="fullscreen" onclick="unityInstance.SetFullscreen(1)"></div>
+	  	   <div class="fullscreen" onclick="playFullscreen()"></div>
 	    </div>
 	  
 	</div>
@@ -62,12 +55,13 @@
 	<script>
 
   const wax = new waxjs.WaxJS('https://wax.greymass.com');
-    // Run on loading player
-    function customProgress(unityInstance, progress) {
-      if (progress === 1) {
-         WaitForUnity();
-      }
-    }
+   
+   function playFullscreen() {
+		gameInstance.then((unityInstance) => {
+            unityInstance.SetFullscreen(1);        
+        });
+   }
+   
   screen = document.getElementById('loading');
   log = document.getElementById('response'); //Gone for now
   login = document.getElementById('logindiv');
@@ -91,7 +85,9 @@
       //log.append(wax.pubKeys);
       //log.append("\n");
       //log.append(userAccount);
-	  unityInstance.SendMessage("Networker", "SetLogin", userAccount);
+	  gameInstance.then((unityInstance) => {
+            unityInstance.SendMessage("Networker", "SetLogin", userAccount);        
+        });
     } catch(e) {
       console.log(e.message);
     }
