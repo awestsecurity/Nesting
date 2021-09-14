@@ -10,7 +10,7 @@ public class QualityButtons : MonoBehaviour
 	private Button b;
 	private Text t;
 	private string[] shadowOptions = {" Best ", " Minimal ", " None "};
-	private string[] qualityOptions = {" Poor ", " Okey Dokey ", " Great "};
+	private string[] qualityOptions = {" Poor ", " Just OK ", " Great "};
 	private string[] viewDistance = {" Far ", "Middle", "Close"};
 	private string[] booleanOptions = {" ON ", " OFF "};
 	private int i = 1;
@@ -29,6 +29,9 @@ public class QualityButtons : MonoBehaviour
 				break;
 			case 2:
 				b.onClick.AddListener(delegate {ChangeSFX(); });
+				break;
+			case 3:
+				b.onClick.AddListener(delegate {ChangeMusic(); });
 				break;
 			default:
 				break;
@@ -56,13 +59,28 @@ public class QualityButtons : MonoBehaviour
 	
 	void ChangeSFX() {
 		i = (i < booleanOptions.Length - 1) ? (i+1) : 0 ;
-		t.text = $"Sound: {booleanOptions[i]}";
+		t.text = $"SFX: {booleanOptions[i]}";
 		switch (i) {
 			case 0:
-				AudioListener.volume = 0.8f;
+				Settings.sfxOn = true;
 				break;
 			case 1:
-				AudioListener.volume = 0f;
+				Settings.sfxOn = false;
+				break;
+			default:
+				break;
+		}
+	}
+	
+	void ChangeMusic() {
+		i = (i < booleanOptions.Length - 1) ? (i+1) : 0 ;
+		t.text = $"Music: {booleanOptions[i]}";
+		switch (i) {
+			case 0:
+				Settings.musicOn = true;
+				break;
+			case 1:
+				Settings.musicOn = false;
 				break;
 			default:
 				break;

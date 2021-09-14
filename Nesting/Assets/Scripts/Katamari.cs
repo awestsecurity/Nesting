@@ -111,7 +111,7 @@ public class Katamari : MonoBehaviour {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
 		if (thingy != null && SmallEnoughToGrab(thingy)) {
 			//Debug.Log($"Picking up: {thingy.thingyName} with {thingy.GetVolume()}g");
-			speaker.PlayOneShot(basePickupSounds[Random.Range(0,basePickupSounds.Length)]);
+			if (Settings.sfxOn) speaker.PlayOneShot(basePickupSounds[Random.Range(0,basePickupSounds.Length)]);
 			thingy.DisableCollider();
 			thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;

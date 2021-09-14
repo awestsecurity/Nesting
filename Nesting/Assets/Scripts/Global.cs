@@ -61,6 +61,8 @@ public static class UIObjects {
 public static class Settings {
 	public static bool shadows = true;
 	public static bool skipText = false;	
+	public static bool musicOn = false;
+	public static bool sfxOn = false;
 }
 // QualitySettings.shadows = ShadowQuality.All;
 // QualitySettings.shadows = ShadowQuality.HardOnly;

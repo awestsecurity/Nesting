@@ -19,7 +19,7 @@ public class BirdMenu : MonoBehaviour{
 			b.transform.localScale = new Vector3(1,1,1);
 			//Add bird image to button
 			RawImage img = b.GetComponent<RawImage>();
-			img.texture = Resources.Load(images[i]) as Texture2D;
+			img.texture = Resources.Load(images[i]+"-o") as Texture2D;
 			//Add on click function
 			Button button = b.GetComponent<Button>();
 			int id = templates[i];
