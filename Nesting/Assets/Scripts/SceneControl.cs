@@ -39,7 +39,6 @@ public class SceneControl : MonoBehaviour
 	
 	void Start() {
 		timeremaining = 555;
-		AudioListener.volume = 0f;
 		TextAsset file = (TextAsset)Resources.Load("BirdFacts");
 		facts = file.text.Split('\n');
 		events = EventSystem.current;

@@ -31,20 +31,32 @@ public static class BirdDetails {
 		string stringid = birdid.ToString();
 		birdname = birdData[stringid]["name"].Value;
 		birdstatus = birdData[stringid]["status"].Value;
-		birdimg = birdData[stringid]["image"].Value;
-		Debug.Log($"Bird: {BirdDetails.birdname} - Status: {BirdDetails.birdstatus} - IMG: {BirdDetails.birdimg} - ID:{BirdDetails.birdid}");
+		birdimg = birdname;
+		Debug.Log($"Bird: {BirdDetails.birdname} - Status: {BirdDetails.birdstatus} - ID:{BirdDetails.birdid}");
 	}
 	
-	public static string[] GetBirdImages(int[] templateIDs) {
+	public static float[] GetBirdJSONStatAsFloat(int[] templateIDs, string fetch) {
 		if (birdsfile == null) { 
 			birdsfile = (TextAsset)Resources.Load("birds");
 		}
-		string[] images = new string[templateIDs.Length];
+		float[] floats = new float[templateIDs.Length];
 		var birdData = JSON.Parse(birdsfile.text);
 		for (int i = 0; i < templateIDs.Length; i++) {
-			images[i] = birdData[templateIDs[i].ToString()]["image"].Value;
+			floats[i] = birdData[templateIDs[i].ToString()][fetch].AsFloat;
 		}
-		return images;
+		return floats;
+	}
+	
+	public static string[] GetBirdJSONStat(int[] templateIDs, string fetch) {
+		if (birdsfile == null) { 
+			birdsfile = (TextAsset)Resources.Load("birds");
+		}
+		string[] stats = new string[templateIDs.Length];
+		var birdData = JSON.Parse(birdsfile.text);
+		for (int i = 0; i < templateIDs.Length; i++) {
+			stats[i] = birdData[templateIDs[i].ToString()][fetch].Value;
+		}
+		return stats;
 	}
 	
 }

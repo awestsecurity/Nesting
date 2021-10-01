@@ -15,7 +15,12 @@ public class AutoScroll : MonoBehaviour {
     private bool                m_right;
     private bool                m_left;
 	private GameObject			m_lastButton;
-
+	
+	public Text nameDisplay;
+	public Text statusDisplay;
+	public Text flavorDisplay;
+	public Text speedDisplay;
+	
     public void Start()
     {
         m_scrollRect        = GetComponent<ScrollRect>();
@@ -31,7 +36,16 @@ public class AutoScroll : MonoBehaviour {
 
     public void Update()
     {
-		Scroll(EventSystem.current.currentSelectedGameObject);
+		GameObject b = EventSystem.current.currentSelectedGameObject;
+		if ( m_lastButton == null || m_lastButton != b ) {
+			m_lastButton = b;
+			Scroll(b);
+			BirdStats s = b.GetComponent<BirdStats>();
+			nameDisplay.text = s.name;
+			statusDisplay.text = $"Status: {s.status}";
+			flavorDisplay.text = s.flavortext;
+			speedDisplay.text = $"Speed: {s.speed.ToString()} - Just a place holder. Will change."; 
+		}
     }
 	
 	void Scroll(GameObject button) {

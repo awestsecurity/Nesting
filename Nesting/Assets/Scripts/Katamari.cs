@@ -24,7 +24,6 @@ public class Katamari : MonoBehaviour {
 	private GameObject hud;
 	private Text sizeDisplay;
 	private Text birdDisplay;
-	private RawImage birdui;
 	
 	private SphereCollider collide;
 	private Thingy lastAssimilated;
@@ -44,8 +43,6 @@ public class Katamari : MonoBehaviour {
 		collide = gameObject.GetComponent<SphereCollider>();
 		ballController = gameObject.GetComponent<Ball>();
 		speaker = gameObject.GetComponent<AudioSource>();
-		Texture2D texture = Resources.Load(BirdDetails.birdimg) as Texture2D;
-		birdui.texture = texture;
 		displayVolume = 1;
 		trueVolume = 4888;
 		prevvolume = trueVolume;
@@ -103,7 +100,6 @@ public class Katamari : MonoBehaviour {
 		hud.transform.GetChild(0).gameObject.SetActive(true); //Activate Stat Panel
 		sizeDisplay = hud.transform.GetChild(0).GetChild(1).GetComponent<Text>();
 		birdDisplay = hud.transform.GetChild(0).GetChild(0).GetComponent<Text>();
-		birdui = hud.transform.GetChild(3).GetChild(1).GetComponent<RawImage>();
 	}
 	
 	//Collided with something. We only care if it is a "Thingy" (can be picked up)
@@ -122,6 +118,7 @@ public class Katamari : MonoBehaviour {
 			lastAssimilated = thingy;
 			collected.Add(thingy.thingyName);
 			RemoveOldChildrenAfterMax();
+			Destroy(thingy.GetComponent<Movement>());
 		} 
 	}
 	

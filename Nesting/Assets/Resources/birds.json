@@ -2,146 +2,204 @@
 		"93834" : {
 			"name" : "Northern Mockingbird",
 			"status" : "LC",
+			"speed" : "5.1",
+			"text" : "I don't just immitate other birds. I'll gladly learn your ringtone too.",
 			"image" : "NorthernMockingbird"
 		},
 		"93840" : {
 			"name" : "Bobolink",
 			"status" : "LC",
+			"speed" : "5.8",
+			"text" : "Overgown meadows are my favorite spot.",
 			"image" : "Bobolink"
 		},
 		"93847" : {
 			"name" : "Bachman's Sparrow",
 			"status" : "NT",
+			"speed" : "5.3",
+			"text" : "Natural wildfires make my habitat so hospitable. Ironic, huh?",
 			"image" : "BachmansSparrow"
 		},
 		"93873" : {
 			"name" : "Black Rail",
 			"status" : "EN",
+			"speed" : "6.0",
+			"text" : "I like to spook tourists by running through the marsh making growling noises.",
 			"image" : "BlackRail"
 		},
 		"95058" : {
 			"name" : "Loggerhead Shrike",
 			"status" : "NT",
+			"speed" : "6.3",
+			"text" : "Don't cross me. They don't call me the butcher bird for nothing.",
 			"image" : "LoggerheadShrike"
 		},
 		"104678" : {
 			"name" : "Marianne White-eye",
 			"status" : "EX",
+			"speed" : "6.5",
+			"text" : "Am I dreaming?",
 			"image" : "MarianneWhite-eye"
 		},
 		"104679" : {
 			"name" : "Bachman's Warbler",
 			"status" : "CR",
+			"speed" : "5.0",
+			"text" : "Who doesn't like to holiday in Cuba?",
 			"image" : "BachmansWarbler"
 		},
 		"104687" : {
 			"name" : "House Finch",
 			"status" : "LC",
+			"speed" : "5.4",
+			"text" : "You must be mistaken, I'm too pretty to be invasive.",
 			"image" : "HouseFinch"
 		},
 		"104688" : {
 			"name" : "Louisiana Waterthrush",
 			"status" : "LC",
+			"speed" : "5.9",
+			"text" : "The ground hog knows nothing. My song descends at the true start of spring.",
 			"image" : "LouisianaWaterthrush"
 		},
 		"104697" : {
 			"name" : "Piping Plover",
 			"status" : "NT",
+			"speed" : "6.7",
+			"text" : "Thanks for the work you've been doing. I have more plover friends every year.",
 			"image" : "PipingPlover"
 		},
 		"104699" : {
 			"name" : "White-plumed Antbird",
 			"status" : "LC",
+			"speed" : "6.5",
+			"text" : "I don't eat ants, they help me find food. I prefer their company to other birds frankly.",
 			"image" : "White-plumedAntbird"
 		},
 		"104707" : {
 			"name" : "Ascension Frigatebird",
 			"status" : "VU",
+			"speed" : "8.0",
+			"text" : "I wish people would stop making fun of my red sac.",
 			"image" : "AscensionFrigatebird"
 		},
 		"104713" : {
 			"name" : "Guam Kingfisher",
 			"status" : "EW",
+			"speed" : "7.4",
+			"text" : "Maybe I don't get out much. I'm tired of getting into fights with tree snakes.",
 			"image" : "GuamKingfisher"
 		},
 		"104714" : {
 			"name" : "Canada Warbler",
 			"status" : "LC",
+			"speed" : "5.0",
+			"text" : "My 3,000 mile commute doesn't get me down at all. I have lots of audio books.",
 			"image" : "CanadaWarbler"
 		},
 		"104715" : {
 			"name" : "Javan Hawk-eagle",
 			"status" : "EN",
+			"speed" : "8.0",
+			"text" : "I am the rare Garuda, bow before this raptor.",
 			"image" : "JavanHawk-eagle"
 		},
 		"104718" : {
 			"name" : "American Goldfinch",
 			"status" : "LC",
+			"speed" : "5.6",
+			"text" : "I'm only gold when showing off. How else would you spot a tiny bird like me?",
 			"image" : "AmericanGoldfinch"
 		},
 		"109276" : {
 			"name" : "Red-bellied Woodpecker",
 			"status" : "LC",
+			"speed" : "6.1",
+			"text" : "Knock, knock...",
 			"image" : "Red-belliedWoodpecker"
 		},
 		"109277" : {
 			"name" : "Common Starling",
 			"status" : "LC",
+			"speed" : "5.0",
+			"text" : "God, my kids are the worst.",
 			"image" : "CommonStarling"
 		},
 		"109280" : {
 			"name" : "Saint Helena Plover",
 			"status" : "VU",
+			"speed" : "5.8",
+			"text" : "My face is on money!",
 			"image" : "SaintHelenaPlover"
 		},
 		"109281" : {
 			"name" : "Sedge Wren",
 			"status" : "LC",
+			"speed" : "6.2",
+			"text" : "People call me secretive. I much prefer discrete.",
 			"image" : "SedgeWren"
 		},
 		"109283" : {
 			"name" : "Spix's Macaw",
 			"status" : "EW",
+			"speed" : "6.0",
+			"text" : "They made a movie about me! I didn't see it.",
 			"image" : "SpixsMacaw"
 		},
 		"118985" : {
 			"name" : "Little Woodstar",
 			"status" : "VU",
+			"speed" : "5.5",
+			"text" : "",
 			"image" : "LittleWoodstar"
 		},
 		"119034" : {
 			"name" : "Mystery Bird",
 			"status" : "VU",
+			"speed" : "5.5",
+			"text" : "",
 			"image" : "LittleWoodstar"
 		},
 		"143869" : {
 			"name" : "Jerdon's Courser",
 			"status" : "CR",
+			"speed" : "5.8",
+			"text" : "",
 			"image" : "JerdonsCourser"
 		},
 		"143873" : {
 			"name" : "Stitchbird",
 			"status" : "VU",
+			"speed" : "5.2",
+			"text" : "Don't kill 2 birds with one stone. Feed two birds with one scone!",
 			"image" : "Stitchbird"
 		},
 		"143883" : {
 			"name" : "Red-headed Vulture",
 			"status" : "CR",
+			"speed" : "7.5",
+			"text" : "",
 			"image" : "Red-headedVulture"
 		},
 		"143889" : {
 			"name" : "Tahiti Monarch",
 			"status" : "CR",
+			"speed" : "4.5",
+			"text" : "",
 			"image" : "TahitiMonarch"
 		}
 		"244778" : {
 			"name" : "Macaroni Penguin",
 			"status" : "VU",
+			"speed" : "6.1",
+			"text" : "Do you think somewhere there's a pasta shapped like me?",
 			"image" : "MacaroniPenguin"
 		}
 		"279598" : {
 			"name" : "Rock Pigeon",
 			"status" : "LC",
+			"speed" : "5.0",
+			"text" : "I may be just a rat with wings to you, but I know who I am.",
 			"image" : "RockPigeon"
 		}
 	}

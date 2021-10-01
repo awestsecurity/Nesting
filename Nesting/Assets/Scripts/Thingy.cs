@@ -16,9 +16,6 @@ public class Thingy : MonoBehaviour {
 	public float minScale = 0.8f;
 	public float maxScale = 1.2f;
 	
-	
-	Mesh mesh;
-	Vector3[] vertices;
 	BoxCollider boxcollide;
 	MeshCollider meshcollide;
 	Rigidbody body;
@@ -46,8 +43,6 @@ public class Thingy : MonoBehaviour {
 		if (rotate){
 			t.rotation = Random.rotation;
 		}
-		mesh = GetComponent<MeshFilter>().mesh;
-        vertices = mesh.vertices;
 		actualVolume = GetVolume();
 		boxcollide = gameObject.GetComponent<BoxCollider>();
 		meshcollide = gameObject.GetComponent<MeshCollider>();
