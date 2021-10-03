@@ -62,14 +62,13 @@ public class MakeNestSwirl : MonoBehaviour
 				Debug.Log("Not Restarting.");	
 			}
 		} else if (Input.GetKeyDown("m") && !restarting) {
-			if (BirdDetails.ownedBirds.Length > 1) {
-				UIObjects.birdMenu.gameObject.SetActive(true);
-				Cursor.lockState = CursorLockMode.None;
-				Destroy(katamari);
+			bool b = UIObjects.sceneCon.StartLoad(0);
+			Destroy(katamari);
+			if (b) {
 				restarting = true;
+				Debug.Log("Restart.");
 			} else {
-				popup.AddMessage($"You need more than 1 bird if you want to choose. Hit 'r' to restart.");
-				popup.LaunchMessagePanel();
+				Debug.Log("Not Restarting.");	
 			}
 		}
     }

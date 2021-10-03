@@ -10,10 +10,13 @@ public class NetworkRequest : MonoBehaviour
 {
 	public string account_name;
 	public bool AirplaneMode; // no network, skip for play testing
+	
+	public GameObject ui;
 	public Popup popup;
 	public SceneControl sceneCon;
 	public GameObject pause;
 	public BirdMenu menu;
+	
 	private readonly string collection_name = "1forthebirds";
 	private string request_owned_templates;
 	private string request_template_info;
@@ -24,7 +27,9 @@ public class NetworkRequest : MonoBehaviour
 //  private string getAllAssets = "https://wax.api.atomicassets.io/atomicassets/v1/assets?owner=fuqqw.wam&collection_name=1forthebirds&page=1&limit=100&order=desc&sort=asset_id";
 	
 	void Start() {
+		UIObjects.ui = ui;
 		UIObjects.popup = popup;
+		popup.gameObject.SetActive(true);
 		UIObjects.sceneCon = sceneCon;
 		UIObjects.pauseMenu = pause;
 		UIObjects.birdMenu = menu;

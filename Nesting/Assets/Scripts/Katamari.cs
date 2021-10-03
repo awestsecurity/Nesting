@@ -29,12 +29,15 @@ public class Katamari : MonoBehaviour {
 	private Thingy lastAssimilated;
 	private List<string> collected = new List<string>();
 	private Ball ballController;
+	private Rigidbody rbody;
 	private bool fullscreen = false;
 	
 	private int cheatVolume = 9999999;
 	private float prevvolume;
 	
 	private AudioSource speaker;
+	public AudioClip waterSplash;
+	public AudioClip plodNoise;
 	public AudioClip[] basePickupSounds;
 	
 	void Start () {
@@ -43,6 +46,7 @@ public class Katamari : MonoBehaviour {
 		collide = gameObject.GetComponent<SphereCollider>();
 		ballController = gameObject.GetComponent<Ball>();
 		speaker = gameObject.GetComponent<AudioSource>();
+		rbody = gameObject.GetComponent<Rigidbody>();
 		displayVolume = 1;
 		trueVolume = 4888;
 		prevvolume = trueVolume;
@@ -71,6 +75,11 @@ public class Katamari : MonoBehaviour {
 		if (displayVolume < trueVolume) displayVolume += Mathf.Round((trueVolume - displayVolume) / 30f);
 		if (trueVolume > BirdDetails.score && trueVolume < (BirdDetails.score*1.5f)) {
 			BirdDetails.score = trueVolume;
+		}
+		
+		//Debug.Log (rbody.velocity.magnitude);
+		if (!speaker.isPlaying) {
+			PlaySFX(plodNoise, rbody.velocity.magnitude/15f);
 		}
 		
 		//Cheat Detection
@@ -107,7 +116,7 @@ public class Katamari : MonoBehaviour {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
 		if (thingy != null && SmallEnoughToGrab(thingy)) {
 			//Debug.Log($"Picking up: {thingy.thingyName} with {thingy.GetVolume()}g");
-			if (Settings.sfxOn) speaker.PlayOneShot(basePickupSounds[Random.Range(0,basePickupSounds.Length)]);
+			PlaySFX(basePickupSounds[Random.Range(0,basePickupSounds.Length)]);
 			thingy.DisableCollider();
 			thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;
@@ -119,7 +128,15 @@ public class Katamari : MonoBehaviour {
 			collected.Add(thingy.thingyName);
 			RemoveOldChildrenAfterMax();
 			Destroy(thingy.GetComponent<Movement>());
-		} 
+		} else if (collision.gameObject.name == "Water"){
+			PlaySFX(waterSplash);
+		}
+	}
+	
+	void PlaySFX(AudioClip sfx, float loudness = 1.0f) {
+		if (Settings.sfxOn) {
+			speaker.PlayOneShot(sfx, loudness);
+		}
 	}
 	
 	//Handle the expansion given the thingy volume and modifier

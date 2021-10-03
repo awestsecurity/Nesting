@@ -14,8 +14,10 @@ public class KeepMenuFocus : MonoBehaviour {
 	public GameObject defaultButton;
 	private GameObject lastSelected;
 	private bool defaultSet = false;
+	private EventSystem eventSystem;
 	
 	void Start() {
+		eventSystem = EventSystem.current;
 		if (defaultButton != null) {
 			lastSelected = defaultButton;
 			defaultSet = true;
@@ -28,7 +30,7 @@ public class KeepMenuFocus : MonoBehaviour {
 		if (!defaultSet) {
 			SearchForFirstButton(transform);
 		}
-		EventSystem.current.SetSelectedGameObject(defaultButton);
+		eventSystem.SetSelectedGameObject(defaultButton);
 	}
 	
 	void Update() {
@@ -37,13 +39,17 @@ public class KeepMenuFocus : MonoBehaviour {
 			lastSelected = defaultButton;
 		}
 		
-		if(EventSystem.current.currentSelectedGameObject == null) {
+		//Debug.Log($"{lastSelected} : {lastSelected.activeSelf}");
+		if(eventSystem.currentSelectedGameObject == null || !lastSelected.activeSelf || lastSelected.GetComponent<Button>() == null) {
 			if (lastSelected.gameObject.activeSelf && lastSelected.GetComponent<Button>() != null && lastSelected.GetComponent<Button>().interactable) {
-				EventSystem.current.SetSelectedGameObject(lastSelected);
+				eventSystem.SetSelectedGameObject(lastSelected);
+			} else {
+				defaultSet = false;
+				Debug.Log("Get New Button.");
+				SearchForFirstButton(transform);
 			}
-		}
-		else {
-			lastSelected = EventSystem.current.currentSelectedGameObject;
+		} else {
+			lastSelected = eventSystem.currentSelectedGameObject;
 		}
 	}
 	
@@ -62,6 +68,8 @@ public class KeepMenuFocus : MonoBehaviour {
 		
 		if (found != null) { 
 			defaultButton = found;
+			lastSelected = found;
+			eventSystem.SetSelectedGameObject(found);
 			defaultSet = true;
 		}
 	}

@@ -9,14 +9,15 @@ public class Global : MonoBehaviour {}
 public static class BirdDetails {
 	public static TextAsset birdsfile;
 	public static int[] ownedBirds;
-	public static int birdid = 1111;
+	public static int birdid = 1111; //1111
 	public static string birdname = "The Vulgar Seagull";
 	public static string birdstatus = "LC";
 	public static string birdimg = "AmericanRobin";
 	
-	public static int mapx = 25;
-	public static int mapy = 25;
+	public static int mapx = 125;
+	public static int mapy = 125;
 	public static float mapz = 0.5f;
+	public static int hexBuffer = 100;
 	
 	public static float score = 0;
 	public static string highscores;
@@ -63,6 +64,7 @@ public static class BirdDetails {
 
 //These get assigned by the Network Request Object as it's the first thing to do anything in production
 public static class UIObjects {
+	public static GameObject ui;
 	public static Popup popup;
 	public static SceneControl sceneCon;
 	public static GameObject pauseMenu;

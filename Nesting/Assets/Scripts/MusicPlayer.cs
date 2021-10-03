@@ -7,11 +7,12 @@ public class MusicPlayer : MonoBehaviour
 {
 	private AudioSource speaker;
 	public AudioClip song;
-	private bool on = false;
+	private bool on;
 	
 	void Start() {
 		speaker = gameObject.GetComponent<AudioSource>();
 		SetSong();
+		on = Settings.musicOn;
 	}
 	
     void Update() {

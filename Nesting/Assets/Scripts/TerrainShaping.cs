@@ -10,7 +10,6 @@ public class TerrainShaping : MonoBehaviour
 	public GameObject fence;
 	private float height = 1.75f;
 	public float wallmargin = 3.5f;
-	private int hexagonXBuffer = 45;
 	public Material material;
 	
 	private MeshFilter meshfilter;
@@ -22,10 +21,12 @@ public class TerrainShaping : MonoBehaviour
     void Awake()
     {
 		Random.InitState(BirdDetails.birdid);
-		BirdDetails.mapx = Random.Range(115,240);
-		BirdDetails.mapy = Random.Range(125,250);
+		BirdDetails.mapx = Random.Range(60,120);
+		BirdDetails.mapy = Random.Range(66,125);
 		BirdDetails.mapz = Random.Range(0.75f,5.5f);
-		xScale = BirdDetails.mapx + (hexagonXBuffer * 2);
+		//Extra width is needed to accomodate the hexagons sides
+		BirdDetails.hexBuffer = Mathf.RoundToInt( BirdDetails.mapy / 3.33f ) * 2;
+		xScale = BirdDetails.mapx + BirdDetails.hexBuffer;
 		yScale = BirdDetails.mapy;
 		height = BirdDetails.mapz;
 		GameObject ground = new GameObject();
@@ -38,8 +39,11 @@ public class TerrainShaping : MonoBehaviour
         meshfilter.mesh = FormMesh();
 		meshrenderer.material = material;
 		meshcollider.sharedMesh = meshfilter.mesh;
-		ground.transform.position = new Vector3( -hexagonXBuffer, 0, 0);
+		ground.transform.position = new Vector3( -BirdDetails.hexBuffer, 0, 0);
 		CreateBoundries(wallmargin);
+		if (Debug.isDebugBuild) {
+			Debug.Log($"Ground created. x:{xScale}, y:{yScale}, height:{height}");
+		}
     }
 
 	Mesh FormMesh() {
@@ -54,12 +58,13 @@ public class TerrainShaping : MonoBehaviour
 		//Create vertices with perlin noise heightmap
 		float yf = 0;
 		float perlinOffset = Random.value;
-		for (int i = 0; yf <= yScale; yf += 1) {
-			for (float xf = 0; xf <= xScale; xf += 1, i++) {
+		for (int i = 0; yf <= yScale*2; yf += 2) {
+			for (float xf = 0; xf <= xScale*2; xf += 2, i++) {
 				float noisex = perlinOffset + xf / ((float)xScale * (resolution/3f));
 				float noisey = perlinOffset + yf / ((float)yScale * (resolution/3f));
 				float h = Mathf.PerlinNoise(noisex,noisey)*height - (height/2f);
 				verts[i] = new Vector3(xf, h, yf);
+				//Debug.Log(verts[i]);
 				uv[i] = new Vector2(xf / xScale, yf / yScale);
 			}
 		}
@@ -82,15 +87,16 @@ public class TerrainShaping : MonoBehaviour
 
 	// Create colliders at the edges - no falling off the map!
 	void CreateBoundries(float margin = 1) {
-		int yrepeat = Mathf.CeilToInt(( yScale - margin ) / 6.5f);
-		int xlimit = Mathf.CeilToInt(xScale - ( margin + hexagonXBuffer*2 ));
+		int ylimit = Mathf.CeilToInt( yScale * 2 - margin) ;
+		int yrepeat = Mathf.CeilToInt( ( ylimit ) / 6.5f);
+		int xlimit = Mathf.CeilToInt(BirdDetails.mapx * 2 - margin);
 		float angleDistMod = 1.65f;
 		
 		GameObject northwall = new GameObject();
 		northwall.name = "Northwall";
 		northwall.transform.parent = this.transform;
 		for (int i=0; i <= (xlimit/6.5f); i++) {
-			GameObject go = Instantiate(fence, new Vector3(margin+(i*6.5f), -2.5f, yScale-margin), Quaternion.identity) as GameObject;
+			GameObject go = Instantiate(fence, new Vector3(margin+(i*6.5f), -2.5f, ylimit), Quaternion.identity) as GameObject;
 			go.transform.parent = northwall.transform;
 		}
 		
@@ -116,11 +122,11 @@ public class TerrainShaping : MonoBehaviour
 		
 		GameObject neastwall = new GameObject();
 		Transform neastwallT = neastwall.transform;
-		neastwallT.position = new Vector3(xlimit,0,yScale-margin);
+		neastwallT.position = new Vector3(xlimit,0, ylimit);
 		neastwall.name = "NEastwall";
 		neastwallT.parent = this.transform;
 		for (int i=0; i <= yrepeat/angleDistMod; i++) {
-			GameObject go = Instantiate(fence, new Vector3(xlimit, -2.5f, yScale-margin-(i*6.5f)), Quaternion.Euler(0, 90, 0)) as GameObject;
+			GameObject go = Instantiate(fence, new Vector3(xlimit, -2.5f, ylimit-(i*6.5f)), Quaternion.Euler(0, 90, 0)) as GameObject;
 			go.transform.parent = neastwallT;
 		}	
 		neastwallT.eulerAngles = new Vector3(0, 330, 0);
@@ -139,11 +145,11 @@ public class TerrainShaping : MonoBehaviour
 		
 		GameObject nwestwall = new GameObject();
 		Transform nwestwallT = nwestwall.transform;
-		nwestwallT.position = new Vector3(margin,0,yScale-margin);
+		nwestwallT.position = new Vector3(margin,0,ylimit);
 		nwestwall.name = "NWestwall";
 		nwestwallT.parent = this.transform;
 		for (int i=0; i <= yrepeat/angleDistMod; i++) {
-			GameObject go = Instantiate(fence, new Vector3(margin, -2.5f, yScale-margin-(i*6.5f)), Quaternion.Euler(0, 90, 0)) as GameObject;
+			GameObject go = Instantiate(fence, new Vector3(margin, -2.5f, ylimit-(i*6.5f)), Quaternion.Euler(0, 90, 0)) as GameObject;
 			go.transform.parent = nwestwallT;
 		}	
 		nwestwallT.eulerAngles = new Vector3(0, 30, 0);

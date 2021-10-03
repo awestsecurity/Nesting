@@ -28,6 +28,7 @@ public class SceneControl : MonoBehaviour
 	private bool playing = false;
 	private bool paused = false;
 	private bool priorState;
+	private int activeScene;
 	
 	public float timeremaining {get; private set;}
 	private float lastTimeStamp = 0;
@@ -73,25 +74,29 @@ public class SceneControl : MonoBehaviour
 		
 		//PAUSING
 
-		if (CrossPlatformInputManager.GetButtonDown("Pause")) {
-			if (!paused) priorState = playing;
+		if (CrossPlatformInputManager.GetButtonDown("Pause") && activeScene == 1) {
+			if (!paused) priorState = playing; //This is needed if we allow pausing on non-game scenes.
 			paused = !paused;
 			if (paused) {
-				playing = false;
-				UIObjects.pauseMenu.SetActive(true);
+				PauseGame();
 		        events.SetSelectedGameObject(firstUIElemOnPause);
 				if (BirdDetails.highscores != null) {
 					highscore.text = $"Best {BirdDetails.birdname}s \n {BirdDetails.highscores}";
 				}
-				Cursor.lockState = CursorLockMode.None;
-				Time.timeScale = 0;
+				//Cursor.lockState = CursorLockMode.None;
 			} else {
-				playing = priorState;
-				UIObjects.pauseMenu.SetActive(false);
-				Cursor.lockState = CursorLockMode.Locked;
-				Time.timeScale = 1;
+				PauseGame(false);
+				//playing = priorState;
+				//Cursor.lockState = CursorLockMode.Locked;
 			}
 		}
+	}
+	
+	//Pause Game
+	private void PauseGame(bool p = true) {
+		playing = !p;
+		UIObjects.pauseMenu.SetActive(p);
+		Time.timeScale = ( p ) ? 0 : 1;
 	}
 	
 	private void EndPlay() {
@@ -127,6 +132,7 @@ public class SceneControl : MonoBehaviour
 		}
 		StartCoroutine(FadeScreen());
 		isLoading = false;
+		activeScene = sceneindex;
 		textbox.text = "";
 		
 		// IF WE ARE LOADING THE GAME PLAY SCENE
@@ -157,6 +163,10 @@ public class SceneControl : MonoBehaviour
 		background.SetActive(false);
 		c.a = 1.0f;
 		img.color = c;
+	}
+	
+	public void ChangeScene(int index){
+		StartLoad(index);
 	}
 	
 	private float GetPlaytime() {

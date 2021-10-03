@@ -9,38 +9,69 @@ public class QualityButtons : MonoBehaviour
 	public int settingID = 0;
 	private Button b;
 	private Text t;
+	private string[] buttonOptions;
+	private string buttonName;
+	private delegate void buttonDelegate(int i);
+	private buttonDelegate changeFunction;
+	
 	private string[] shadowOptions = {" Best ", " Minimal ", " None "};
 	private string[] qualityOptions = {" Poor ", " Just OK ", " Great "};
-	private string[] viewDistance = {" Far ", "Middle", "Close"};
+	private string[] viewDistanceOptions = {" Far ", "Middle", "Close"};
 	private string[] booleanOptions = {" ON ", " OFF "};
-	private int i = 1;
+
+	private int currentSetting;
 	private Camera cam;
 	
     void Start()
     {
         b = this.gameObject.GetComponent<Button>();
         t = this.gameObject.transform.GetChild(0).GetComponent<Text>();
-		switch(settingID) {
-			case 0:
-				b.onClick.AddListener(delegate {ChangeQuality(); });
-				break;
-			case 1:
-				b.onClick.AddListener(delegate {ChangeViewDistance(); });
-				break;
-			case 2:
-				b.onClick.AddListener(delegate {ChangeSFX(); });
-				break;
-			case 3:
-				b.onClick.AddListener(delegate {ChangeMusic(); });
-				break;
-			default:
-				break;
-		}
+		b.onClick.AddListener(delegate {ChangeSetting(); });
+		LoadPref();
+		SetOptions();
+		ChangeSetting(0);
     }
 	
-	void ChangeQuality() {
-		i = (i < qualityOptions.Length - 1) ? (i+1) : 0 ;
-		t.text = $"Quality: {qualityOptions[i]}";
+	private void LoadPref() {
+		currentSetting = PlayerPrefs.GetInt($"{settingID}", 1);
+	}
+	
+	private void SetOptions() {
+		switch(settingID) {
+			case 0: //Overall quality
+				buttonOptions = qualityOptions;
+				buttonName = "Quality";
+				changeFunction = new buttonDelegate(ChangeQuality);
+				break;
+			case 1: //Camera View Distance. Not written. May be unfair
+				buttonOptions = viewDistanceOptions;
+				buttonName = "Camera";
+				changeFunction = new buttonDelegate(ChangeViewDistance);
+				break;
+			case 2: //Sound effects on/off
+				buttonOptions = booleanOptions;
+				buttonName = "SFX";
+				changeFunction = new buttonDelegate(ChangeSFX);
+				break;
+			case 3: //music on/off
+				buttonOptions = booleanOptions;
+				buttonName = "Music";
+				changeFunction = new buttonDelegate(ChangeMusic);
+				break;
+			default:
+				break;		
+		}
+	}
+	
+	private void ChangeSetting(int moveNext = 1) {
+		currentSetting = (currentSetting < buttonOptions.Length - 1) ? (currentSetting + moveNext) : 0 ;
+		t.text = $"{buttonName}: {buttonOptions[currentSetting]}";	
+		changeFunction(currentSetting);
+		PlayerPrefs.SetInt($"{settingID}", currentSetting);
+	}
+	
+	//Possible delagates below
+	void ChangeQuality(int i) {
 		switch (i) {
 			case 0:
 				QualitySettings.SetQualityLevel(1, true);
@@ -54,12 +85,9 @@ public class QualityButtons : MonoBehaviour
 			default:
 				break;
 		}		
-		
 	}
 	
-	void ChangeSFX() {
-		i = (i < booleanOptions.Length - 1) ? (i+1) : 0 ;
-		t.text = $"SFX: {booleanOptions[i]}";
+	void ChangeSFX(int i) {
 		switch (i) {
 			case 0:
 				Settings.sfxOn = true;
@@ -72,9 +100,7 @@ public class QualityButtons : MonoBehaviour
 		}
 	}
 	
-	void ChangeMusic() {
-		i = (i < booleanOptions.Length - 1) ? (i+1) : 0 ;
-		t.text = $"Music: {booleanOptions[i]}";
+	void ChangeMusic(int i) {
 		switch (i) {
 			case 0:
 				Settings.musicOn = true;
@@ -84,12 +110,10 @@ public class QualityButtons : MonoBehaviour
 				break;
 			default:
 				break;
-		}		
+		}	
 	}
 
-	void ChangeShadowSetting(){
-		i = (i < shadowOptions.Length - 1) ? (i+1) : 0 ;
-		t.text = $"Shadows: {shadowOptions[i]}";
+	void ChangeShadowSetting(int i){
 		switch (i) {
 			case 0:
 				QualitySettings.shadows = ShadowQuality.All;
@@ -105,9 +129,7 @@ public class QualityButtons : MonoBehaviour
 		}
 	}
 	
-	void ChangeViewDistance(){
-		t.text = $"Shadows: {shadowOptions[i]}";
-		i = (i < viewDistance.Length - 1) ? (i+1) : 0 ;
+	void ChangeViewDistance(int i){
 		switch (i) {
 			case 0:
 				// change fog
@@ -119,6 +141,6 @@ public class QualityButtons : MonoBehaviour
 				break;
 			default:
 				break;
-		}		
+		}	
 	}
 }
