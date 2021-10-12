@@ -101,14 +101,15 @@ public class Katamari : MonoBehaviour {
 		hud = GameObject.Find("HUD");
 		if (hud == null) {
 			hud = Instantiate(HUDPrefab);
-			hud.transform.GetChild(2).gameObject.SetActive(false); //Deactivate titlescreen
+			hud.transform.GetChild(2).GetChild(0).gameObject.SetActive(false); //Deactivate titlescreen
 			//hud.transform.GetChild(3).gameObject.SetActive(false); //Deactivate announcment
-			hud.transform.GetChild(4).gameObject.SetActive(false); //Deactivate Loading Screen
-			hud.transform.GetChild(5).gameObject.SetActive(false); //Bird Menu
+			hud.transform.GetChild(3).gameObject.SetActive(false); //Deactivate Loading Screen
+			hud.transform.GetChild(2).GetChild(3).gameObject.SetActive(false); //Bird Menu
 		}
-		hud.transform.GetChild(0).gameObject.SetActive(true); //Activate Stat Panel
-		sizeDisplay = hud.transform.GetChild(0).GetChild(1).GetComponent<Text>();
-		birdDisplay = hud.transform.GetChild(0).GetChild(0).GetComponent<Text>();
+		GameObject statPanel = hud.transform.GetChild(0).gameObject;
+		statPanel.SetActive(true); //Activate Stat Panel
+		birdDisplay = statPanel.transform.GetChild(0).GetComponent<Text>();
+		sizeDisplay = statPanel.transform.GetChild(1).GetComponent<Text>();
 	}
 	
 	//Collided with something. We only care if it is a "Thingy" (can be picked up)
@@ -133,7 +134,7 @@ public class Katamari : MonoBehaviour {
 		}
 	}
 	
-	void PlaySFX(AudioClip sfx, float loudness = 1.0f) {
+	void PlaySFX(AudioClip sfx, float loudness = 0.666f) {
 		if (Settings.sfxOn) {
 			speaker.PlayOneShot(sfx, loudness);
 		}

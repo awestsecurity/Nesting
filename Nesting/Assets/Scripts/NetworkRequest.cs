@@ -16,6 +16,7 @@ public class NetworkRequest : MonoBehaviour
 	public SceneControl sceneCon;
 	public GameObject pause;
 	public BirdMenu menu;
+	public GameObject titleButtons;
 	
 	private readonly string collection_name = "1forthebirds";
 	private string request_owned_templates;
@@ -44,6 +45,11 @@ public class NetworkRequest : MonoBehaviour
 				SetLogin(account_name);
 			}
 		}
+	}
+	
+	void LoadSettings() {
+		Settings.musicOn = (PlayerPrefs.GetInt("3", 0) == 0) ? true : false ;
+		Settings.sfxOn = (PlayerPrefs.GetInt("2", 0) == 0) ? true : false ;
 	}
 	
 	// To be called from the outside js code.
@@ -106,16 +112,18 @@ public class NetworkRequest : MonoBehaviour
 	}
 	
 	public void ChooseRandomBird() {
-		if (BirdDetails.ownedBirds.Length >= 1) {
-			int bird = BirdDetails.ownedBirds[Random.Range(0,BirdDetails.ownedBirds.Length)];
-			BirdDetails.SetBird(bird);
-			sceneCon.StartLoad(1);
-		}
+		menu.SelectRandomBird();
+		//if (BirdDetails.ownedBirds.Length >= 1) {
+		//	int bird = BirdDetails.ownedBirds[Random.Range(0,BirdDetails.ownedBirds.Length)];
+		//	BirdDetails.SetBird(bird);
+		//	sceneCon.StartLoad(1);
+		//}
 	}
 	
-	public void PopBirdMenu() {
-		menu.gameObject.SetActive(true);
-		menuActive = true;
+	public void PopBirdMenu(bool on = true) {
+		menu.gameObject.SetActive(on);
+		menuActive = on;
+		titleButtons.SetActive(!on);
 	}
 
 	public void PostHighScore() {
@@ -153,7 +161,7 @@ public class NetworkRequest : MonoBehaviour
 	public IEnumerator GetHighScores() {
 		string url = "https://www.forthebirds.space/play/api/get.php";
 		string safename = BirdDetails.birdname.Replace("'",string.Empty);
-		string get_url = $"{url}?bird={safename}";
+		string get_url = $"{url}?bird={safename}&amount=6";
 		
 		UnityWebRequest www = UnityWebRequest.Get(get_url);
         yield return www.SendWebRequest();

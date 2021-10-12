@@ -30,8 +30,8 @@ public class MakeNestSwirl : MonoBehaviour
 		
         if (katamari == null) { katamari = GameObject.Find("Katamari"); }
 		if (ui == null) { ui = GameObject.Find("HUD"); }
-		ui.transform.GetChild(1).gameObject.SetActive(false); //hide announcement
-		ui.transform.GetChild(2).gameObject.SetActive(false); //hide timer
+		//ui.transform.GetChild(1).gameObject.SetActive(false); //hide announcement
+		ui.transform.GetChild(1).gameObject.SetActive(false); //hide timer
 		katamari.transform.position = Vector3.zero;
 		katamari.transform.rotation = Quaternion.identity;
 		RemoveKatamriControl();
@@ -39,7 +39,7 @@ public class MakeNestSwirl : MonoBehaviour
 		popup = UIObjects.popup;
 		popup.AddMessage($"It's quite {mostlyThis}y. How exciting!");
 		popup.AddMessage(BirdDetails.highscores);
-		popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
+		popup.AddMessage($"Why not give it another go? Hit 'r' to restart or refresh to choose a bird.");
 		popup.LaunchMessagePanel();
 		//Debug.Log($"Children: {katamari.transform.childCount} Ring:{ring.Count}");
     }
@@ -54,22 +54,22 @@ public class MakeNestSwirl : MonoBehaviour
 		}
 		if (Input.GetKeyDown("r") && !restarting) {
 			bool b = UIObjects.sceneCon.StartLoad(1);
-			Destroy(katamari);
 			if (b) {
+				Destroy(katamari);
 				restarting = true;
 				Debug.Log("Restart.");
 			} else {
 				Debug.Log("Not Restarting.");	
 			}
 		} else if (Input.GetKeyDown("m") && !restarting) {
-			bool b = UIObjects.sceneCon.StartLoad(0);
-			Destroy(katamari);
-			if (b) {
-				restarting = true;
-				Debug.Log("Restart.");
-			} else {
-				Debug.Log("Not Restarting.");	
-			}
+			//bool b = UIObjects.sceneCon.StartLoad(0);
+			//if (b) {
+			//	Destroy(katamari);
+			//	restarting = true;
+			//	Debug.Log("Restart.");
+			//} else {
+			//	Debug.Log("Not Restarting.");	
+			//}
 		}
     }
 	

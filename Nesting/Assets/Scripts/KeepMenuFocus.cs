@@ -16,8 +16,12 @@ public class KeepMenuFocus : MonoBehaviour {
 	private bool defaultSet = false;
 	private EventSystem eventSystem;
 	
+	private AudioSource speaker;
+	public AudioClip selectNoise;
+	
 	void Start() {
 		eventSystem = EventSystem.current;
+		speaker = gameObject.GetComponent<AudioSource>();
 		if (defaultButton != null) {
 			lastSelected = defaultButton;
 			defaultSet = true;
@@ -40,16 +44,20 @@ public class KeepMenuFocus : MonoBehaviour {
 		}
 		
 		//Debug.Log($"{lastSelected} : {lastSelected.activeSelf}");
-		if(eventSystem.currentSelectedGameObject == null || !lastSelected.activeSelf || lastSelected.GetComponent<Button>() == null) {
+		if(eventSystem.currentSelectedGameObject == null || !lastSelected.activeSelf) {
 			if (lastSelected.gameObject.activeSelf && lastSelected.GetComponent<Button>() != null && lastSelected.GetComponent<Button>().interactable) {
 				eventSystem.SetSelectedGameObject(lastSelected);
 			} else {
 				defaultSet = false;
-				Debug.Log("Get New Button.");
+				//Debug.Log("Get New Button.");
 				SearchForFirstButton(transform);
 			}
 		} else {
-			lastSelected = eventSystem.currentSelectedGameObject;
+			if (lastSelected != eventSystem.currentSelectedGameObject) {
+				lastSelected = eventSystem.currentSelectedGameObject;
+				if (Settings.sfxOn) { speaker.PlayOneShot(selectNoise, 0.5f); }
+			}
+			//lastSelected = eventSystem.currentSelectedGameObject;
 		}
 	}
 	

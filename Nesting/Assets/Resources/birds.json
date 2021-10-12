@@ -4,6 +4,7 @@
 			"status" : "LC",
 			"speed" : "5.1",
 			"text" : "I don't just immitate other birds. I'll gladly learn your ringtone too.",
+			"song" : "",
 			"image" : "NorthernMockingbird"
 		},
 		"93840" : {
@@ -11,6 +12,7 @@
 			"status" : "LC",
 			"speed" : "5.8",
 			"text" : "Overgown meadows are my favorite spot.",
+			"song" : "",
 			"image" : "Bobolink"
 		},
 		"93847" : {
@@ -18,6 +20,7 @@
 			"status" : "NT",
 			"speed" : "5.3",
 			"text" : "Natural wildfires make my habitat so hospitable. Ironic, huh?",
+			"song" : "",
 			"image" : "BachmansSparrow"
 		},
 		"93873" : {
@@ -25,6 +28,7 @@
 			"status" : "EN",
 			"speed" : "6.0",
 			"text" : "I like to spook tourists by running through the marsh making growling noises.",
+			"song" : "",
 			"image" : "BlackRail"
 		},
 		"95058" : {
@@ -32,6 +36,7 @@
 			"status" : "NT",
 			"speed" : "6.3",
 			"text" : "Don't cross me. They don't call me the butcher bird for nothing.",
+			"song" : "",
 			"image" : "LoggerheadShrike"
 		},
 		"104678" : {
@@ -39,6 +44,7 @@
 			"status" : "EX",
 			"speed" : "6.5",
 			"text" : "Am I dreaming?",
+			"song" : "",
 			"image" : "MarianneWhite-eye"
 		},
 		"104679" : {
@@ -46,6 +52,7 @@
 			"status" : "CR",
 			"speed" : "5.0",
 			"text" : "Who doesn't like to holiday in Cuba?",
+			"song" : "",
 			"image" : "BachmansWarbler"
 		},
 		"104687" : {
@@ -53,6 +60,7 @@
 			"status" : "LC",
 			"speed" : "5.4",
 			"text" : "You must be mistaken, I'm too pretty to be invasive.",
+			"song" : "",
 			"image" : "HouseFinch"
 		},
 		"104688" : {
@@ -60,6 +68,7 @@
 			"status" : "LC",
 			"speed" : "5.9",
 			"text" : "The ground hog knows nothing. My song descends at the true start of spring.",
+			"song" : "",
 			"image" : "LouisianaWaterthrush"
 		},
 		"104697" : {
@@ -67,6 +76,7 @@
 			"status" : "NT",
 			"speed" : "6.7",
 			"text" : "Thanks for the work you've been doing. I have more plover friends every year.",
+			"song" : "",
 			"image" : "PipingPlover"
 		},
 		"104699" : {
@@ -74,6 +84,7 @@
 			"status" : "LC",
 			"speed" : "6.5",
 			"text" : "I don't eat ants, they help me find food. I prefer their company to other birds frankly.",
+			"song" : "",
 			"image" : "White-plumedAntbird"
 		},
 		"104707" : {
@@ -81,6 +92,7 @@
 			"status" : "VU",
 			"speed" : "8.0",
 			"text" : "I wish people would stop making fun of my red sac.",
+			"song" : "",
 			"image" : "AscensionFrigatebird"
 		},
 		"104713" : {
@@ -88,6 +100,7 @@
 			"status" : "EW",
 			"speed" : "7.4",
 			"text" : "Maybe I don't get out much. I'm tired of getting into fights with tree snakes.",
+			"song" : "",
 			"image" : "GuamKingfisher"
 		},
 		"104714" : {
@@ -95,6 +108,7 @@
 			"status" : "LC",
 			"speed" : "5.0",
 			"text" : "My 3,000 mile commute doesn't get me down at all. I have lots of audio books.",
+			"song" : "",
 			"image" : "CanadaWarbler"
 		},
 		"104715" : {
@@ -102,6 +116,7 @@
 			"status" : "EN",
 			"speed" : "8.0",
 			"text" : "I am the rare Garuda, bow before this raptor.",
+			"song" : "",
 			"image" : "JavanHawk-eagle"
 		},
 		"104718" : {
@@ -109,6 +124,7 @@
 			"status" : "LC",
 			"speed" : "5.6",
 			"text" : "I'm only gold when showing off. How else would you spot a tiny bird like me?",
+			"song" : "",
 			"image" : "AmericanGoldfinch"
 		},
 		"109276" : {
@@ -116,6 +132,7 @@
 			"status" : "LC",
 			"speed" : "6.1",
 			"text" : "Knock, knock...",
+			"song" : "",
 			"image" : "Red-belliedWoodpecker"
 		},
 		"109277" : {
@@ -130,6 +147,7 @@
 			"status" : "VU",
 			"speed" : "5.8",
 			"text" : "My face is on money!",
+			"song" : "",
 			"image" : "SaintHelenaPlover"
 		},
 		"109281" : {
@@ -137,6 +155,7 @@
 			"status" : "LC",
 			"speed" : "6.2",
 			"text" : "People call me secretive. I much prefer discrete.",
+			"song" : "",
 			"image" : "SedgeWren"
 		},
 		"109283" : {
@@ -144,6 +163,7 @@
 			"status" : "EW",
 			"speed" : "6.0",
 			"text" : "They made a movie about me! I didn't see it.",
+			"song" : "",
 			"image" : "SpixsMacaw"
 		},
 		"118985" : {
@@ -151,6 +171,7 @@
 			"status" : "VU",
 			"speed" : "5.5",
 			"text" : "",
+			"song" : "",
 			"image" : "LittleWoodstar"
 		},
 		"119034" : {
@@ -158,6 +179,7 @@
 			"status" : "VU",
 			"speed" : "5.5",
 			"text" : "",
+			"song" : "",
 			"image" : "LittleWoodstar"
 		},
 		"143869" : {
@@ -165,6 +187,7 @@
 			"status" : "CR",
 			"speed" : "5.8",
 			"text" : "",
+			"song" : "",
 			"image" : "JerdonsCourser"
 		},
 		"143873" : {
@@ -172,13 +195,15 @@
 			"status" : "VU",
 			"speed" : "5.2",
 			"text" : "Don't kill 2 birds with one stone. Feed two birds with one scone!",
+			"song" : "",
 			"image" : "Stitchbird"
 		},
 		"143883" : {
 			"name" : "Red-headed Vulture",
 			"status" : "CR",
 			"speed" : "7.5",
-			"text" : "",
+			"text" : "I like to think I'm more mysterious than spooky.... No?",
+			"song" : "",
 			"image" : "Red-headedVulture"
 		},
 		"143889" : {
@@ -186,6 +211,7 @@
 			"status" : "CR",
 			"speed" : "4.5",
 			"text" : "",
+			"song" : "",
 			"image" : "TahitiMonarch"
 		}
 		"244778" : {
@@ -193,6 +219,7 @@
 			"status" : "VU",
 			"speed" : "6.1",
 			"text" : "Do you think somewhere there's a pasta shapped like me?",
+			"song" : "",
 			"image" : "MacaroniPenguin"
 		}
 		"279598" : {
@@ -200,6 +227,7 @@
 			"status" : "LC",
 			"speed" : "5.0",
 			"text" : "I may be just a rat with wings to you, but I know who I am.",
+			"song" : "",
 			"image" : "RockPigeon"
 		}
 	}

@@ -14,8 +14,7 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class SceneControl : MonoBehaviour
 {
-    
-	private bool isLoading;
+   	private bool isLoading;
 
 	public GameObject background;
 	public Popup popup;
@@ -172,7 +171,7 @@ public class SceneControl : MonoBehaviour
 	private float GetPlaytime() {
 		switch(BirdDetails.birdstatus) {
 			case "LC":
-				return 250;
+				return 250; //250
 			case "NT":
 				return 350;
 			case "VU":
@@ -185,6 +184,8 @@ public class SceneControl : MonoBehaviour
 				return 999;
 			case "EX":
 				return 9999;
+			case "DD":
+				return 5555;
 			default:
 				return 60;
 		}

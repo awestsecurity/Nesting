@@ -1,6 +1,14 @@
-.Title screen
-.Sound track
+.Level select
+.more levels
+.More music
 .more detailed Object List
 .Diverse closing remarks
-.Sound Effects
-.Bird selection menu
+.Sound Balancing
+.music for nest swirl
+.Make own skybox
+.Make own fence
+.Get Settings saving
+.make jukebox
+.skip text setting
+.Manual camera option
+.clouds

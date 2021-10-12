@@ -55,7 +55,7 @@ public class MenuSwitch : MonoBehaviour
 		}
 	}
 	
-	void OnDisabled() {
+	void OnDisable() {
 		keepEnabled = false;
 	}
 }
