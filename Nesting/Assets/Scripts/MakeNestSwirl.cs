@@ -39,7 +39,7 @@ public class MakeNestSwirl : MonoBehaviour
 		popup = UIObjects.popup;
 		popup.AddMessage($"It's quite {mostlyThis}y. How exciting!");
 		popup.AddMessage(BirdDetails.highscores);
-		popup.AddMessage($"Why not give it another go? Hit 'r' to restart or refresh to choose a bird.");
+		popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
 		popup.LaunchMessagePanel();
 		//Debug.Log($"Children: {katamari.transform.childCount} Ring:{ring.Count}");
     }
@@ -62,14 +62,14 @@ public class MakeNestSwirl : MonoBehaviour
 				Debug.Log("Not Restarting.");	
 			}
 		} else if (Input.GetKeyDown("m") && !restarting) {
-			//bool b = UIObjects.sceneCon.StartLoad(0);
-			//if (b) {
-			//	Destroy(katamari);
-			//	restarting = true;
-			//	Debug.Log("Restart.");
-			//} else {
-			//	Debug.Log("Not Restarting.");	
-			//}
+			bool b = UIObjects.sceneCon.StartLoad(0);
+			if (b) {
+				Destroy(katamari);
+				restarting = true;
+				Debug.Log("Restart.");
+			} else {
+				Debug.Log("Not Restarting.");	
+			}
 		}
     }
 	

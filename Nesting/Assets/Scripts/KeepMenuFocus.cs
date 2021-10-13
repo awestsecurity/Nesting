@@ -31,19 +31,24 @@ public class KeepMenuFocus : MonoBehaviour {
 	}
 	
 	void OnEnable() {
+		eventSystem = EventSystem.current;
 		if (!defaultSet) {
 			SearchForFirstButton(transform);
+		} 
+		if (defaultSet) {
+			eventSystem.SetSelectedGameObject(defaultButton);
 		}
-		eventSystem.SetSelectedGameObject(defaultButton);
 	}
 	
 	void Update() {
-		
+		eventSystem = EventSystem.current;
 		if (lastSelected == null) {
 			lastSelected = defaultButton;
 		}
 		
-		//Debug.Log($"{lastSelected} : {lastSelected.activeSelf}");
+		//Debug.Log(eventSystem.currentSelectedGameObject);
+		
+		//Use the slower activeInHierarchy to avoid false positives from activeSelf. i.e. button is active, but parent menu is innactive
 		if(eventSystem.currentSelectedGameObject == null || !lastSelected.activeSelf) {
 			if (lastSelected.gameObject.activeSelf && lastSelected.GetComponent<Button>() != null && lastSelected.GetComponent<Button>().interactable) {
 				eventSystem.SetSelectedGameObject(lastSelected);

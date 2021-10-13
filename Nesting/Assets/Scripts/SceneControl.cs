@@ -12,7 +12,7 @@ using UnityStandardAssets.CrossPlatformInput;
 //Manage Loading screen
 //Set random seed
 
-public class SceneControl : MonoBehaviour
+public class SceneControl : GenericSingleton<SceneControl>
 {
    	private bool isLoading;
 
@@ -22,6 +22,8 @@ public class SceneControl : MonoBehaviour
 	public Text textbox;
 	public Text highscore;
 	public GameObject titleScreen;
+	public GameObject katamari {get;set;}
+	private GameObject titleButtons;
 	
 	private string[] facts;
 	private bool playing = false;
@@ -30,9 +32,9 @@ public class SceneControl : MonoBehaviour
 	private int activeScene;
 	
 	public float timeremaining {get; private set;}
+	public Text timeDisplay;
 	private float lastTimeStamp = 0;
 	private bool cheatDetected = false;
-	public Text timeDisplay;
 	
 	public GameObject firstUIElemOnPause;
 	private EventSystem events;
@@ -42,9 +44,11 @@ public class SceneControl : MonoBehaviour
 		TextAsset file = (TextAsset)Resources.Load("BirdFacts");
 		facts = file.text.Split('\n');
 		events = EventSystem.current;
+		titleButtons = titleScreen.transform.GetChild(0).gameObject;
 	}
 	
 	public bool StartLoad(int sceneindex) {
+		//Debug.Log("trying to load scene: "+sceneindex);
 		if (isLoading) {
 			return false;
 		} else {
@@ -65,6 +69,10 @@ public class SceneControl : MonoBehaviour
 			int sec = (int)timeremaining % 60;
 			timeDisplay.text = $"{min}:{sec.ToString("00")}";
 			lastTimeStamp = timeremaining;
+			
+			if(Input.GetKeyDown("q") && Debug.isDebugBuild) {
+				timeremaining -= 100;
+			}
 		}
 		if (playing && (timeremaining <= 0 || cheatDetected)) {
 			EndPlay();
@@ -99,23 +107,32 @@ public class SceneControl : MonoBehaviour
 	}
 	
 	private void EndPlay() {
-		//Time.timeScale = 0.1f;
-		Debug.Log("TimeOver");
+		//Debug.Log("TimeOver");
 		playing = false;
 		UIObjects.network.PostHighScore();
 		StartLoad(2);
 	}
 	
+	public void EndPlayEarly() {
+		//Debug.Log("Quit");
+		PauseGame(false);
+		playing = false;
+		timeremaining = 0;
+		StartLoad(0);
+	}
+	
 	IEnumerator PreLoadScene(int sceneindex, float delay = 1.25f) {
 		if (sceneindex != 1) {
 			Random.InitState(Mathf.RoundToInt(Time.deltaTime));
+		} else {
+			Destroy(katamari);
 		}
 		float minTime = 5f;
 		popup.Reset();
 		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(sceneindex);
 		isLoading = true;
 		background.SetActive(true);
-		titleScreen.SetActive(false);
+		if (sceneindex != 0) { titleScreen.SetActive(false); }
 		string randfact = facts[Random.Range(0,facts.Length)];
 		textbox.text = $"Loading...   Did you know, {randfact}";
 		while (!loadingOperation.isDone)
@@ -142,8 +159,10 @@ public class SceneControl : MonoBehaviour
 			Cursor.lockState = CursorLockMode.Locked;
 			playing = true;
 			StartCoroutine(UIObjects.network.GetHighScores());
-		} else if (sceneindex == 2) {
-			//End Scene
+		} else if (sceneindex == 0) {
+			//Title Scene
+			titleScreen.SetActive(true);
+			titleButtons.SetActive(true);
 		}
 	}
 	

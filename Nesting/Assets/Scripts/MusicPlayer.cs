@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(AudioSource))]
-public class MusicPlayer : MonoBehaviour
+public class MusicPlayer : GenericSingleton<MusicPlayer>
 {
 	private AudioSource speaker;
 	public AudioClip menuSong;
@@ -58,7 +58,7 @@ public class MusicPlayer : MonoBehaviour
 	
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
 		int index = scene.buildIndex;
-        Debug.Log("OnSceneLoaded: " + index);
+        //Debug.Log("OnSceneLoaded: " + index);
 		if ( index == 0 ) {
 			SetSong(menuSong);
 			speaker.loop = true;

@@ -9,12 +9,14 @@ public class OnMenuEnable : MonoBehaviour
 	public GameObject startSelected;
 	
 	private bool defaultSet = false;
+	private EventSystem eventSystem;
 
     void OnEnable() {
+		eventSystem = EventSystem.current;
 		if (startSelected == null ) {
 			SearchForFirstButton(transform);
 		}
-		EventSystem.current.SetSelectedGameObject(startSelected);
+		eventSystem.SetSelectedGameObject(startSelected);
 	}
 	
 	private void SearchForFirstButton(Transform t) {
@@ -35,6 +37,8 @@ public class OnMenuEnable : MonoBehaviour
 	}
 	
 	void OnDisable(){
-		EventSystem.current.SetSelectedGameObject(this.gameObject);
+		if (EventSystem.current != null) {
+			EventSystem.current.SetSelectedGameObject(this.gameObject);
+		}
 	}
 }

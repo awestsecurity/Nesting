@@ -41,6 +41,9 @@ public class Katamari : MonoBehaviour {
 	public AudioClip[] basePickupSounds;
 	
 	void Start () {
+		//revrse singleton
+		UIObjects.sceneCon.katamari = this.gameObject;
+		
 		ConnectUI();
 		volumeCheck = trueVolume * percentPossible;
 		collide = gameObject.GetComponent<SphereCollider>();

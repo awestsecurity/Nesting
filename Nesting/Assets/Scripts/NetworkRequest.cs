@@ -6,7 +6,7 @@ using SimpleJSON;
 using UnityEngine.UI;
 
 
-public class NetworkRequest : MonoBehaviour
+public class NetworkRequest : GenericSingleton<NetworkRequest>
 {
 	public string account_name;
 	public bool AirplaneMode; // no network, skip for play testing

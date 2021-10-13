@@ -11,4 +11,4 @@
 .make jukebox
 .skip text setting
 .Manual camera option
-.clouds
+.Pause bug fix so pause sreen resets each time
