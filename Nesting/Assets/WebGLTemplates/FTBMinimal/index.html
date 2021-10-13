@@ -7,15 +7,15 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
-  
+
   <script src='waxjs.js'></script>
-  
+
   <body>
-  <div id="loading" ><p id="wait">...loading...</p></div>
+  <div id="loading" ><p id="wait">.loading.</p></div>
 
 	<div class="webgl-content">
 	  <div id="logindiv" ></div>
-	  
+
 		<canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px; background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"></canvas>
 		<script src="Build/{{{ LOADER_FILENAME }}}"></script>
 		<script>
@@ -49,22 +49,23 @@
 		<div class="footer">
 	  	   <div class="fullscreen" onclick="playFullscreen()"></div>
 	    </div>
-	  
+
 	</div>
-	
+
 	<script>
 
   const wax = new waxjs.WaxJS('https://wax.greymass.com');
-   
+
    function playFullscreen() {
 		gameInstance.then((unityInstance) => {
-            unityInstance.SetFullscreen(1);        
+            unityInstance.SetFullscreen(1);
         });
    }
-   
+
   screen = document.getElementById('loading');
   log = document.getElementById('response'); //Gone for now
   login = document.getElementById('logindiv');
+  lCounter = 1;
 
   async function WaitForUnity() {
  	  console.log("Game is loaded");
@@ -86,12 +87,23 @@
       //log.append("\n");
       //log.append(userAccount);
 	  gameInstance.then((unityInstance) => {
-            unityInstance.SendMessage("Networker", "SetLogin", userAccount);        
+            unityInstance.SendMessage("Networker", "SetLogin", userAccount);
         });
     } catch(e) {
       console.log(e.message);
     }
   }
+
+  function LoadingAnim() {
+    newtext = "."+screen.innerHTML+".";
+    lCounter += 1;
+    if (lCounter >= 5) {
+      newtext = ".loading."
+      lCounter = 1;
+    }
+    screen.innerHTML = newtext;
+  }
+  setInterval(LoadingAnim, 1000);
 </script>
 
   </body>

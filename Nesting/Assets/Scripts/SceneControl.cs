@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityStandardAssets.CrossPlatformInput;
 
-
 //Handle scene transitions
 //Keep play time
 //Manage Loading screen
@@ -24,21 +23,21 @@ public class SceneControl : GenericSingleton<SceneControl>
 	public GameObject titleScreen;
 	public GameObject katamari {get;set;}
 	private GameObject titleButtons;
-	
+
 	private string[] facts;
 	private bool playing = false;
 	private bool paused = false;
 	private bool priorState;
 	private int activeScene;
-	
+
 	public float timeremaining {get; private set;}
 	public Text timeDisplay;
 	private float lastTimeStamp = 0;
 	private bool cheatDetected = false;
-	
+
 	public GameObject firstUIElemOnPause;
 	private EventSystem events;
-	
+
 	void Start() {
 		timeremaining = 555;
 		TextAsset file = (TextAsset)Resources.Load("BirdFacts");
@@ -46,7 +45,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		events = EventSystem.current;
 		titleButtons = titleScreen.transform.GetChild(0).gameObject;
 	}
-	
+
 	public bool StartLoad(int sceneindex) {
 		//Debug.Log("trying to load scene: "+sceneindex);
 		if (isLoading) {
@@ -54,13 +53,13 @@ public class SceneControl : GenericSingleton<SceneControl>
 		} else {
 			StartCoroutine(PreLoadScene(sceneindex));
 			return true;
-		}		
+		}
 	}
-	
+
 	void Update() {
 		//PLAY TIMER
-		if (playing) {	
-			timeremaining = timeremaining - Time.deltaTime; 
+		if (playing) {
+			timeremaining = timeremaining - Time.deltaTime;
 			if (lastTimeStamp <= timeremaining) {
 				cheatDetected = true;
 				BirdDetails.cheat = true;
@@ -69,7 +68,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 			int sec = (int)timeremaining % 60;
 			timeDisplay.text = $"{min}:{sec.ToString("00")}";
 			lastTimeStamp = timeremaining;
-			
+
 			if(Input.GetKeyDown("q") && Debug.isDebugBuild) {
 				timeremaining -= 100;
 			}
@@ -78,7 +77,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 			EndPlay();
 			//move to endgame scene
 		}
-		
+
 		//PAUSING
 
 		if (CrossPlatformInputManager.GetButtonDown("Pause") && activeScene == 1) {
@@ -98,21 +97,21 @@ public class SceneControl : GenericSingleton<SceneControl>
 			}
 		}
 	}
-	
+
 	//Pause Game
 	private void PauseGame(bool p = true) {
 		playing = !p;
 		UIObjects.pauseMenu.SetActive(p);
 		Time.timeScale = ( p ) ? 0 : 1;
 	}
-	
+
 	private void EndPlay() {
 		//Debug.Log("TimeOver");
 		playing = false;
 		UIObjects.network.PostHighScore();
 		StartLoad(2);
 	}
-	
+
 	public void EndPlayEarly() {
 		//Debug.Log("Quit");
 		PauseGame(false);
@@ -120,7 +119,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		timeremaining = 0;
 		StartLoad(0);
 	}
-	
+
 	IEnumerator PreLoadScene(int sceneindex, float delay = 1.25f) {
 		if (sceneindex != 1) {
 			Random.InitState(Mathf.RoundToInt(Time.deltaTime));
@@ -150,7 +149,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		isLoading = false;
 		activeScene = sceneindex;
 		textbox.text = "";
-		
+
 		// IF WE ARE LOADING THE GAME PLAY SCENE
 		if (sceneindex == 1) {
 			timeremaining = GetPlaytime();
@@ -165,7 +164,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 			titleButtons.SetActive(true);
 		}
 	}
-	
+
 	IEnumerator FadeScreen(bool fadeout = true, float fadeTime = 0.85f) {
 		Image img = background.GetComponent<Image>();
 		Color c = img.color;
@@ -182,11 +181,11 @@ public class SceneControl : GenericSingleton<SceneControl>
 		c.a = 1.0f;
 		img.color = c;
 	}
-	
+
 	public void ChangeScene(int index){
 		StartLoad(index);
 	}
-	
+
 	private float GetPlaytime() {
 		switch(BirdDetails.birdstatus) {
 			case "LC":
@@ -194,7 +193,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 			case "NT":
 				return 350;
 			case "VU":
-				return 450;	
+				return 450;
 			case "EN":
 				return 600;
 			case "CR":
@@ -209,5 +208,5 @@ public class SceneControl : GenericSingleton<SceneControl>
 				return 60;
 		}
 	}
-	
+
 }

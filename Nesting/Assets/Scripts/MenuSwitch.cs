@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class MenuSwitch : MonoBehaviour
 {
-	
+
 	public string defaultName = "Pause";
 	public bool keepEnabled = false;
 
@@ -17,7 +17,7 @@ public class MenuSwitch : MonoBehaviour
 			obj.SetActive(on);
 		}
 	}
-	
+
 	public void SwitchScreen(string name) {
 		GameObject screenToSwitchTo = null;
 		foreach(Transform child in this.transform) {
@@ -29,14 +29,15 @@ public class MenuSwitch : MonoBehaviour
 				obj.SetActive(false);
 			}
 		}
-		if (screenToSwitchTo != null) { 
-			screenToSwitchTo.SetActive(true); 
+		if (screenToSwitchTo != null) {
+			screenToSwitchTo.SetActive(true);
 		}
 		keepEnabled = true;
 	}
-	
+
 	public void Close() {
 		//IMPORTANT this has to deactivate before children for event system to pick a new button.
+		//Seriusly the EventSystem is needs a lot of hand-holding for multiple menus or singleton UIs
 		if (!keepEnabled) {
 			gameObject.SetActive(false);
 		}
@@ -50,11 +51,11 @@ public class MenuSwitch : MonoBehaviour
 				obj.SetActive(false);
 			}
 		}
-		if (screenToSwitchTo != null) { 
-			screenToSwitchTo.SetActive(true); 
+		if (screenToSwitchTo != null) {
+			screenToSwitchTo.SetActive(true);
 		}
 	}
-	
+
 	void OnDisable() {
 		keepEnabled = false;
 	}
