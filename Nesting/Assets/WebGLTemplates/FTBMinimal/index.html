@@ -65,6 +65,7 @@
   screen = document.getElementById('loading');
   log = document.getElementById('response'); //Gone for now
   login = document.getElementById('logindiv');
+  lText = document.getElementById('wait');
   lCounter = 1;
 
   async function WaitForUnity() {
@@ -95,13 +96,13 @@
   }
 
   function LoadingAnim() {
-    newtext = "."+screen.innerHTML+".";
+    newtext = "."+lText.innerHTML+".";
     lCounter += 1;
     if (lCounter >= 5) {
       newtext = ".loading."
       lCounter = 1;
     }
-    screen.innerHTML = newtext;
+    lText.innerHTML = newtext;
   }
   setInterval(LoadingAnim, 1000);
 </script>

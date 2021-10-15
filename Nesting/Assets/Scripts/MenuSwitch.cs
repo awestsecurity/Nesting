@@ -7,6 +7,7 @@ public class MenuSwitch : MonoBehaviour
 {
 
 	public string defaultName = "Pause";
+	public GameObject defaultObj;
 	public bool keepEnabled = false;
 
 	public void EnableAndSwitchScreen(string name) {
@@ -44,6 +45,7 @@ public class MenuSwitch : MonoBehaviour
 		GameObject screenToSwitchTo = null;
 		foreach(Transform child in this.transform) {
 			GameObject obj = child.gameObject;
+			//Debug.Log($"{obj.name} and {defaultName}");
 			if ( defaultName == obj.name ) {
 				screenToSwitchTo = obj;
 			}
@@ -53,6 +55,12 @@ public class MenuSwitch : MonoBehaviour
 		}
 		if (screenToSwitchTo != null) {
 			screenToSwitchTo.SetActive(true);
+		}
+	}
+
+	void OnEnable() {
+		if (!defaultObj.activeSelf){
+			keepEnabled = true;
 		}
 	}
 
