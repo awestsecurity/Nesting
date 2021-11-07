@@ -21,7 +21,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 	public Text textbox;
 	public Text highscore;
 	public GameObject titleScreen;
-	public GameObject katamari {get;set;}
+	public GameObject katamari {get;set;} //katamari sets itself here.
 	private GameObject titleButtons;
 
 	private string[] facts;
@@ -115,6 +115,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 	public void EndPlayEarly() {
 		//Debug.Log("Quit");
 		PauseGame(false);
+		paused = false;
 		playing = false;
 		timeremaining = 0;
 		StartLoad(0);
@@ -123,9 +124,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 	IEnumerator PreLoadScene(int sceneindex, float delay = 1.25f) {
 		if (sceneindex != 1) {
 			Random.InitState(Mathf.RoundToInt(Time.deltaTime));
-		} else {
-			Destroy(katamari);
-		}
+		} 
 		float minTime = 5f;
 		popup.Reset();
 		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(sceneindex);
@@ -162,6 +161,11 @@ public class SceneControl : GenericSingleton<SceneControl>
 			//Title Scene
 			titleScreen.SetActive(true);
 			titleButtons.SetActive(true);
+			Random.InitState(Mathf.RoundToInt(Time.deltaTime));
+			if (katamari) {
+				Debug.Log($"katamari destroyed? {katamari.name}");
+				Destroy(katamari);
+			}
 		}
 	}
 

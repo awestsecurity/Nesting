@@ -7,9 +7,6 @@
 .music for nest swirl
 .Make own skybox
 .Make own fence
-.Get Settings saving
 .make jukebox
 .skip text setting
 .Manual camera option
-.Pause bug fix so pause screen resets each time
-.animate loading div on html template

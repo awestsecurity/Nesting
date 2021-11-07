@@ -45,11 +45,15 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 				SetLogin(account_name);
 			}
 		}
+		LoadSettings();
 	}
 	
 	void LoadSettings() {
-		Settings.musicOn = (PlayerPrefs.GetInt("3", 0) == 0) ? true : false ;
-		Settings.sfxOn = (PlayerPrefs.GetInt("2", 0) == 0) ? true : false ;
+		Settings.musicOn = (PlayerPrefs.GetInt("3", 1) == 1) ? true : false ;
+		Settings.sfxOn = (PlayerPrefs.GetInt("2", 1) == 1) ? true : false ;
+		int[] quality = new int[] {1,3,5};
+		QualitySettings.SetQualityLevel(quality[PlayerPrefs.GetInt("0", 1)], true);
+		//Debug.Log($"PPrefs Music: {Settings.musicOn} and sfx {Settings.sfxOn}");
 	}
 	
 	// To be called from the outside js code.

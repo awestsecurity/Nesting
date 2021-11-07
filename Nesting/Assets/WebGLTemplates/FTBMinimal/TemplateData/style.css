@@ -8,11 +8,10 @@
 .webgl-content .logo.Dark {background-image: url('progressLogo.Dark.png');}
 .webgl-content .progress.Dark .empty {background-image: url('progressEmpty.Dark.png');}
 .webgl-content .progress.Dark .full {background-image: url('progressFull.Dark.png');}
-.webgl-content .footer {margin-top: 5px; height: 38px; line-height: 38px; font-family: Helvetica, Verdana, Arial, sans-serif; font-size: 18px;}
-.webgl-content .footer .webgl-logo, .title, .fullscreen {height: 100%; display: inline-block; background: transparent center no-repeat;}
-.webgl-content .footer .webgl-logo {background-image: url('webgl-logo.png'); width: 204px; float: left;}
+.webgl-content .footer {height: 38px; line-height: 38px; font-family: Helvetica, Verdana, Arial, sans-serif; font-size: 18px;}
 .webgl-content .footer .title {margin-right: 10px; float: right;}
-.webgl-content .footer .fullscreen {background-image: url('fullscreen.png'); width: 38px; float: right;}
+.webgl-content .footer .fullscreen {background-image: url('fullscreen.png'); width: 38px; height:38px; float: left;}
+.webgl-content .footer .discord {background-image: url('discord.png'); width: 38px; height:38px; float: left;margin-left:2px;}
 
 @font-face {
   font-family: MajorMono;
@@ -31,6 +30,8 @@ body {
 	width:100%;height:100%;
 	z-index:999;
 	top:0;left:0;
+	font-size:1.25em;
+	font-family:MajorMono;
 }
 
 #wait {
@@ -57,8 +58,4 @@ body {
 	color:black;
 	border-radius:10px;
 	z-index:887;
-}
-
-.footer {
-	position:absolute;left:1%;top:92%;z-index:555;
 }

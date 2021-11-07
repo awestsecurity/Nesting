@@ -88,7 +88,7 @@ TextureImporter:
     second: Whiskered Wren
   - first:
       213: 1059697883745673186
-    second: Macaroni Pengiun
+    second: Macaroni Penguin
   - first:
       213: -3800553805413166747
     second: Northern Mockingbird
@@ -835,7 +835,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Macaroni Pengiun
+      name: Macaroni Penguin
       rect:
         serializedVersion: 2
         x: 0

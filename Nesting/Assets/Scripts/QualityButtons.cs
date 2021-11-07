@@ -17,7 +17,7 @@ public class QualityButtons : MonoBehaviour
 	private string[] shadowOptions = {" Best ", " Minimal ", " None "};
 	private string[] qualityOptions = {" Poor ", " Just OK ", " Great "};
 	private string[] viewDistanceOptions = {" Far ", "Middle", "Close"};
-	private string[] booleanOptions = {" ON ", " OFF "};
+	private string[] booleanOptions = {" OFF ", " ON "};
 
 	private int currentSetting;
 	private Camera cam;
@@ -27,13 +27,14 @@ public class QualityButtons : MonoBehaviour
         b = this.gameObject.GetComponent<Button>();
         t = this.gameObject.transform.GetChild(0).GetComponent<Text>();
 		b.onClick.AddListener(delegate {ChangeSetting(); });
-		LoadPref();
 		SetOptions();
-		ChangeSetting(0);
+		LoadPref();
+		InitializeSetting();
     }
 	
 	private void LoadPref() {
 		currentSetting = PlayerPrefs.GetInt($"{settingID}", 1);
+		//Debug.Log($"{settingID} == {currentSetting}");
 	}
 	
 	private void SetOptions() {
@@ -63,6 +64,12 @@ public class QualityButtons : MonoBehaviour
 		}
 	}
 	
+	private void InitializeSetting() {
+		t.text = $"{buttonName}: {buttonOptions[currentSetting]}";	
+		//changeFunction(currentSetting);	
+		//Debug.Log($"{settingID} == {currentSetting} | {buttonName}: {buttonOptions[currentSetting]}");
+	}
+	
 	private void ChangeSetting(int moveNext = 1) {
 		currentSetting = (currentSetting < buttonOptions.Length - 1) ? (currentSetting + moveNext) : 0 ;
 		t.text = $"{buttonName}: {buttonOptions[currentSetting]}";	
@@ -90,10 +97,10 @@ public class QualityButtons : MonoBehaviour
 	void ChangeSFX(int i) {
 		switch (i) {
 			case 0:
-				Settings.sfxOn = true;
+				Settings.sfxOn = false;
 				break;
 			case 1:
-				Settings.sfxOn = false;
+				Settings.sfxOn = true;
 				break;
 			default:
 				break;
@@ -103,10 +110,10 @@ public class QualityButtons : MonoBehaviour
 	void ChangeMusic(int i) {
 		switch (i) {
 			case 0:
-				Settings.musicOn = true;
+				Settings.musicOn = false;
 				break;
 			case 1:
-				Settings.musicOn = false;
+				Settings.musicOn = true;
 				break;
 			default:
 				break;
