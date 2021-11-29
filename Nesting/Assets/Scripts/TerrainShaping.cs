@@ -11,11 +11,14 @@ public class TerrainShaping : MonoBehaviour
 	private float height = 1.75f;
 	public float wallmargin = 3.5f;
 	public Material material;
+	[Range(-0.2f,0.2f)]
+	public float colliderOffset;
 	
 	private MeshFilter meshfilter;
 	private MeshRenderer meshrenderer;
 	private MeshCollider meshcollider;
 	private Mesh mesh;
+	private GameObject offsetGround;
 	
     // Start is called before the first frame update
     void Awake()
@@ -35,11 +38,26 @@ public class TerrainShaping : MonoBehaviour
 		ground.layer = 8;
 		meshfilter = ground.AddComponent<MeshFilter>();
 		meshrenderer = ground.AddComponent<MeshRenderer>();
-		meshcollider = ground.AddComponent<MeshCollider>();
-        meshfilter.mesh = FormMesh();
+		//meshcollider = ground.AddComponent<MeshCollider>();
+		meshfilter.mesh = FormMesh();
 		meshrenderer.material = material;
-		meshcollider.sharedMesh = meshfilter.mesh;
-		ground.transform.position = new Vector3( -BirdDetails.hexBuffer, 0, 0);
+		//meshcollider.sharedMesh = meshfilter.mesh;
+		ground.transform.position = new Vector3( -BirdDetails.hexBuffer, 0, 0);		
+		//Move the ground collider from the ground render
+		if (colliderOffset != 0) {
+			offsetGround = new GameObject();
+			MeshFilter offsetMeshfilter = offsetGround.AddComponent<MeshFilter>();
+			offsetMeshfilter.mesh = meshfilter.mesh;
+			MeshCollider offsetMeshcollider = offsetGround.AddComponent<MeshCollider>();
+			offsetMeshcollider.sharedMesh = meshfilter.mesh;
+			offsetGround.transform.parent = this.transform;
+			offsetGround.transform.position = ground.transform.position + new Vector3(0,colliderOffset,0);
+			offsetGround.layer = 8;
+			offsetGround.name = "Ground Collider";
+		} else {
+			meshcollider = ground.AddComponent<MeshCollider>();
+			meshcollider.sharedMesh = meshfilter.mesh;
+		}
 		CreateBoundries(wallmargin);
 		if (Debug.isDebugBuild) {
 			Debug.Log($"Ground created. x:{xScale}, y:{yScale}, height:{height}");

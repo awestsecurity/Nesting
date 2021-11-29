@@ -39,7 +39,7 @@ public class MakeNestSwirl : MonoBehaviour
 		popup = UIObjects.popup;
 		popup.AddMessage($"It's quite {mostlyThis}y. How exciting!");
 		popup.AddMessage(BirdDetails.highscores);
-		popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
+		//popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
 		popup.LaunchMessagePanel();
 		//Debug.Log($"Children: {katamari.transform.childCount} Ring:{ring.Count}");
     }
@@ -52,7 +52,7 @@ public class MakeNestSwirl : MonoBehaviour
 				ring[i].RotateAround(center, new Vector3(0,1,-0.2f), speeds[i]*Time.deltaTime);
 			}
 		}
-		if (Input.GetKeyDown("r") && !restarting) {
+		/*if (Input.GetKeyDown("r") && !restarting) {
 			bool b = UIObjects.sceneCon.StartLoad(1);
 			if (b) {
 				Destroy(katamari);
@@ -70,7 +70,7 @@ public class MakeNestSwirl : MonoBehaviour
 			} else {
 				Debug.Log("Not Restarting.");	
 			}
-		}
+		}*/
     }
 	
 	void RemoveKatamriControl() {
@@ -100,4 +100,11 @@ public class MakeNestSwirl : MonoBehaviour
 			ring.Add(child);
 		}
 	}
+	
+	public void PassOnLoadScene(int i) {
+		Destroy(katamari);
+		restarting = true;
+		UIObjects.sceneCon.ChangeScene(i);
+	}
+	
 }

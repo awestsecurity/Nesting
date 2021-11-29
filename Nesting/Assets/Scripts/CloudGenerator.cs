@@ -6,6 +6,7 @@ public class CloudGenerator : MonoBehaviour
 {
 	
 	public GameObject[] cloudPrefabs;
+	public int startingClouds = 3;
 	[Range(5,20)]
 	public int maxClouds;
 	[Range(0.1f,2f)]
@@ -28,7 +29,7 @@ public class CloudGenerator : MonoBehaviour
 		windDirection = Vector3.forward;
 		delay = 30;
 		counter = delay;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < startingClouds; i++) {
 			Vector3 pos = new Vector3(Random.Range(-10, limitx), 50, Random.Range(-10, limity));
 			GameObject cld = MakeCloud(pos);
 			cld.transform.parent = this.transform;

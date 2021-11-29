@@ -230,4 +230,20 @@
 			"song" : "",
 			"image" : "RockPigeon"
 		}
+		"366240" : {
+			"name" : "Tawny Frogmouth",
+			"status" : "LC",
+			"speed" : "5.0",
+			"text" : "Ribbit...",
+			"song" : "",
+			"image" : "TawnyFrogmouth"
+		}
+		"366244" : {
+			"name" : "Belted Kingfisher",
+			"status" : "LC",
+			"speed" : "5.0",
+			"text" : "",
+			"song" : "",
+			"image" : "BeltedKingfisher"
+		}
 	}

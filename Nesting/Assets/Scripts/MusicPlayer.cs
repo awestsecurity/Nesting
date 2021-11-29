@@ -84,7 +84,7 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 				speaker.Play();
 			}
 		}
-		if ( index == 1 ) {
+		if ( index != 0 && index != 2 ) {
 			//This is the play level
 			speaker.loop = false;
 			StartCoroutine(PopSongCredits());

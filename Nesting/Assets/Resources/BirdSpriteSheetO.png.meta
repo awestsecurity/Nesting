@@ -122,6 +122,12 @@ TextureImporter:
   - first:
       213: -1934914407066739313
     second: Tahiti Monarch
+  - first:
+      213: -8751691800599403195
+    second: Belted Kingfisher
+  - first:
+      213: 2875558922329094233
+    second: Tawny Frogmouth
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -1082,6 +1088,48 @@ TextureImporter:
       bones: []
       spriteID: f8d5000399dc525e0800000000000000
       internalID: -1934914407066739313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Belted Kingfisher
+      rect:
+        serializedVersion: 2
+        x: 780
+        y: 0
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 545e2910daebb8680800000000000000
+      internalID: -8751691800599403195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tawny Frogmouth
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 0
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9587120ca9908e720800000000000000
+      internalID: 2875558922329094233
       vertices: []
       indices: 
       edges: []

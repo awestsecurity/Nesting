@@ -10,7 +10,6 @@ using UnityEngine.EventSystems;
 
 public class KeepMenuFocus : MonoBehaviour {
 
-	//
 	public GameObject defaultButton;
 	private GameObject lastSelected;
 	private bool defaultSet = false;

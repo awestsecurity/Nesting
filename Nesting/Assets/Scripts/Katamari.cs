@@ -42,8 +42,9 @@ public class Katamari : MonoBehaviour {
 	
 	void Start () {
 		//revrse singleton
-		UIObjects.sceneCon.katamari = this.gameObject;
-		
+		if (!SetKatamariInSceneControl()) {
+			Debug.LogWarning("Testing Mode?: Scene Con not found.");
+		}
 		ConnectUI();
 		volumeCheck = trueVolume * percentPossible;
 		collide = gameObject.GetComponent<SphereCollider>();
@@ -81,8 +82,8 @@ public class Katamari : MonoBehaviour {
 		}
 		
 		//Debug.Log (rbody.velocity.magnitude);
-		if (!speaker.isPlaying) {
-			PlaySFX(plodNoise, rbody.velocity.magnitude/15f);
+		if (!speaker.isPlaying && ballController.grounded) {
+			PlaySFX(plodNoise, rbody.velocity.magnitude/17f);
 		}
 		
 		//Cheat Detection
@@ -189,6 +190,15 @@ public class Katamari : MonoBehaviour {
 		   }
 		}
 		return mostCommonValue;
+	}
+	
+	bool SetKatamariInSceneControl() {
+		if (UIObjects.sceneCon) {
+				UIObjects.sceneCon.katamari = this.gameObject;
+				return true;
+		} else {
+			return false;
+		}
 	}
 	
 }

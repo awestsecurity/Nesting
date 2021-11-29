@@ -55,8 +55,9 @@ public class Popup : MonoBehaviour
 			}
 			ClearMessage();
 		}
-		yield return new WaitForSeconds(typeDelay*2);
+		//yield return new WaitForSeconds(typeDelay*2);
 		complete = true;
+
 	}
 	
 	public void AddMessage(string s = "you forgot the message. :/") {

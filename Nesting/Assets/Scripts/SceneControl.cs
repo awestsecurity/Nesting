@@ -125,12 +125,16 @@ public class SceneControl : GenericSingleton<SceneControl>
 		if (sceneindex != 1) {
 			Random.InitState(Mathf.RoundToInt(Time.deltaTime));
 		} 
+		if (sceneindex != 0) { titleScreen.SetActive(false); }
 		float minTime = 5f;
 		popup.Reset();
-		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(sceneindex);
+		int i = sceneindex;
+		if (sceneindex == 1) {
+			i = Settings.levelSelected;
+		}
+		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(i);
 		isLoading = true;
 		background.SetActive(true);
-		if (sceneindex != 0) { titleScreen.SetActive(false); }
 		string randfact = facts[Random.Range(0,facts.Length)];
 		textbox.text = $"Loading...   Did you know, {randfact}";
 		while (!loadingOperation.isDone)

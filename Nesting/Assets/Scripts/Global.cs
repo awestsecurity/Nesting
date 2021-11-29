@@ -73,6 +73,7 @@ public static class UIObjects {
 }
 
 public static class Settings {
+	public static int levelSelected = 3;
 	public static bool shadows = true;
 	public static bool skipText = false;	
 	public static bool musicOn = true;

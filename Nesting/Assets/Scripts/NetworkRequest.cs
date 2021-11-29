@@ -9,7 +9,8 @@ using UnityEngine.UI;
 public class NetworkRequest : GenericSingleton<NetworkRequest>
 {
 	public string account_name;
-	public bool AirplaneMode; // no network, skip for play testing
+	public bool airplaneMode; // no network, skip for play testing
+	public bool submitScores; // stop submitting high scores to the database
 	
 	public GameObject ui;
 	public Popup popup;
@@ -36,7 +37,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		UIObjects.birdMenu = menu;
 		UIObjects.network = gameObject.GetComponent<NetworkRequest>();
 		if (Debug.isDebugBuild) {
-			if (AirplaneMode) {
+			if (airplaneMode) {
 				account_name = "Anonymous";
 				StartCoroutine(SkipLogin());
 			} else if ( account_name == null ) {
@@ -67,7 +68,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 	
 	IEnumerator SkipLogin() {
 		yield return new WaitForSeconds(2);
-		sceneCon.StartLoad(1);
+		sceneCon.StartLoad(Settings.levelSelected);
 	}
 	
 	IEnumerator GetAssets() {
@@ -149,7 +150,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
         form.AddField("name", account_name);
         form.AddField("hash", hash);
 		
-		if (!BirdDetails.cheat) {
+		if (!BirdDetails.cheat && submitScores) {
 			UnityWebRequest www = UnityWebRequest.Post(url,form);
 			yield return www.SendWebRequest();
 			if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
@@ -167,13 +168,17 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		string safename = BirdDetails.birdname.Replace("'",string.Empty);
 		string get_url = $"{url}?bird={safename}&amount=6";
 		
-		UnityWebRequest www = UnityWebRequest.Get(get_url);
-        yield return www.SendWebRequest();
-        if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
-            Debug.Log(www.result);
-        } else {
-            string response = www.downloadHandler.text;
-			BirdDetails.highscores = response;
+		if (submitScores) {
+			UnityWebRequest www = UnityWebRequest.Get(get_url);
+			yield return www.SendWebRequest();
+			if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
+				Debug.Log(www.result);
+			} else {
+				string response = www.downloadHandler.text;
+				BirdDetails.highscores = response;
+			}
+		} else {
+				BirdDetails.highscores = "Scores Temporarily Disabled";
 		}
 	}
 
