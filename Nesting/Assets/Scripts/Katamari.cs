@@ -15,11 +15,12 @@ public class Katamari : MonoBehaviour {
 	
 	public static float volumeCheck;
 	public string mostCommonChild { get {return GetMostCommonChild(); } private set{} }
+	private string[] childrenByQuantity;
 
 	public float radius; // Where is the edge to attach things.
 	public Transform camPos;
 	public CamFollow camFollow;
-	public int maxChildren = 200;
+	public int maxChildren = 222;
 	
 	private GameObject hud;
 	private Text sizeDisplay;
@@ -173,6 +174,19 @@ public class Katamari : MonoBehaviour {
 	}
 	
 	string GetMostCommonChild() {
+		Dictionary<string, int> dict = ChildFrequencyDict();
+		string mostCommonValue = "whoops";
+		int highestCount = 0;
+		foreach (KeyValuePair<string, int> pair in dict) {
+		   if (pair.Value > highestCount) {
+			   mostCommonValue = pair.Key;
+			   highestCount = pair.Value;
+		   }
+		}
+		return mostCommonValue;
+	}
+	
+	Dictionary<string, int> ChildFrequencyDict() {
 		var cnt = new Dictionary<string, int>();
 		foreach (string value in collected) {
 		   if (cnt.ContainsKey(value)) {
@@ -181,15 +195,34 @@ public class Katamari : MonoBehaviour {
 			  cnt.Add(value, 1);
 		   }
 		}
-		string mostCommonValue = "whoops";
-		int highestCount = 0;
-		foreach (KeyValuePair<string, int> pair in cnt) {
-		   if (pair.Value > highestCount) {
-			  mostCommonValue = pair.Key;
-			  highestCount = pair.Value;
-		   }
+		return cnt;
+	}
+	
+	//switch to list and it all gets easier
+	public string[] GetTopThings(int amount = 3) {
+		Dictionary<string, int> dict = ChildFrequencyDict();
+		string[] rank = new string[amount];
+		for(int i = 0; i < amount; i++) {
+		   rank[i] = "empty space";
 		}
-		return mostCommonValue;
+		int highest = 0;
+		foreach (KeyValuePair<string, int> pair in dict) {
+		   if (pair.Value > highest) {
+			   if (rank[0] == "empty space") {
+					rank[0] = pair.Key;
+			   } else if (rank[1] == "empty space") {
+					rank[1] = rank[0];
+					rank[0] = pair.Key;
+			   } else {
+					rank[2] = rank[1];
+					rank[1] = rank[0];
+					rank[0] = pair.Key;
+				}
+			   highest = pair.Value;
+		   }
+
+		}		
+		return rank;
 	}
 	
 	bool SetKatamariInSceneControl() {

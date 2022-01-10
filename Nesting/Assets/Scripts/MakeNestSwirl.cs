@@ -14,6 +14,7 @@ public class MakeNestSwirl : MonoBehaviour
 	private bool restarting = false;
 
 	private string mostlyThis;
+	private string[] mostlyThese;
 	private List<Transform> ring = new List<Transform>();
 	private List<Transform> middleRing = new List<Transform>();
 	private List<Transform> outerRing = new List<Transform>();
@@ -37,7 +38,7 @@ public class MakeNestSwirl : MonoBehaviour
 		RemoveKatamriControl();
 		SplitKatamari();
 		popup = UIObjects.popup;
-		popup.AddMessage($"It's quite {mostlyThis}y. How exciting!");
+		popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting!");
 		popup.AddMessage(BirdDetails.highscores);
 		//popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
 		popup.LaunchMessagePanel();
@@ -76,6 +77,7 @@ public class MakeNestSwirl : MonoBehaviour
 	void RemoveKatamriControl() {
 		Katamari k = katamari.GetComponent<Katamari>();
 		mostlyThis = k.mostCommonChild;
+		mostlyThese = k.GetTopThings();
 		Destroy (katamari.GetComponent<Rigidbody>());
 		Destroy (katamari.GetComponent<Ball>());
 		Destroy (katamari.GetComponent<BallUserControl>());

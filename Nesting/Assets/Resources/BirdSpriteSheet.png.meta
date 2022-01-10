@@ -19,7 +19,7 @@ TextureImporter:
     second: Canada Warbler
   - first:
       213: -425405736221707377
-    second: Guam Kingfischer
+    second: Guam Kingfisher
   - first:
       213: 4334540434156931428
     second: House Finch
@@ -358,7 +358,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Guam Kingfischer
+      name: Guam Kingfisher
       rect:
         serializedVersion: 2
         x: 650
@@ -1122,7 +1122,7 @@ TextureImporter:
         width: 128
         height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

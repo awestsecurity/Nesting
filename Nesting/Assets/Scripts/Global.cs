@@ -12,7 +12,7 @@ public static class BirdDetails {
 	public static int birdid = 1111; //1111
 	public static string birdname = "The Vulgar Seagull";
 	public static string birdstatus = "LC";
-	public static string birdimg = "AmericanRobin";
+	public static string birdimg = "Guam Kingfisher";
 	
 	public static int mapx = 125;
 	public static int mapy = 125;

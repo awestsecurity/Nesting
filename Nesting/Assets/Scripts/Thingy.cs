@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-//[RequireComponent(typeof(BoxCollider))]
+//[RequireComponent(typeof(Collider))]
 public class Thingy : MonoBehaviour {
 
 	public string thingyName;
@@ -13,17 +13,19 @@ public class Thingy : MonoBehaviour {
 	public bool randomize;
 	public bool rotate;
 	public bool keepRatio;
+	public bool testForGravity = false; //Will the object be floating at any point and need to enable gravity
 	public float minScale = 0.8f;
 	public float maxScale = 1.2f;
-	
-	BoxCollider boxcollide;
-	MeshCollider meshcollide;
+
+	Collider collide;
 	Rigidbody body;
 	Transform t;
 	
 	public bool assimilated {get;set;}
+	private bool primed = false;
 	private bool delay = false;
 	private float actualVolume;
+	private bool ai;
 
 	// Use this for initialization
 	void Start () {
@@ -44,41 +46,82 @@ public class Thingy : MonoBehaviour {
 			t.rotation = Random.rotation;
 		}
 		actualVolume = GetVolume();
-		boxcollide = gameObject.GetComponent<BoxCollider>();
-		meshcollide = gameObject.GetComponent<MeshCollider>();
+		collide = gameObject.GetComponent<Collider>(); //box or mesh colliders used
 		body = gameObject.GetComponent<Rigidbody>();
+		if (gameObject.GetComponent<CharacterController>() != null) ai = true;
 		StartCoroutine(Delay());
 	}
 	
+	/// <summary>
+	/// Delays size checking so falling objects settle before collider is set to trigger.
+	/// </summary>
 	IEnumerator Delay() {
 		yield return new WaitForSeconds(2);
 		delay = true;
 	}
 	
 	void Update () {
-		if (delay && !assimilated && !IsTrigger() && actualVolume < (Katamari.volumeCheck)) {
-			if (boxcollide) boxcollide.isTrigger = true;
-			if (meshcollide) meshcollide.isTrigger = true;
-			body.isKinematic = true;
+		if (delay && !primed && actualVolume < (Katamari.volumeCheck)) {
+			PrimeForKatamari();
+		} else if (delay && !assimilated && testForGravity) {
+			
+			if (!Physics.Raycast(transform.position, -Vector3.up, 0.1f)) {
+				StartCoroutine(TemporaryGravity());
+				testForGravity = false;
+			}
+		}
+		if (ai && assimilated) {
+			ai = false;
+			Destroy(gameObject.GetComponent<Wander>()); //Remove Wander first to avoid error on controller dependence
+			Destroy(gameObject.GetComponent<CharacterController>());
 		}
 	}
 	
+	/// <summary>
+	/// Sets neccessary settings so object will be recognized and picked up by birdamari.
+	/// </summary>
+	private void PrimeForKatamari() {
+		primed = true;
+		collide.isTrigger = true;
+		body.isKinematic = true;
+	}
+	
+	/// <summary>
+	/// Returns gravity effects until object hits something or is picked up.
+	/// </summary>
+	private IEnumerator TemporaryGravity() {
+		yield return new WaitForSeconds(0.5f);
+		delay = false;
+		bool k = body.isKinematic;
+		bool g = body.useGravity;
+		bool t = collide.isTrigger;
+		body.isKinematic = false;
+		body.useGravity = true;
+		collide.isTrigger = false;
+		while (!Physics.Raycast(transform.position, -Vector3.up, 0.1f) && !assimilated) {
+			yield return new WaitForEndOfFrame();
+		}
+		body.isKinematic = k;
+		body.useGravity = g;
+		collide.isTrigger = t;
+	}
+	
 	public void DisableCollider() {
-		if (boxcollide != null) {boxcollide.enabled = false;}
-		else {meshcollide.isTrigger = true;}
+		collide.enabled = false;
 		body.isKinematic = true;
 	}
 	
 	bool IsTrigger() {
-		if (boxcollide != null) {return boxcollide.isTrigger;}
-		else {return meshcollide.isTrigger;}		
+		return collide.isTrigger;	
 	}
 	
 	public float GetVolume() {
 		return volume * ((t.localScale.x + t.localScale.y + t.localScale.z) / 3.0f);
 	}
 	
-	// Step toward center of katamari
+	/// <summary>
+	/// Step towards birdamari center.
+	/// </summary>
 	void MoveToParent () {
 		t.position = Vector3.MoveTowards(t.position, this.transform.parent.position, Time.deltaTime);
 	}
