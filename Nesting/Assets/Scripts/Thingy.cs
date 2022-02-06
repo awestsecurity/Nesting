@@ -82,8 +82,10 @@ public class Thingy : MonoBehaviour {
 	/// </summary>
 	private void PrimeForKatamari() {
 		primed = true;
-		collide.isTrigger = true;
 		body.isKinematic = true;
+		if (!GetComponent<CharacterController>()) {
+			collide.isTrigger = true;
+		}
 	}
 	
 	/// <summary>

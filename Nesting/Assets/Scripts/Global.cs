@@ -77,7 +77,10 @@ public static class Settings {
 	public static bool shadows = true;
 	public static bool skipText = false;	
 	public static bool musicOn = true;
+	public static bool shuffle = true;
 	public static bool sfxOn = true;
+	public static bool showLog = true;
+	
 }
 // QualitySettings.shadows = ShadowQuality.All;
 // QualitySettings.shadows = ShadowQuality.HardOnly;

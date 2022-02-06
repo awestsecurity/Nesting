@@ -21,6 +21,9 @@ public class KeepMenuFocus : MonoBehaviour {
 	void Start() {
 		eventSystem = EventSystem.current;
 		speaker = gameObject.GetComponent<AudioSource>();
+		if (speaker == null) {
+			speaker = gameObject.AddComponent<AudioSource>();
+		}
 		if (defaultButton != null) {
 			lastSelected = defaultButton;
 			defaultSet = true;

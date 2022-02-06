@@ -1,12 +1,11 @@
-.Level select
 .more levels
 .More music
 .more detailed Object List
 .Diverse closing remarks
 .Sound Balancing
-.music for nest swirl
-.Make own skybox
 .Make own fence
 .make jukebox
 .skip text setting
 .Manual camera option
+.Thingy rotating display
+.Wondering thingies

@@ -38,7 +38,20 @@ public class MakeNestSwirl : MonoBehaviour
 		RemoveKatamriControl();
 		SplitKatamari();
 		popup = UIObjects.popup;
-		popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting!");
+		switch(Random.Range(0,3)) {
+			case 0:
+				popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting!");
+				break;
+			case 1:
+				popup.AddMessage($"That is a lot of {mostlyThese[0]}. The {mostlyThese[1]} is a nice touch though. Excellent!");
+				break;
+			case 2:
+				popup.AddMessage($"I love a {mostlyThese[0]}y nest. The {mostlyThese[1]} balances it nicely!");
+				break;
+			default:
+				popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting!");
+				break;
+		}
 		popup.AddMessage(BirdDetails.highscores);
 		//popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
 		popup.LaunchMessagePanel();

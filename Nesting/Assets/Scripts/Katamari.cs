@@ -63,11 +63,11 @@ public class Katamari : MonoBehaviour {
 	void Update () {
 		volumeCheck = trueVolume * percentPossible;
 		if (!fullscreen && Input.anyKeyDown) {
-			fullscreen = true;
-			Screen.fullScreen = true;
-			Cursor.lockState = CursorLockMode.Locked;
+		//	fullscreen = true;
+		//	Screen.fullScreen = true;
+		//	Cursor.lockState = CursorLockMode.Locked;
 		}
-		if (fullscreen && Input.GetKeyDown(KeyCode.Escape)) {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
 			Screen.fullScreen = false;
 			Cursor.lockState = CursorLockMode.None;
 		}

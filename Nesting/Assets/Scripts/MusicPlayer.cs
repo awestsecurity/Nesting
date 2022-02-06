@@ -47,6 +47,10 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 		}
 		
 		if (on && !speaker.isPlaying && Application.isFocused) {
+			if (Settings.shuffle) {
+				nextSongIndex = GetRandSongI();
+				Debug.Log($"next song: {nextSongIndex}, of {songList.Length}");
+			}
 			SetSong(songList[nextSongIndex]);
 			nextSongIndex += 1;
 			if (nextSongIndex >= songList.Length) {
@@ -67,6 +71,16 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 	
 	void SetSong(AudioClip song) {
 		speaker.clip = song;
+	}
+	
+	int GetRandSongI() {
+		//Random.InitState(Mathf.RoundToInt(Time.deltaTime));
+		int pre = nextSongIndex;
+		int next = Random.Range(0, songList.Length);
+		while (next == pre) {
+			next = Random.Range(0, songList.Length);
+		}
+		return next;
 	}
 	
 	void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
@@ -98,5 +112,5 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 			}
 		}
     }
-
+	
 }

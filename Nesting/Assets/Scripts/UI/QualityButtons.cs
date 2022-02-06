@@ -59,6 +59,16 @@ public class QualityButtons : MonoBehaviour
 				buttonName = "Music";
 				changeFunction = new buttonDelegate(ChangeMusic);
 				break;
+			case 4: //Shuffle songs
+				buttonOptions = booleanOptions;
+				buttonName = "Shuffle";
+				changeFunction = new buttonDelegate(ToggleShuffleSongs);
+				break;
+			case 5: //Display info like FPS
+				buttonOptions = booleanOptions;
+				buttonName = "Debug";
+				changeFunction = new buttonDelegate(ToggleShowLog);
+				break;
 			default:
 				break;		
 		}
@@ -95,29 +105,19 @@ public class QualityButtons : MonoBehaviour
 	}
 	
 	void ChangeSFX(int i) {
-		switch (i) {
-			case 0:
-				Settings.sfxOn = false;
-				break;
-			case 1:
-				Settings.sfxOn = true;
-				break;
-			default:
-				break;
-		}
+		Settings.sfxOn = (i > 0) ? true : false;
 	}
 	
 	void ChangeMusic(int i) {
-		switch (i) {
-			case 0:
-				Settings.musicOn = false;
-				break;
-			case 1:
-				Settings.musicOn = true;
-				break;
-			default:
-				break;
-		}	
+		Settings.musicOn = (i > 0) ? true : false;
+	}
+	
+	void ToggleShuffleSongs(int i) {
+		Settings.shuffle = (i > 0) ? true : false;
+	}
+	
+	void ToggleShowLog(int i) {
+		Settings.showLog = (i > 0) ? true : false;
 	}
 
 	void ChangeShadowSetting(int i){

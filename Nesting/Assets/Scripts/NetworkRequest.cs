@@ -22,7 +22,6 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 	private readonly string collection_name = "1forthebirds";
 	private string request_owned_templates;
 	private string request_template_info;
-	private bool menuActive = false;
 	private bool birdsLoaded = false;
 //	private string waxLogin = "https://all-access.wax.io/cloud-wallet/login";
 //	private string waxAccess = "https://api-idm.wax.io/v1/accounts/auto-accept/";
@@ -52,8 +51,11 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 	void LoadSettings() {
 		Settings.musicOn = (PlayerPrefs.GetInt("3", 1) == 1) ? true : false ;
 		Settings.sfxOn = (PlayerPrefs.GetInt("2", 1) == 1) ? true : false ;
+		Settings.shuffle = (PlayerPrefs.GetInt("4", 1) == 1) ? true : false ;
+		Settings.showLog = (PlayerPrefs.GetInt("5", 1) == 1) ? true : false ;
 		int[] quality = new int[] {1,3,5};
 		QualitySettings.SetQualityLevel(quality[PlayerPrefs.GetInt("0", 1)], true);
+
 		//Debug.Log($"PPrefs Music: {Settings.musicOn} and sfx {Settings.sfxOn}");
 	}
 	
@@ -124,12 +126,6 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		//	sceneCon.StartLoad(1);
 		//}
 	}
-	
-	public void PopBirdMenu(bool on = true) {
-		menu.gameObject.SetActive(on);
-		menuActive = on;
-		titleButtons.SetActive(!on);
-	}
 
 	public void PostHighScore() {
 		int score = (int)BirdDetails.score;
@@ -145,6 +141,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 
 		WWWForm form = new WWWForm();
         form.AddField("bird", safename);
+		form.AddField("level", Settings.levelSelected);
         form.AddField("size", score);
         form.AddField("account", account_name);
         form.AddField("name", account_name);
@@ -164,9 +161,10 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 	}
 	
 	public IEnumerator GetHighScores() {
+		int numScores = 10;
 		string url = "https://www.forthebirds.space/play/api/get.php";
 		string safename = BirdDetails.birdname.Replace("'",string.Empty);
-		string get_url = $"{url}?bird={safename}&amount=6";
+		string get_url = $"{url}?bird={safename}&amount={numScores}&level={Settings.levelSelected}";
 		
 		if (submitScores) {
 			UnityWebRequest www = UnityWebRequest.Get(get_url);
