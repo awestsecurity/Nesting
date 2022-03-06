@@ -83,8 +83,12 @@ public class BirdMenu : MonoBehaviour{
 	}
 	
 	public void SelectRandomBird() {
-		int choice = Random.Range(0,options.Length);
-		AssignChosenBird(options[choice].templateID, options[choice].name);
+		if (options != null) {
+			int choice = Random.Range(0,options.Length);
+			AssignChosenBird(options[choice].templateID, options[choice].name);
+		} else {
+			AssignChosenBird(279598,"Rock Pigeon");
+		}
 	}
 	
 	public void AssignChosenBird(int templateId, string name) {

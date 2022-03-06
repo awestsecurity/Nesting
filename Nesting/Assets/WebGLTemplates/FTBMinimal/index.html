@@ -3,9 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>For The Bird | {{{ PRODUCT_NAME }}} - {{{ PRODUCT_VERSION }}}</title>
+    <title>For The Birds | {{{ PRODUCT_NAME }}} - {{{ PRODUCT_VERSION }}}</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
+	<script src="https://unpkg.com/anchor-link@3"></script>
+	<script src="https://unpkg.com/anchor-link-browser-transport@3"></script>
   </head>
 
   <script src='waxjs.js'></script>
@@ -14,7 +16,11 @@
   <div id="loading" ><p id="wait">.loading.</p></div>
 
 	<div class="webgl-content">
-	  <div id="logindiv" ></div>
+	  	<div id="logindiv" style="display:none;">
+			<button class="login"><a onclick="CloudLogin()"><img class="logo" src="TemplateData/wax-logo.png"> Login</a></button>
+			<button class="login"><a onclick="AttempAnchor()"><img class="logo" src="TemplateData/anchor-logo.png"> Login</a></button>
+			<button class="login"><a onclick="HideLoginOptions()"> Demo</a></button>
+		</div>
 
 		<canvas id="unity-canvas" width={{{ WIDTH }}} height={{{ HEIGHT }}} style="width: {{{ WIDTH }}}px; height: {{{ HEIGHT }}}px; background: {{{ BACKGROUND_FILENAME ? 'url(\'Build/' + BACKGROUND_FILENAME.replace(/'/g, '%27') + '\') center / cover' : BACKGROUND_COLOR }}}"></canvas>
 		<script src="Build/{{{ LOADER_FILENAME }}}"></script>
@@ -49,7 +55,9 @@
 		
 		<div class="footer">
 	  	   <div class="fullscreen" onclick="playFullscreen()"></div>
+   	  	   <a class="homebutton" href="https://forthebirds.space"></a>
 	  	   <a class="discord" href="https://discord.gg/873B7yAYPn" target="_blank"></a>
+	  	   <a class="cartbutton" href="https://wax.atomichub.io/drops/81620+81622+81623+81624+81625+81626" target="_blank"></a>
 	  	   <a class="atomichub" href="https://wax.atomichub.io/market?collection_name=1forthebirds" target="_blank"></a>
     	</div>
 
@@ -64,35 +72,30 @@
             unityInstance.SetFullscreen(1);
         });
    }
-
+   
   screen = document.getElementById('loading');
   log = document.getElementById('response'); //Gone for now
   login = document.getElementById('logindiv');
   lText = document.getElementById('wait');
   lCounter = 1;
 
+   function HideLoginOptions() {
+	login.style.display = "none";
+   }
+
+
   async function WaitForUnity() {
  	  console.log("Game is loaded");
-	  //Add login button
-	  var button = document.createElement("button");
-	  button.id = "login_button";
-	  button.innerHTML = "Login";
-	  button.onclick = Login;
-	  login.appendChild(button);
+	  //Enable login button
+	  login.style.display = "block";
 	  //remove loading screen
 	  screen.style.display = "none";
   }
 
-  async function Login() {
+  async function CloudLogin() {
     try {
       const userAccount = await wax.login();
-	  login.style.display = "none";
-      //log.append(wax.pubKeys);
-      //log.append("\n");
-      //log.append(userAccount);
-	  gameInstance.then((unityInstance) => {
-            unityInstance.SendMessage("Networker", "SetLogin", userAccount);
-        });
+	  SendLoginToGame(userAccount);
     } catch(e) {
       console.log(e.message);
     }
@@ -108,6 +111,36 @@
     lText.innerHTML = newtext;
   }
   setInterval(LoadingAnim, 1000);
+  
+  async function AttempAnchor() {
+	const transport = new AnchorLinkBrowserTransport();
+	const link = new AnchorLink({
+    transport,
+		chains: [
+			{
+				chainId: '1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4',
+				nodeUrl: 'https://wax.greymass.com',
+			}
+		],
+	})
+	
+	// Perform the login, which returns the users identity
+	const identity = await link.login('ForTheBirds');
+	// Save the session within your application for future use
+	const {session} = identity;
+	name = `${session.auth}`.split('@')[0];
+	console.log(`Logged in as ${session.auth}`);
+	SendLoginToGame(name);
+
+  }
+  
+  function SendLoginToGame(account) {
+  	gameInstance.then((unityInstance) => {
+            unityInstance.SendMessage("Networker", "SetLogin", account);
+    });
+    HideLoginOptions();
+  }
+  
 </script>
 
   </body>

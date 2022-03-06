@@ -10,13 +10,14 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 {
 	public string account_name;
 	public bool airplaneMode; // no network, skip for play testing
-	public bool submitScores; // stop submitting high scores to the database
+	public bool submitScores = false; // stop submitting high scores to the database
 	
 	public GameObject ui;
 	public Popup popup;
 	public SceneControl sceneCon;
 	public GameObject pause;
 	public BirdMenu menu;
+	public MusicPlayer musicPlayer;
 	public GameObject titleButtons;
 	
 	private readonly string collection_name = "1forthebirds";
@@ -35,12 +36,14 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		UIObjects.pauseMenu = pause;
 		UIObjects.birdMenu = menu;
 		UIObjects.network = gameObject.GetComponent<NetworkRequest>();
+		UIObjects.musicPlayer = musicPlayer;
 		if (Debug.isDebugBuild) {
 			if (airplaneMode) {
 				account_name = "Anonymous";
 				StartCoroutine(SkipLogin());
-			} else if ( account_name == null ) {
-				account_name = "fuqqw.wam";
+			} else if ( account_name == null || account_name == "" ) {
+				//account_name = "fuqqw.wam";
+				submitScores = false;
 			} else {
 				SetLogin(account_name);
 			}
@@ -64,6 +67,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		account_name = a;
 		popup.AddMessage($"Loading {account_name}'s birds.");
 		popup.LaunchMessagePanel();
+		submitScores = true;
 		request_owned_templates = $"https://wax.api.atomicassets.io/atomicassets/v1/accounts/{account_name}/{collection_name}";
 		StartCoroutine(GetAssets());
 	}
@@ -166,7 +170,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		string safename = BirdDetails.birdname.Replace("'",string.Empty);
 		string get_url = $"{url}?bird={safename}&amount={numScores}&level={Settings.levelSelected}";
 		
-		if (submitScores) {
+		if (true) {
 			UnityWebRequest www = UnityWebRequest.Get(get_url);
 			yield return www.SendWebRequest();
 			if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
@@ -176,7 +180,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 				BirdDetails.highscores = response;
 			}
 		} else {
-				BirdDetails.highscores = "Scores Temporarily Disabled";
+			BirdDetails.highscores = "Scores Temporarily Disabled";
 		}
 	}
 

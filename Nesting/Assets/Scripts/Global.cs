@@ -70,10 +70,11 @@ public static class UIObjects {
 	public static GameObject pauseMenu;
 	public static BirdMenu birdMenu;
 	public static NetworkRequest network;
+	public static MusicPlayer musicPlayer;
 }
 
 public static class Settings {
-	public static int levelSelected = 3;
+	public static int levelSelected = 1;
 	public static bool shadows = true;
 	public static bool skipText = false;	
 	public static bool musicOn = true;

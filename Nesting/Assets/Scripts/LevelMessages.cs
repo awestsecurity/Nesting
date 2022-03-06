@@ -6,6 +6,8 @@ public class LevelMessages : MonoBehaviour
 {
 	private Popup popup;
 	public string[] messages;
+	
+	public AudioClip levelSong;
 
     void Start()
     {
@@ -24,6 +26,10 @@ public class LevelMessages : MonoBehaviour
 			popup.AddMessage(m);
 		}
 		popup.LaunchMessagePanel();
+		
+		if ( levelSong != null ) {
+			UIObjects.musicPlayer.PrimeLevelSong(levelSong);
+		}
     }
 
 }

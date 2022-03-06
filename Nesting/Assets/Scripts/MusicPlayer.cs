@@ -33,6 +33,11 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 		PlayStop();
 	}
 	
+	public void PrimeLevelSong(AudioClip s) {
+		int index = System.Array.IndexOf(songList, s);
+		nextSongIndex = index;
+	}
+	
 	IEnumerator PopSongCredits() {
 		songCredit.text = speaker.clip.name;
 		songCredit.gameObject.SetActive(true);
@@ -73,9 +78,10 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 		speaker.clip = song;
 	}
 	
+	//return a random song index that is different than the current song.
 	int GetRandSongI() {
-		//Random.InitState(Mathf.RoundToInt(Time.deltaTime));
-		int pre = nextSongIndex;
+		Random.InitState(Mathf.RoundToInt(Time.deltaTime));
+		int pre = nextSongIndex > 0 ? nextSongIndex-1 : songList.Length-1 ;
 		int next = Random.Range(0, songList.Length);
 		while (next == pre) {
 			next = Random.Range(0, songList.Length);
