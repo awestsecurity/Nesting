@@ -170,17 +170,18 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		string safename = BirdDetails.birdname.Replace("'",string.Empty);
 		string get_url = $"{url}?bird={safename}&amount={numScores}&level={Settings.levelSelected}";
 		
-		if (true) {
+		if (!airplaneMode) {
 			UnityWebRequest www = UnityWebRequest.Get(get_url);
 			yield return www.SendWebRequest();
 			if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
 				Debug.Log(www.result);
+				BirdDetails.highscores = "Scores Conn Error";
 			} else {
 				string response = www.downloadHandler.text;
 				BirdDetails.highscores = response;
 			}
 		} else {
-			BirdDetails.highscores = "Scores Temporarily Disabled";
+			BirdDetails.highscores = "Airplane Mode - No Scores";
 		}
 	}
 

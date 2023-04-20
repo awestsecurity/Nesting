@@ -9,15 +9,16 @@ public class LevelMenu : MonoBehaviour
 
 	private GameObject lastSelected;
 	private EventSystem eventSystem;
-	public Text selectedLevel;
+	public Text selectedLevelText;
 	public Image icon;
 	public Sprite[] levelIcons;
 	public LevelData[] levels;
 
 	void Start() {
-		levels = new LevelData[2];
+		levels = new LevelData[3];
 		levels[0] = new LevelData("Spring Meadow", 1, 0);
 		levels[1] = new LevelData("Winter Wonder", 3, 1);
+		levels[2] = new LevelData("Sleepy Marsh", 4, 2);
 		UpdateDisplay();
 	}
 
@@ -30,9 +31,7 @@ public class LevelMenu : MonoBehaviour
     // Update is called once per frame
 	// Occasionally check if WebGL will support event triggers to avoid this whole mess.
 	// As of Jan 2022, an event trigger will crash the game
-    void Update()
-    {
-        //selectedLevel.text = Settings.GetSelectedLevelName();
+    void Update()   {
 		if ( eventSystem.currentSelectedGameObject != lastSelected) {
 			GameObject newSelected = eventSystem.currentSelectedGameObject;
 			if (lastSelected.name == "LevelButton") {
@@ -49,10 +48,10 @@ public class LevelMenu : MonoBehaviour
     }
 	
 	public void UpdateDisplay() {
-		for(int i = 0; i < levels.Length; i++) {
-			if (levels[i].levelSceneID == Settings.levelSelected) {
-				selectedLevel.text = levels[i].levelName;
-				icon.sprite = levelIcons[levels[i].levelIconID];
+		foreach(LevelData l in levels) {
+			if (l.levelSceneID == Settings.levelSelected) {
+				selectedLevelText.text = l.levelName;
+				icon.sprite = levelIcons[l.levelIconID];
 				break;
 			}
 		}

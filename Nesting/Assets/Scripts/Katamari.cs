@@ -31,6 +31,7 @@ public class Katamari : MonoBehaviour {
 	private List<string> collected = new List<string>();
 	private Ball ballController;
 	private Rigidbody rbody;
+	private Light glow;
 	private bool fullscreen = false;
 	
 	private int cheatVolume = 9999999;
@@ -71,13 +72,14 @@ public class Katamari : MonoBehaviour {
 			Screen.fullScreen = false;
 			Cursor.lockState = CursorLockMode.None;
 		}
+		
 		//Fallen through ground somehow
-		//if (transform.position.y < -15) SceneManager.LoadScene(SceneManager.GetActiveScene().name) ;
+		if (transform.position.y < -15) SceneManager.LoadScene(SceneManager.GetActiveScene().name) ;
 		
 		//AdjustCameraPosition();
 		birdDisplay.text = BirdDetails.birdname;
 		sizeDisplay.text = "Mass: "+displayVolume;
-		if (displayVolume < trueVolume) displayVolume += Mathf.Round((trueVolume - displayVolume) / 30f);
+		if (displayVolume < trueVolume) displayVolume += Mathf.CeilToInt((trueVolume - displayVolume) / 30f);
 		if (trueVolume > BirdDetails.score && trueVolume < (BirdDetails.score*1.5f)) {
 			BirdDetails.score = trueVolume;
 		}
@@ -137,6 +139,20 @@ public class Katamari : MonoBehaviour {
 		} else if (collision.gameObject.name == "Water"){
 			PlaySFX(waterSplash);
 		}
+	}
+	
+	//For spooky level. Katamari will accumilate light from glowing things.
+	void AbsorbLight(){
+		if (!glow) {
+			glow = gameObject.AddComponent<Light>() as Light;
+			glow.intensity = 0.1f;
+			glow.range = 0.1f;
+			glow.color = Color.green / 2f;
+			glow.type = LightType.Point;
+		}
+		//get light from thingy
+		//start coroutine to fade light from thingy to katamari
+		//worth destroying light on thingy when complete?
 	}
 	
 	void PlaySFX(AudioClip sfx, float loudness = 0.666f) {
