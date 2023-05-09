@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Rendering;
 
 public class QualityButtons : MonoBehaviour
 {
@@ -69,6 +70,11 @@ public class QualityButtons : MonoBehaviour
 				buttonName = "Debug";
 				changeFunction = new buttonDelegate(ToggleShowLog);
 				break;
+			case 6: //Post Processing On/Off
+				buttonOptions = booleanOptions;
+				buttonName = "Render FX";
+				changeFunction = new buttonDelegate(TogglePostProcessing);
+				break;
 			default:
 				break;		
 		}
@@ -118,6 +124,15 @@ public class QualityButtons : MonoBehaviour
 	
 	void ToggleShowLog(int i) {
 		Settings.showLog = (i > 0) ? true : false;
+	}
+	
+	void TogglePostProcessing(int i) {
+		Settings.postProcessing = (i > 0) ? true : false;
+		Camera cam = Camera.main;
+		Volume fx = cam.GetComponentInChildren<Volume>(true);
+		if (fx) {
+			fx.enabled = Settings.postProcessing;
+		}
 	}
 
 	void ChangeShadowSetting(int i){

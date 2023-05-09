@@ -12,6 +12,7 @@ public class Katamari : MonoBehaviour {
 	private static float displayVolume; // How big we are / What we can pick up.
 	private float trueVolume; // Display Volume
 	private static float percentPossible = 0.57f;  // How big we are / What we can pick up.
+	private Vector3 tuckInObject = new Vector3(0.85f,0.85f,0.85f);
 	
 	public static float volumeCheck;
 	public string mostCommonChild { get {return GetMostCommonChild(); } private set{} }
@@ -129,12 +130,16 @@ public class Katamari : MonoBehaviour {
 			thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;
 			tt.parent = gameObject.transform;
-			tt.localPosition = new Vector3 (tt.localPosition.x * 0.85f, tt.localPosition.y * 0.85f, tt.localPosition.z * 0.85f);
+			tt.localPosition = Vector3.Scale(tt.localPosition, tuckInObject);
 			float volume = thingy.GetVolume();
 			AddVolumeToKatamari(volume, thingy.modifier);
 			lastAssimilated = thingy;
 			collected.Add(thingy.thingyName);
 			RemoveOldChildrenAfterMax();
+			if (thingy is ThingyGlow) {
+				var l = thingy as ThingyGlow;
+				AbsorbLight(l);
+			}
 			Destroy(thingy.GetComponent<Movement>());
 		} else if (collision.gameObject.name == "Water"){
 			PlaySFX(waterSplash);
@@ -142,7 +147,7 @@ public class Katamari : MonoBehaviour {
 	}
 	
 	//For spooky level. Katamari will accumilate light from glowing things.
-	void AbsorbLight(){
+	IEnumerator AbsorbLight(ThingyGlow l){
 		if (!glow) {
 			glow = gameObject.AddComponent<Light>() as Light;
 			glow.intensity = 0.1f;
@@ -150,9 +155,12 @@ public class Katamari : MonoBehaviour {
 			glow.color = Color.green / 2f;
 			glow.type = LightType.Point;
 		}
-		//get light from thingy
-		//start coroutine to fade light from thingy to katamari
-		//worth destroying light on thingy when complete?
+		l.StartLightFade();
+		int target = 1;
+		while (glow.intensity < target) {
+			yield return new WaitForSeconds(0.1f);
+			glow.intensity += 0.1f;
+		}
 	}
 	
 	void PlaySFX(AudioClip sfx, float loudness = 0.666f) {

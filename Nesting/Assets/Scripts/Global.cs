@@ -74,6 +74,7 @@ public static class UIObjects {
 }
 
 public static class Settings {
+	
 	public static int levelSelected = 1;
 	public static bool shadows = true;
 	public static bool skipText = false;	
@@ -81,6 +82,18 @@ public static class Settings {
 	public static bool shuffle = true;
 	public static bool sfxOn = true;
 	public static bool showLog = true;
+	public static bool postProcessing = true;
+	
+	public static bool GetSettingByID(int i) {
+		if (i == 0) {return shadows;}
+		else if (i == 1) {return skipText;}
+		else if (i == 2) {return musicOn;}
+		else if (i == 3) {return shuffle;}
+		else if (i == 4) {return sfxOn;}
+		else if (i == 5) {return showLog;}
+		else if (i == 6) {return postProcessing;}
+		else { return false; }
+	}
 	
 }
 // QualitySettings.shadows = ShadowQuality.All;

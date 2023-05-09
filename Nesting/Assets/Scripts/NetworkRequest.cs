@@ -56,6 +56,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		Settings.sfxOn = (PlayerPrefs.GetInt("2", 1) == 1) ? true : false ;
 		Settings.shuffle = (PlayerPrefs.GetInt("4", 1) == 1) ? true : false ;
 		Settings.showLog = (PlayerPrefs.GetInt("5", 1) == 1) ? true : false ;
+		Settings.postProcessing = (PlayerPrefs.GetInt("6", 1) == 1) ? true : false ;
 		int[] quality = new int[] {1,3,5};
 		QualitySettings.SetQualityLevel(quality[PlayerPrefs.GetInt("0", 1)], true);
 
