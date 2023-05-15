@@ -71,6 +71,7 @@ public static class UIObjects {
 	public static BirdMenu birdMenu;
 	public static NetworkRequest network;
 	public static MusicPlayer musicPlayer;
+	public static Achievements achievements;
 }
 
 public static class Settings {

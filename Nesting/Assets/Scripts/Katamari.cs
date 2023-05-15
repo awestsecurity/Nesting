@@ -173,9 +173,9 @@ public class Katamari : MonoBehaviour {
 	void AddVolumeToKatamari(float v, float m = 1) {
 		trueVolume += (v*m / 40f);
 		float adjust = v / 350000f;  //5000000 old number
-		collide.radius += adjust *0.75f;
-		ballController.m_MovePower += adjust*2;
-		camFollow.spacer += adjust*2;
+		collide.radius += adjust * 0.75f;
+		ballController.m_MovePower += adjust * 2;
+		camFollow.spacer += adjust * 2;
 	}
 	
 	//Remove the oldest attached object when we have too many

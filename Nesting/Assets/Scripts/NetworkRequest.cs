@@ -19,6 +19,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 	public BirdMenu menu;
 	public MusicPlayer musicPlayer;
 	public GameObject titleButtons;
+	public Achievements achievements;
 	
 	private readonly string collection_name = "1forthebirds";
 	private string request_owned_templates;
@@ -37,6 +38,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		UIObjects.birdMenu = menu;
 		UIObjects.network = gameObject.GetComponent<NetworkRequest>();
 		UIObjects.musicPlayer = musicPlayer;
+		UIObjects.achievements = achievements;
 		if (Debug.isDebugBuild) {
 			if (airplaneMode) {
 				account_name = "Anonymous";
