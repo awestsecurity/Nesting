@@ -15,10 +15,7 @@ public class LevelMenu : MonoBehaviour
 	public LevelData[] levels;
 
 	void Start() {
-		levels = new LevelData[3];
-		levels[0] = new LevelData("Spring Meadow", 1, 0);
-		levels[1] = new LevelData("Winter Wonder", 3, 1);
-		levels[2] = new LevelData("Sleepy Marsh", 4, 2);
+		SetupLevels();
 		UpdateDisplay();
 	}
 
@@ -26,6 +23,13 @@ public class LevelMenu : MonoBehaviour
 		eventSystem = EventSystem.current;
 		lastSelected = eventSystem.currentSelectedGameObject;
 		UpdateDisplay();
+	}
+	
+	void SetupLevels() {
+		levels = new LevelData[3];
+		levels[0] = new LevelData("Spring Meadow", 1, 0);
+		levels[1] = new LevelData("Winter Wonder", 3, 1);
+		levels[2] = new LevelData("Sleepy Marsh", 4, 2);
 	}
 
     // Update is called once per frame
@@ -48,6 +52,10 @@ public class LevelMenu : MonoBehaviour
     }
 	
 	public void UpdateDisplay() {
+		if (levels == null) {
+			Debug.LogWarning("Levels setup after Start()");
+			SetupLevels();
+		}
 		foreach(LevelData l in levels) {
 			if (l.levelSceneID == Settings.levelSelected) {
 				selectedLevelText.text = l.levelName;

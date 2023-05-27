@@ -81,11 +81,15 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 	}
 	
 	IEnumerator GetAssets() {
-		Debug.Log($"Getting Assets for Account {account_name}");
+		BirdDetails.ownedBirds = new int[0];
+		//Debug.Log($"Getting Assets for Account {account_name}");
 		UnityWebRequest www = UnityWebRequest.Get(request_owned_templates);
         yield return www.SendWebRequest();
         if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
-            Debug.Log(www.result);
+            //Debug.Log(www.result);
+			popup.Reset();
+			popup.AddMessage($"Connection Error. Check network or try again in a couple minutes.");
+			popup.LaunchMessagePanel();			
         }
 		else {
             // Show results as text
@@ -109,7 +113,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 			birdsLoaded = true;
 		}
 		
-		if ( BirdDetails.ownedBirds.Length <= 0 ) {
+		if ( BirdDetails.ownedBirds.Length == 0 ) {
 			Debug.Log("User has no birds.");
 			popup.Reset();
 			popup.AddMessage($"{account_name} doesn't appear to have any birds.");
@@ -158,7 +162,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 			UnityWebRequest www = UnityWebRequest.Post(url,form);
 			yield return www.SendWebRequest();
 			if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
-				Debug.Log(www.result);
+				Debug.Log("SendScores: "+www.result);
 			}
 			else {
 				string response = www.downloadHandler.text;
@@ -177,7 +181,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 			UnityWebRequest www = UnityWebRequest.Get(get_url);
 			yield return www.SendWebRequest();
 			if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
-				Debug.Log(www.result);
+				Debug.Log("GetScores: "+www.result);
 				BirdDetails.highscores = "Scores Conn Error";
 			} else {
 				string response = www.downloadHandler.text;

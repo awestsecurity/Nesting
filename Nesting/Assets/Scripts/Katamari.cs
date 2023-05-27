@@ -96,7 +96,7 @@ public class Katamari : MonoBehaviour {
 		if ( trueVolume >= cheatVolume ) BirdDetails.cheat = true;
 	}
 	
-	//Hold off on the gravity to allow easy settling
+	//Hold off on the gravity to allow easy settling of objects and player
 	IEnumerator GravityDelay() {
 		yield return new WaitForSeconds(2);
 		Rigidbody r = this.GetComponent<Rigidbody>();
@@ -135,6 +135,7 @@ public class Katamari : MonoBehaviour {
 			AddVolumeToKatamari(volume, thingy.modifier);
 			lastAssimilated = thingy;
 			collected.Add(thingy.thingyName);
+			UpdateCollectedStats(thingy.thingyName);
 			RemoveOldChildrenAfterMax();
 			if (thingy is ThingyGlow) {
 				var l = thingy as ThingyGlow;
@@ -246,7 +247,17 @@ public class Katamari : MonoBehaviour {
 		   }
 
 		}		
+		UpdateCollectedStats("Flower", dict["Flower"]);
 		return rank;
+	}
+	
+	//Add to collection stats for achievements
+	private void UpdateCollectedStats(string thingName, int amount = 1) {
+		if (thingName == "Mushroom") {
+			UIObjects.achievements.UpdateMetric("MushroomsCollected", amount);
+		} else if (thingName == "Flower") {
+			UIObjects.achievements.UpdateMetric("FlowersIn1Run", amount);
+		}
 	}
 	
 	bool SetKatamariInSceneControl() {
