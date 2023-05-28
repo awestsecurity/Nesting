@@ -11,7 +11,7 @@ public class AchievementPopup : MonoBehaviour {
 	
 	private Transform t;
 	private CanvasGroup image;
-	private int secondsVisible = 4;
+	private int secondsVisible = 5;
 	private int heightGoal = 140;
 	
 	public void SetAchievement(Achievement a) {

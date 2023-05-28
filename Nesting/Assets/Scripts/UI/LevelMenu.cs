@@ -38,13 +38,13 @@ public class LevelMenu : MonoBehaviour
     void Update()   {
 		if ( eventSystem.currentSelectedGameObject != lastSelected) {
 			GameObject newSelected = eventSystem.currentSelectedGameObject;
-			if (lastSelected.name == "LevelButton") {
+			if (lastSelected.tag == "LevelButton") {
 				LevelSelectButton button = lastSelected.GetComponent<LevelSelectButton>();
 				if (button) {
 					button.ExitButton();
 				}
 			}
-			if (newSelected.name == "LevelButton") {	
+			if (newSelected.tag == "LevelButton") {	
 				newSelected.GetComponent<LevelSelectButton>().IsSelected();
 			}
 			lastSelected = newSelected;

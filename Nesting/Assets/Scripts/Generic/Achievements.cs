@@ -19,28 +19,42 @@ public class Achievements : MonoBehaviour {
 
     void Start() {
 		
-		metrics.Add("TimesPlayedMeadow", new Metric("TimesPlayedMeadow", 1, false));
+		//Perpetual Metrics
+		metrics.Add("TimesPlayedSpring", new Metric("TimesPlayedSpring", 1, false));
 		metrics.Add("TimesPlayedWinter", new Metric("TimesPlayedWinter", 1, false));
 		metrics.Add("TimesPlayedMarsh", new Metric("TimesPlayedMarsh", 1, false));
-		metrics.Add("TotalWeight", new Metric("TotalWeight", 1, false));
-
-		metrics.Add("EggFound-Meadow", new Metric("EggFound-Meadow", 0));
-		metrics["EggFound-Meadow"].SetTarget(1);
+		metrics.Add("TotalMass", new Metric("TotalMass", 1, false));
+		metrics.Add("EggFound", new Metric("EggFound", 0));
 		metrics.Add("MushroomsCollected", new Metric("MushroomsCollected", 1, false));
+		//
+		//Challenge metrics
 		metrics.Add("FlowersIn1Run", new Metric("FlowersIn1Run", 1, true));
-
+		//
+		//Temporary metrics
 		metrics.Add("Level", new Metric("Level", 0, replace: true));
 		metrics.Add("BirdRarity", new Metric("BirdRarity", 0, replace: true));
+		//
 		
-		MetricGoalPair[] pair = new MetricGoalPair[] {new MetricGoalPair(metrics["EggFound-Meadow"], 1)};
+		//ACHIEVEMENTS//
+		MetricGoalPair[] pair = new MetricGoalPair[] {new MetricGoalPair(metrics["EggFound"], 1), new MetricGoalPair(metrics["Level"], 1)};
 		incompleteAchievements.Add(new Achievement("Treasure Hunter 1", 0, pair));
+		
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["TimesPlayedWinter"], 5)};
-		incompleteAchievements.Add(new Achievement("PolarSwim", 0, pair));
+		incompleteAchievements.Add(new Achievement("Polar Swim", 0, pair, "Play winter wonderland 5 times"));
+		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["TimesPlayedSpring"], 8)};
+		incompleteAchievements.Add(new Achievement("Promenade", 0, pair, "Play Spring Meadow 8 times"));
+		
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["FlowersIn1Run"], 50), new MetricGoalPair(metrics["Level"], 1)};
-		incompleteAchievements.Add(new Achievement("Gardener 1", 0, pair));
-		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 100)};
-		incompleteAchievements.Add(new Achievement("Forager 1", 0, pair, "Collect 100 Mushrooms"));
+		incompleteAchievements.Add(new Achievement("Gardener 1", 0, pair, "Collect 50 flowers in a single Meadow run"));
+		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["BirdRarity"], 4), new MetricGoalPair(metrics["Level"], 3)};
+		incompleteAchievements.Add(new Achievement("Risky Operation", 0, pair, "Take an endangered bird out in the winter"));
 
+		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 100)};
+		incompleteAchievements.Add(new Achievement("Forager I", 0, pair, "Collect 100 Mushrooms"));
+		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 500)};
+		incompleteAchievements.Add(new Achievement("Forager II", 0, pair, "Collect 500 Mushrooms"));
+		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 2000)};
+		incompleteAchievements.Add(new Achievement("Forager III", 0, pair, "Collect 500 Mushrooms"));
 
 		LoadMetricsAndAchievements();
 		//Loops
@@ -69,9 +83,13 @@ public class Achievements : MonoBehaviour {
 		badge.Display();
 	}
 	
-	public void UpdateMetric(string name, int v){
-		metrics[name].Set(v);
-		Debug.Log(name+" updated to "+metrics[name].Get());
+	public void UpdateMetric(string name, int v = 1){
+		if (metrics.ContainsKey(name)) {
+			metrics[name].Set(v);
+			//Debug.Log(name+" updated to "+metrics[name].Get());
+		} else {
+			Debug.LogWarning("No metric with name: "+name+". Check your metric/achievement list.");
+		}
 	}
 	
 	public List<Achievement> GetCompletedAchievments(){
@@ -177,7 +195,7 @@ public class Metric {
 			temp = v < mCurrentValue ? v : mCurrentValue;
 			mCurrentValue = mReplace ? temp : mCurrentValue - v;
 		} else if (mCompare == 0) { //value to replace
-			mCurrentValue = v == mTargetValue ? v : mCurrentValue;
+			mCurrentValue = v;
 		} else { //value to increase
 			temp = v > mCurrentValue ? v : mCurrentValue;
 			mCurrentValue = mReplace ? temp : mCurrentValue + v;

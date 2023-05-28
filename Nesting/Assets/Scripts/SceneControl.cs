@@ -74,12 +74,11 @@ public class SceneControl : GenericSingleton<SceneControl>
 			}
 		}
 		if (playing && (timeremaining <= 0 || cheatDetected)) {
-			EndPlay();
-			//move to endgame scene
+			//UIObjects.achievements.UpdateMetric
+			EndPlay();	//move to endgame scene
 		}
 
 		//PAUSING
-
 		if (CrossPlatformInputManager.GetButtonDown("Pause") && activeScene == 1) {
 			if (!paused) priorState = playing; //This is needed if we allow pausing on non-game scenes.
 			paused = !paused;
@@ -106,9 +105,13 @@ public class SceneControl : GenericSingleton<SceneControl>
 	}
 
 	private void EndPlay() {
-		//Debug.Log("TimeOver");
 		playing = false;
+		if (Settings.levelSelected == 1) {UIObjects.achievements.UpdateMetric("TimesPlayedSpring");}
+		else if (Settings.levelSelected == 3) {UIObjects.achievements.UpdateMetric("TimesPlayedWinter");}
+		else if (Settings.levelSelected == 4) {UIObjects.achievements.UpdateMetric("TimesPlayedMarsh");}
+		UIObjects.achievements.UpdateMetric("TotalMass", (int)BirdDetails.score);
 		UIObjects.network.PostHighScore();
+		UIObjects.achievements.UpdateMetric("EggFound", 0);
 		StartLoad(2);
 	}
 
@@ -117,7 +120,8 @@ public class SceneControl : GenericSingleton<SceneControl>
 		PauseGame(false);
 		paused = false;
 		playing = false;
-		timeremaining = 0;
+		timeremaining = 555;
+		UIObjects.achievements.UpdateMetric("EggFound", 0);
 		StartLoad(0);
 	}
 
@@ -131,6 +135,9 @@ public class SceneControl : GenericSingleton<SceneControl>
 		int i = sceneindex;
 		if (sceneindex == 1) {
 			i = Settings.levelSelected;
+			UIObjects.achievements.UpdateMetric("Level", i);
+			int rarity = StatusToNumber();
+			UIObjects.achievements.UpdateMetric("BirdRarity", rarity);
 		}
 		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(i);
 		isLoading = true;
@@ -214,6 +221,27 @@ public class SceneControl : GenericSingleton<SceneControl>
 				return 5555;
 			default:
 				return 60;
+		}
+	}
+	
+	private int StatusToNumber() {
+		switch(BirdDetails.birdstatus) {
+			case "LC":
+				return 1;
+			case "NT":
+				return 2;
+			case "VU":
+				return 3;
+			case "EN":
+				return 4;
+			case "CR":
+				return 5;
+			case "EX":
+				return 6;
+			case "DD":
+				return 7;
+			default:
+				return 0;
 		}
 	}
 

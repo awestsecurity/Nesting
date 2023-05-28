@@ -255,15 +255,16 @@ public class Katamari : MonoBehaviour {
 	private void UpdateCollectedStats(string thingName, int amount = 1) {
 		if (thingName == "Mushroom") {
 			UIObjects.achievements.UpdateMetric("MushroomsCollected", amount);
-		} else if (thingName == "Flower") {
-			UIObjects.achievements.UpdateMetric("FlowersIn1Run", amount);
+		} else if (thingName == "Egg") {
+			UIObjects.achievements.UpdateMetric("EggFound", 1);
 		}
+		//else if (thingName == "Flower") { UIObjects.achievements.UpdateMetric("FlowersIn1Run", amount); }
 	}
 	
 	bool SetKatamariInSceneControl() {
 		if (UIObjects.sceneCon) {
-				UIObjects.sceneCon.katamari = this.gameObject;
-				return true;
+			UIObjects.sceneCon.katamari = this.gameObject;
+			return true;
 		} else {
 			return false;
 		}
