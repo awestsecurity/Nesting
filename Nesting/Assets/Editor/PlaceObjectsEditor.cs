@@ -9,13 +9,13 @@ public class PlaceObjectsEditor : Editor {
  
     PlaceObjects t;
     SerializedObject GetTarget;
-    SerializedProperty ThisList;
+    SerializedProperty LevelObjectList;
     int ListSize;
  
     void OnEnable(){
         t = (PlaceObjects)target;
         GetTarget = new SerializedObject(t);
-        ThisList = GetTarget.FindProperty("PlaceSetting"); // Find the List in our script and create a refrence of it
+        LevelObjectList = GetTarget.FindProperty("PlaceSetting"); // Find the List in our script and create a refrence of it
     }
 	
 	public override void OnInspectorGUI(){
@@ -32,8 +32,8 @@ public class PlaceObjectsEditor : Editor {
 		float originalLabelWidth = EditorGUIUtility.labelWidth;
 	
 		//Editables
-		for(int i = 0; i < ThisList.arraySize; i++){
-            SerializedProperty id = ThisList.GetArrayElementAtIndex(i);
+		for(int i = 0; i < LevelObjectList.arraySize; i++){
+            SerializedProperty id = LevelObjectList.GetArrayElementAtIndex(i);
             SerializedProperty prefab = id.FindPropertyRelative("prefab");
             SerializedProperty amount = id.FindPropertyRelative("amount");
             SerializedProperty ground = id.FindPropertyRelative("ground");
@@ -48,7 +48,7 @@ public class PlaceObjectsEditor : Editor {
 			
 			//Remove this index from the List
 			if(GUILayout.Button("X", GUILayout.Width(20))){
-				ThisList.DeleteArrayElementAtIndex(i);
+				LevelObjectList.DeleteArrayElementAtIndex(i);
 			}
 			EditorGUILayout.EndHorizontal();
 			EditorGUIUtility.labelWidth = originalLabelWidth;

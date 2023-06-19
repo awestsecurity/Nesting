@@ -12,7 +12,7 @@ public class Achievements : MonoBehaviour {
 	//public string saveFile;
 	public GameObject uiTemplate;
 	
-	private Dictionary<string, Metric> metrics = new Dictionary<string, Metric>();
+	public Dictionary<string, Metric> metrics = new Dictionary<string, Metric>();
 	private List<Achievement> completedAchievements = new List<Achievement>();
 	private List<Achievement> incompleteAchievements = new List<Achievement>();
 	

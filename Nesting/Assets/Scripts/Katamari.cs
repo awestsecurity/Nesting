@@ -21,7 +21,7 @@ public class Katamari : MonoBehaviour {
 	public float radius; // Where is the edge to attach things.
 	public Transform camPos;
 	public CamFollow camFollow;
-	public int maxChildren = 222;
+	public int maxChildren = 234;
 	
 	private GameObject hud;
 	private Text sizeDisplay;
