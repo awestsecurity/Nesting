@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -5,7 +6,6 @@ using UnityEngine;
 
 //Goals
 //Make an editor script (AFTER UPGRADING UNITY to 2021 at least) for easy achievement creation
-
 public class Achievements : MonoBehaviour {
 	
 	public int checkFrequency = 6;
@@ -37,24 +37,24 @@ public class Achievements : MonoBehaviour {
 		
 		//ACHIEVEMENTS//
 		MetricGoalPair[] pair = new MetricGoalPair[] {new MetricGoalPair(metrics["EggFound"], 1), new MetricGoalPair(metrics["Level"], 1)};
-		incompleteAchievements.Add(new Achievement("Treasure Hunter 1", 0, pair));
+		incompleteAchievements.Add(new Achievement("Treasure Hunter 1", pair));
 		
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["TimesPlayedWinter"], 5)};
-		incompleteAchievements.Add(new Achievement("Polar Swim", 0, pair, "Play winter wonderland 5 times"));
+		incompleteAchievements.Add(new Achievement("Polar Swim", pair, "Play winter wonderland 5 times"));
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["TimesPlayedSpring"], 8)};
-		incompleteAchievements.Add(new Achievement("Promenade", 0, pair, "Play Spring Meadow 8 times"));
+		incompleteAchievements.Add(new Achievement("Promenade", pair, "Play Spring Meadow 8 times"));
 		
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["FlowersIn1Run"], 50), new MetricGoalPair(metrics["Level"], 1)};
-		incompleteAchievements.Add(new Achievement("Gardener 1", 0, pair, "Collect 50 flowers in a single Meadow run"));
+		incompleteAchievements.Add(new Achievement("Gardener 1", pair, "Collect 50 flowers in a single Meadow run"));
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["BirdRarity"], 4), new MetricGoalPair(metrics["Level"], 3)};
-		incompleteAchievements.Add(new Achievement("Risky Operation", 0, pair, "Take an endangered bird out in the winter"));
+		incompleteAchievements.Add(new Achievement("Risky Operation", pair, "Take an endangered bird out in the winter"));
 
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 100)};
-		incompleteAchievements.Add(new Achievement("Forager I", 0, pair, "Collect 100 Mushrooms"));
+		incompleteAchievements.Add(new Achievement("Forager I", pair, "Collect 100 Mushrooms"));
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 500)};
-		incompleteAchievements.Add(new Achievement("Forager II", 0, pair, "Collect 500 Mushrooms"));
+		incompleteAchievements.Add(new Achievement("Forager II", pair, "Collect 500 Mushrooms"));
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 2000)};
-		incompleteAchievements.Add(new Achievement("Forager III", 0, pair, "Collect 500 Mushrooms"));
+		incompleteAchievements.Add(new Achievement("Forager III", pair, "Collect 500 Mushrooms"));
 
 		LoadMetricsAndAchievements();
 		//Loops
@@ -122,22 +122,40 @@ public class Achievements : MonoBehaviour {
 	}
 }
 
+[Serializable]
 public class Achievement {
 	
 	public string mName {get; private set;}
-	public string mDescription = "null";
+	public string mDescription {get; private set;}
 	public bool mComplete {get; private set;}
 	
-	private int mIconID;
-	private MetricGoalPair[] mNeeds;
-	private int[] mTargets;
+	public string mIcon {get; private set;}
+	public MetricGoalPair[] mNeeds {get; private set;}
 	
-	public Achievement(string name, int iconID, MetricGoalPair[] needs, string description = "") {
+	public Achievement(string name, MetricGoalPair[] needs, string description = "") {
 		mName = name;
-		mIconID = iconID;
 		mComplete = false;
 		mNeeds = needs;
 		mDescription = description;
+		if(mNeeds.Length < 1) {	Debug.LogError("Achievement has no requirements.");	}
+	}
+
+	public Achievement(string name, MetricGoalPair[] needs, string description, String icon) {
+		mName = name;
+		mIcon = icon;
+		mComplete = false;
+		mNeeds = needs;
+		mDescription = description;
+		if(mNeeds.Length < 1) {	Debug.LogError("Achievement has no requirements.");	}
+	}
+	
+	public Achievement(string name, MetricGoalPair[] needs, string description, Sprite icon) {
+		mName = name;
+		mIcon = icon.name;
+		mComplete = false;
+		mNeeds = needs;
+		mDescription = description;
+		if(mNeeds.Length < 1) {	Debug.LogError("Achievement has no requirements.");	}
 	}
 	
 	public void SetDescription(string s) {
@@ -163,29 +181,25 @@ public class Achievement {
 		return mComplete;
 	}
 	
+	public MetricGoalPair[] GetNeeds(){
+		return mNeeds;
+	}
+	
 }
 
+[Serializable]
 public class Metric {
 	
 	public string mName {get; private set;}
-	public bool mComplete {get; private set;}
-
-	private int mTargetValue;
-	private bool mReplace; 
-	private int mCompare; // -1 means less than, 0 means exact, +1 means greater than
-	private int mCurrentValue;
+	public bool mReplace {get; private set;} 
+	public int mCompare {get; private set;} // -1 means less than, 0 means exact, +1 means greater than
+	public int mCurrentValue {get; private set;}
 	
 	public Metric(string name, int compare = 1, bool replace = true) {
 		mName = name;
-		mTargetValue = 99999;
 		mCompare = compare;
-		mComplete = false;
 		mReplace = replace;
 		mCurrentValue = 0;
-	}
-	
-	public void SetTarget(int v) {
-		mTargetValue = v;
 	}
 	
 	//Change the current value of the metric if better than current value
@@ -202,40 +216,25 @@ public class Metric {
 		}			
 	}
 	
-/*	public void Add(int v) {
-		if (mCompare < 0) { //value to decrease
-			mCurrentValue -= v;
-		} else if (mCompare == 0) { //value to replace
-			continue;
-		} else { //value to increase
-			mCurrentValue += v;
-		}	
-	}
-*/
-	
 	public int Get() {
 		return mCurrentValue;
 	}
 	
 	//If not complete, check requirements for completion and set complete flag accordingly
-	public bool Check(int val = -1) {
-		if (mComplete) {
-			return true;
-		}
-		else {
-			val = val == -1 ? mTargetValue : val;
-			if (mCompare < 0) {
-				mComplete = mCurrentValue <= val;
-			} else if (mCompare == 0) {
-				mComplete = mCurrentValue == val;
-			} else {
-				mComplete = mCurrentValue >= val;
-			}	
-			return mComplete;
-		}
+	public bool Check(int val) {
+		bool mComplete = false;
+		if (mCompare < 0) {
+			mComplete = mCurrentValue <= val;
+		} else if (mCompare == 0) {
+			mComplete = mCurrentValue == val;
+		} else {
+			mComplete = mCurrentValue >= val;
+		}	
+		return mComplete;
 	}
 }
 
+[Serializable]
 public struct MetricGoalPair {
 	public Metric metric {get; private set;}
 	public int goal {get; private set;}
