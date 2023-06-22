@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using SimpleJSON;
+
 
 //Goals
 //Make an editor script (AFTER UPGRADING UNITY to 2021 at least) for easy achievement creation
@@ -19,7 +21,7 @@ public class Achievements : MonoBehaviour {
 
     void Start() {
 		
-		//Perpetual Metrics
+	/*	//Perpetual Metrics
 		metrics.Add("TimesPlayedSpring", new Metric("TimesPlayedSpring", 1, false));
 		metrics.Add("TimesPlayedWinter", new Metric("TimesPlayedWinter", 1, false));
 		metrics.Add("TimesPlayedMarsh", new Metric("TimesPlayedMarsh", 1, false));
@@ -55,7 +57,8 @@ public class Achievements : MonoBehaviour {
 		incompleteAchievements.Add(new Achievement("Forager II", pair, "Collect 500 Mushrooms"));
 		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 2000)};
 		incompleteAchievements.Add(new Achievement("Forager III", pair, "Collect 500 Mushrooms"));
-
+	*/
+		
 		LoadMetricsAndAchievements();
 		//Loops
 		InvokeRepeating("CheckAchievements", 10, checkFrequency);
@@ -107,6 +110,19 @@ public class Achievements : MonoBehaviour {
 	}
 	
 	private void LoadMetricsAndAchievements() {
+		//Load Objects
+		string filePath = Application.dataPath+"/Resources/jsonAchievements.json";
+		TextAsset jsonTextFile = Resources.Load<TextAsset>("jsonAchievements");
+		JSONObject json = (JSONObject)JSON.Parse(jsonTextFile.text);
+		foreach(var item in json["metrics"]) {
+			Metric tempMetric = JsonUtility.FromJson<Metric>(item.Value);
+			metrics.Add(tempMetric.mName, tempMetric);
+		}
+		foreach(var item in json["achievements"]) {
+			incompleteAchievements.Add(JsonUtility.FromJson<Achievement>(item.Value));
+		}
+		
+		//Load Status
 		foreach (var entry in metrics) {
 			Metric m = entry.Value;
 			m.Set(PlayerPrefs.GetInt("m_"+m.mName, 0));
@@ -119,43 +135,53 @@ public class Achievements : MonoBehaviour {
 				incompleteAchievements.Remove(a);
 			}
 		}
+		
+		//Set Metrics In Achievement
+		foreach(Achievement a in incompleteAchievements) {
+			Metric[] ms = new Metric[a.inNeeds.Length];
+			for(int i = 0; i < ms.Length; i++) {
+				ms[i] = metrics[a.inNeeds[i].metricName];
+			}
+			a.SetNeeds(ms);
+		}
 	}
 }
 
 [Serializable]
 public class Achievement {
 	
-	public string mName {get; private set;}
-	public string mDescription {get; private set;}
+	public string mName;
+	public string mDescription;
 	public bool mComplete {get; private set;}
 	
-	public string mIcon {get; private set;}
+	public string mIcon;// {get; private set;}
+	public NameGoalPair[] inNeeds;
 	public MetricGoalPair[] mNeeds {get; private set;}
 	
-	public Achievement(string name, MetricGoalPair[] needs, string description = "") {
+	public Achievement(string name, NameGoalPair[] needs, string description = "") {
 		mName = name;
 		mComplete = false;
-		mNeeds = needs;
+		inNeeds = needs;
+		mNeeds = new MetricGoalPair[inNeeds.Length];
 		mDescription = description;
-		if(mNeeds.Length < 1) {	Debug.LogError("Achievement has no requirements.");	}
 	}
 
-	public Achievement(string name, MetricGoalPair[] needs, string description, String icon) {
+	public Achievement(string name, NameGoalPair[] needs, string description, String icon) {
 		mName = name;
 		mIcon = icon;
 		mComplete = false;
-		mNeeds = needs;
+		inNeeds = needs;
+		mNeeds = new MetricGoalPair[inNeeds.Length];
 		mDescription = description;
-		if(mNeeds.Length < 1) {	Debug.LogError("Achievement has no requirements.");	}
 	}
 	
-	public Achievement(string name, MetricGoalPair[] needs, string description, Sprite icon) {
+	public Achievement(string name, NameGoalPair[] needs, string description, Sprite icon) {
 		mName = name;
 		mIcon = icon.name;
 		mComplete = false;
-		mNeeds = needs;
+		inNeeds = needs;
+		mNeeds = new MetricGoalPair[inNeeds.Length];
 		mDescription = description;
-		if(mNeeds.Length < 1) {	Debug.LogError("Achievement has no requirements.");	}
 	}
 	
 	public void SetDescription(string s) {
@@ -181,6 +207,13 @@ public class Achievement {
 		return mComplete;
 	}
 	
+	public void SetNeeds(Metric[] ms) {
+		for(int i = 0; i < inNeeds.Length; i++) {
+			int g = inNeeds[i].goal;
+			mNeeds[i] = new MetricGoalPair(ms[i],g);
+		}
+	}
+	
 	public MetricGoalPair[] GetNeeds(){
 		return mNeeds;
 	}
@@ -190,9 +223,9 @@ public class Achievement {
 [Serializable]
 public class Metric {
 	
-	public string mName {get; private set;}
-	public bool mReplace {get; private set;} 
-	public int mCompare {get; private set;} // -1 means less than, 0 means exact, +1 means greater than
+	public string mName;
+	public bool mReplace;
+	public int mCompare;// -1 means less than, 0 means exact, 1 means greater than
 	public int mCurrentValue {get; private set;}
 	
 	public Metric(string name, int compare = 1, bool replace = true) {
@@ -232,15 +265,28 @@ public class Metric {
 		}	
 		return mComplete;
 	}
+
 }
 
 [Serializable]
 public struct MetricGoalPair {
-	public Metric metric {get; private set;}
-	public int goal {get; private set;}
+	public Metric metric;// {get; private set;}
+	public int goal;// {get; private set;}
 	
 	public MetricGoalPair(Metric m, int g) {
 		metric = m;
 		goal = g;
 	}
+}
+
+[Serializable]
+public struct NameGoalPair {
+
+	public string metricName;// {get; private set;}
+	public int goal;// {get; private set;}
+	
+	public NameGoalPair(string m, int g) {
+		metricName = m;
+		goal = g;
+	}	
 }

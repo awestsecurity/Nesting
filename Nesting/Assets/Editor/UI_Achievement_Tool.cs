@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using SimpleJSON;
 
@@ -31,12 +32,20 @@ public class UI_Achievement_Tool : EditorWindow {
 
 
 	void OnGUI() {
-		
-		//CREATE METRICS/ACHIEVEMNETS//
+	
+		EditorGUILayout.BeginHorizontal();
+		GUILayout.FlexibleSpace();	
 		if (GUILayout.Button("~ Save ~", GUILayout.Width(200))) {
 			SaveAchievementFile();
 		}
+		if (GUILayout.Button("~ Load ~", GUILayout.Width(200))) {
+			LoadAchievementFile();
+		}
+		GUILayout.FlexibleSpace();
+		EditorGUILayout.EndHorizontal();
 		
+		//CREATE METRICS/ACHIEVEMNETS//
+	
 			EditorGUILayout.BeginHorizontal();
 			GUILayout.FlexibleSpace();
 			EditorGUILayout.LabelField("~~~~~~~~~~~~~~~~~~~~~");
@@ -129,6 +138,7 @@ public class UI_Achievement_Tool : EditorWindow {
 			EditorGUILayout.BeginHorizontal();
 			if (GUILayout.Button(" X ", GUILayout.Width(60))) {
 				metrics.RemoveAt(i);
+				return;
 			}	
 			EditorGUILayout.LabelField(metrics[i].mName);
 			EditorGUILayout.LabelField("Compare: "+metrics[i].mCompare);
@@ -152,13 +162,14 @@ public class UI_Achievement_Tool : EditorWindow {
 			EditorGUILayout.BeginHorizontal();
 			if (GUILayout.Button(" X ", GUILayout.Width(40))) {
 				achievements.RemoveAt(i);
+				return;
 			}	
 			EditorGUILayout.LabelField(achievements[i].mName);
 			EditorGUILayout.LabelField("- "+achievements[i].mDescription, GUILayout.Width(300));
 			//EditorGUILayout.EndHorizontal();
-			foreach (MetricGoalPair p in achievements[i].mNeeds) {
+			foreach (NameGoalPair p in achievements[i].inNeeds) {
 				//EditorGUILayout.BeginHorizontal();
-				EditorGUILayout.LabelField(p.metric.mName+" - "+p.goal);
+				EditorGUILayout.LabelField(p.metricName+" - "+p.goal);
 			}
 			EditorGUILayout.EndHorizontal();
 		}
@@ -167,14 +178,22 @@ public class UI_Achievement_Tool : EditorWindow {
 	}
 	
 	public void CreateMetric(string name, int compare, bool replace) {
+		if (name == "") {
+			Debug.LogWarning("Metric Name Required.");
+			return;
+		}
 		metrics.Add(new Metric(name,compare,replace));
 		mname = "";
 	}
 	
 	public void CreateAchievement() {
-		MetricGoalPair[] pair = new MetricGoalPair[mets.Count];
+		if (aname == "") {
+			Debug.LogWarning("Achievement Name Required.");
+			return;
+		}
+		NameGoalPair[] pair = new NameGoalPair[mets.Count];
 		for(int i = 0; i < mets.Count; i++) {
-			pair[i] = new MetricGoalPair(metrics[mets[i]], goals[i]);
+			pair[i] = new NameGoalPair(metrics[mets[i]].mName, goals[i]);
 		}
 		string icon = aicon.name;
 		Achievement a = new Achievement(aname, pair, adescription, icon);
@@ -188,8 +207,27 @@ public class UI_Achievement_Tool : EditorWindow {
 		if (!File.Exists(filePath)) {
 			Debug.LogWarning("Missing Achievements JSON File");
 		}
-		var jsonTextFile = Resources.Load<TextAsset>("Text/jsonAchievements");
-	//	jsonAchievements = JsonUtility.FromJson<jsonAchievementStructure>(jsonTextFile);
+		TextAsset jsonTextFile = Resources.Load<TextAsset>("jsonAchievements");
+		JSONObject json = (JSONObject)JSON.Parse(jsonTextFile.text);
+		foreach(var item in json["metrics"]) {
+			Metric m = JsonUtility.FromJson<Metric>(item.Value);
+			string[] names = metrics.Select(o => o.mName).ToArray();
+			if (names.Contains(m.mName)) {
+				continue;
+			} else {
+				metrics.Add(m);
+			}
+		}			
+		
+		foreach(var item in json["achievements"]) {
+			Achievement a = JsonUtility.FromJson<Achievement>(item.Value);
+			string[] names = achievements.Select(o => o.mName).ToArray();
+			if (names.Contains(a.mName)) {
+				continue;
+			} else {
+				achievements.Add(a);
+			}
+		}
 
 	}
 	
@@ -200,22 +238,15 @@ public class UI_Achievement_Tool : EditorWindow {
 			Debug.LogWarning("Missing Achievements JSON File");
 		}
 		JSONObject json = new JSONObject();
-		json.Add("metrics");
+		json.Add("metrics");	
 		foreach ( Metric m in metrics ) {
-			json["metrics"].Add(m.mName);
-			json["metrics"][m.mName].Add("compare", m.mCompare); 
-			json["metrics"][m.mName].Add("replace", m.mReplace);
+			json["metrics"].Add(JsonUtility.ToJson(m));
 		}
 		json.Add("achievements");
 		foreach ( Achievement a in achievements ) {
-			json["achievements"].Add(a.mName);
-			json["achievements"][a.mName].Add("desc", a.mDescription);
-			json["achievements"][a.mName].Add("icon", a.mIcon);
-			for (int i = 0; i < a.mNeeds.Length; i++) {
-				json["achievements"][a.mName].Add(a.mNeeds[i].metric.mName, a.mNeeds[i].goal);
-			}
+			json["achievements"].Add(JsonUtility.ToJson(a));
 		}
-		Debug.Log(json.ToString());
+		//Debug.Log(json.ToString());
 		File.WriteAllText(filePath, json.ToString());
 	}
 	
