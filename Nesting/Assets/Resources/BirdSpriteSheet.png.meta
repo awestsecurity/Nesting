@@ -129,7 +129,7 @@ TextureImporter:
       213: -5374193788487872741
     second: Belted Kingfisher
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -150,6 +150,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -188,6 +189,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -239,6 +241,30 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -1144,6 +1170,49 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Albertine Owlet: 8095277212815866157
+      American Goldfinch: 8102737839805416592
+      American Robin: -264574178598942374
+      Andjouan Scops-owl: 4484467730091328075
+      Araripe Manakin: 9205599941340687309
+      Ascension Frigatebird: -8394850762513216332
+      Bachman's Sparrow: -8857542161933301019
+      Bachman's Warbler: 8048868322184273678
+      Belding's Yellowthroat: 6402968229275608661
+      Belted Kingfisher: -5374193788487872741
+      Black Rail: -6247547270542657358
+      Bobolink: 1930404057660044136
+      Canada Warbler: -657925012708246364
+      Common Starling: 4867838341543099877
+      Grey Catbird: -5724186887051550252
+      Guam Kingfisher: -425405736221707377
+      House Finch: 4334540434156931428
+      Javan Hawk-eagle: -6661572580168285655
+      Jerdon's Courser: 9217147332107515742
+      Little Woodstar: 8300876747814311136
+      Loggerhead Shrike: -816908395743008150
+      Louisiana Waterthrush: 5244133896901502972
+      Lyall's Wren: -5322466835951809910
+      Macaroni Penguin: 1059697883745673186
+      Marianne White-eye: -7351841691400858998
+      Northern Mockingbird: -3800553805413166747
+      Orchard Oreole: -2629473568295278696
+      Piping Plover: 7600858101823436874
+      Red-ellied Woodpecker: -8562825117571006108
+      Red-headed Vulture: -7777750448150811517
+      Rock Pigeon: -3345579000363310791
+      Rose-breasted Grosebeak: 1460144806177571480
+      Saint Helena Plover: -2329065469093097694
+      Sedge Wren: -3697763303379004871
+      Sittchbird: 970884687296565600
+      Snow Mountain Robin: -3055116907274760520
+      Socorro Dove: -7679738902634543501
+      Spix's Macaw: 731178176870413664
+      Tahiti Monarch: -7877172977770266313
+      Tawny Frogmouth: -2410796699328089732
+      Whiskered Wren: -6083971034406379056
+      White-plumed Antbird: -5786150815579369036
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

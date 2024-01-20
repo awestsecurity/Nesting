@@ -68,3 +68,15 @@ The following packages were updated:
   com.unity.postprocessing from version 2.2.2 to 3.1.0
   com.unity.render-pipelines.universal from version 7.7.1 to 11.0.0
   com.unity.textmeshpro from version 2.1.4 to 3.0.4
+
+=== Wed Nov 22 21:58:25 2023
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.2d.pixel-perfect from version 5.0.0 to 5.0.3
+  com.unity.postprocessing from version 3.1.0 to 3.2.2
+  com.unity.render-pipelines.universal from version 10.6.0 to 12.1.13
+  com.unity.test-framework from version 1.1.27 to 1.1.33
+  com.unity.toolchain.win-x86_64-linux-x86_64 from version 0.1.21-preview to 2.0.4
