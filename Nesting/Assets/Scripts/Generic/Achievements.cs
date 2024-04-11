@@ -8,7 +8,7 @@ using SimpleJSON;
 
 //Goals
 //Make an editor script (AFTER UPGRADING UNITY to 2021 at least) for easy achievement creation
-public class Achievements : MonoBehaviour {
+public class Achievements : GenericSingleton<Achievements> {
 	
 	public int checkFrequency = 6;
 	//public string saveFile;
@@ -17,7 +17,6 @@ public class Achievements : MonoBehaviour {
 	public Dictionary<string, Metric> metrics = new Dictionary<string, Metric>();
 	private List<Achievement> completedAchievements = new List<Achievement>();
 	private List<Achievement> incompleteAchievements = new List<Achievement>();
-	
 
     void Start() {
 		
@@ -70,6 +69,7 @@ public class Achievements : MonoBehaviour {
 		foreach (Achievement a in incompletes) {
 			if (a.CheckDone()) {
 				completedAchievements.Add(a);
+				PlayerPrefs.SetInt(a.mName, 1);
 				incompleteAchievements.Remove(a);
 				Debug.Log("Achievement Complete! "+a.mName);
 				DisplayAchievement(a);
@@ -104,9 +104,6 @@ public class Achievements : MonoBehaviour {
 			Metric m = entry.Value;
 			PlayerPrefs.SetInt("m_"+m.mName,m.Get());
 		}
-		foreach (Achievement a in completedAchievements) {
-			PlayerPrefs.SetInt(a.mName, 1);
-		}
 	}
 	
 	private void LoadMetricsAndAchievements() {
@@ -119,7 +116,9 @@ public class Achievements : MonoBehaviour {
 			metrics.Add(tempMetric.mName, tempMetric);
 		}
 		foreach(var item in json["achievements"]) {
-			incompleteAchievements.Add(JsonUtility.FromJson<Achievement>(item.Value));
+			Achievement tempAchievement = JsonUtility.FromJson<Achievement>(item.Value);
+			MetricGoalPair m = JsonUtility.FromJson<MetricGoalPair>(inNeeds.Value);
+			incompleteAchievements.Add(tempAchievement);
 		}
 		
 		//Load Status
@@ -153,7 +152,7 @@ public class Achievement {
 	public string mName;
 	public string mDescription;
 	public bool mComplete {get; private set;}
-	
+	public string mUnlock;
 	public string mIcon;// {get; private set;}
 	public NameGoalPair[] inNeeds;
 	public MetricGoalPair[] mNeeds {get; private set;}
@@ -202,6 +201,9 @@ public class Achievement {
 			}
 			if (pass) {
 				mComplete = true;
+				if (mUnlock.Length == 1) {
+					UnlockBird();
+				}
 			}
 		}
 		return mComplete;
@@ -209,8 +211,25 @@ public class Achievement {
 	
 	public void SetNeeds(Metric[] ms) {
 		for(int i = 0; i < inNeeds.Length; i++) {
-			int g = inNeeds[i].goal;
-			mNeeds[i] = new MetricGoalPair(ms[i],g);
+			int numGoal = inNeeds[i].goal;
+			try {
+				mNeeds[i] = new MetricGoalPair(ms[i],numGoal);
+			} catch (Exception e) {
+				Debug.Log(e);
+			}
+		}
+	}
+	
+	public void SetBirdUnlock(string s) {
+		s = s.Substring(0,1);
+		mUnlock = s.ToLower();
+	}
+	
+	private void UnlockBird(){
+		string birdsOwned = PlayerPrefs.GetString("666", "a");
+		if (!birdsOwned.Contains(mUnlock)) {
+			birdsOwned = birdsOwned + mUnlock;
+			PlayerPrefs.SetString("666", birdsOwned);
 		}
 	}
 	

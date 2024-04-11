@@ -20,6 +20,7 @@ public class UI_Achievement_Tool : EditorWindow {
 	string aname = "";
 	string adescription = "";
 	UnityEngine.Object aicon;
+	string aUnlock;
 	List<int> mets = new List<int>();
 	List<int> goals = new List<int>();
 	List<Achievement> achievements = new List<Achievement>();
@@ -87,7 +88,6 @@ public class UI_Achievement_Tool : EditorWindow {
 		aname = EditorGUILayout.TextField("Name", aname,GUILayout.Width(200), GUILayout.ExpandWidth(true));
 		EditorGUIUtility.labelWidth = 90;
 		adescription = EditorGUILayout.TextField("| Description", adescription, GUILayout.Width(400), GUILayout.ExpandWidth(true));
-		aicon = EditorGUILayout.ObjectField("| Icon", aicon, typeof(Sprite), false);
 		EditorGUILayout.EndHorizontal();
 		if (mets.Count == 0) {
 			mets.Add(0);
@@ -114,6 +114,9 @@ public class UI_Achievement_Tool : EditorWindow {
 			mets.Add(0);
 			goals.Add(1);
 		}
+		aUnlock = aUnlock.Length > 1 ? aUnlock.Substring(0,1) : aUnlock;
+		aUnlock = EditorGUILayout.TextField("Unlock", aUnlock, GUILayout.Width(120));
+		aicon = EditorGUILayout.ObjectField("| Icon", aicon, typeof(Sprite), false);
 		if (GUILayout.Button(" Create Achievement ", GUILayout.Width(150))) {
 			CreateAchievement();
 		}
@@ -162,13 +165,16 @@ public class UI_Achievement_Tool : EditorWindow {
 			EditorGUILayout.BeginHorizontal();
 			if (GUILayout.Button(" X ", GUILayout.Width(40))) {
 				achievements.RemoveAt(i);
+				EditorGUILayout.EndHorizontal();
+				EditorGUILayout.EndScrollView();
 				return;
 			}	
 			EditorGUILayout.LabelField(achievements[i].mName);
-			EditorGUILayout.LabelField("- "+achievements[i].mDescription, GUILayout.Width(300));
+			EditorGUILayout.LabelField(achievements[i].mUnlock, GUILayout.Width(20));
+			EditorGUILayout.LabelField("- "+achievements[i].mDescription, GUILayout.Width(280));
 			//EditorGUILayout.EndHorizontal();
+			//EditorGUILayout.BeginHorizontal();
 			foreach (NameGoalPair p in achievements[i].inNeeds) {
-				//EditorGUILayout.BeginHorizontal();
 				EditorGUILayout.LabelField(p.metricName+" - "+p.goal);
 			}
 			EditorGUILayout.EndHorizontal();
@@ -197,6 +203,9 @@ public class UI_Achievement_Tool : EditorWindow {
 		}
 		string icon = aicon.name;
 		Achievement a = new Achievement(aname, pair, adescription, icon);
+		if (aUnlock.Length == 1) {
+			a.SetBirdUnlock(aUnlock);
+		}
 		achievements.Add(a);
 		aname = "";
 	}
@@ -219,6 +228,7 @@ public class UI_Achievement_Tool : EditorWindow {
 			}
 		}			
 		
+		achievements = new List<Achievement>();
 		foreach(var item in json["achievements"]) {
 			Achievement a = JsonUtility.FromJson<Achievement>(item.Value);
 			string[] names = achievements.Select(o => o.mName).ToArray();

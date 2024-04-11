@@ -114,7 +114,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		UIObjects.achievements.UpdateMetric("EggFound", 0);
 		StartLoad(2);
 	}
-
+	
 	public void EndPlayEarly() {
 		//Debug.Log("Quit");
 		PauseGame(false);
@@ -123,6 +123,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		timeremaining = 555;
 		UIObjects.achievements.UpdateMetric("EggFound", 0);
 		StartLoad(0);
+		Destroy(katamari);
 	}
 
 	IEnumerator PreLoadScene(int sceneindex, float delay = 1.25f) {
@@ -143,7 +144,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		isLoading = true;
 		background.SetActive(true);
 		string randfact = facts[Random.Range(0,facts.Length)];
-		textbox.text = $"Loading...   Did you know, {randfact}";
+		textbox.text = $"Did you know, {randfact}";
 		while (!loadingOperation.isDone)
         {
 			minTime -= Time.deltaTime;

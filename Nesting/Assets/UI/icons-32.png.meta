@@ -212,7 +212,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -220,6 +220,27 @@ TextureImporter:
       bones: []
       spriteID: dfc5127a096a415b0800000000000000
       internalID: -5398506913100899075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: icons-Egg
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01faf5b70fbf4354fa11de51dacb7dfc
+      internalID: 2054851566
       vertices: []
       indices: 
       edges: []
@@ -238,6 +259,7 @@ TextureImporter:
       icons-32_0: 6616388123066789976
       icons-32_1: -8221354933352618243
       icons-32_2: -5398506913100899075
+      icons-Egg: 2054851566
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

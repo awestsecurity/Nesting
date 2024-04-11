@@ -10,6 +10,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 {
 	public string account_name;
 	public bool airplaneMode; // no network, skip for play testing
+	public bool offWax;
 	public bool submitScores = false; // stop submitting high scores to the database
 	
 	public GameObject ui;
@@ -39,7 +40,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		UIObjects.network = gameObject.GetComponent<NetworkRequest>();
 		UIObjects.musicPlayer = musicPlayer;
 		UIObjects.achievements = achievements;
-		if (Debug.isDebugBuild) {
+		if (Debug.isDebugBuild && !offWax) {
 			if (airplaneMode) {
 				account_name = "Anonymous";
 				StartCoroutine(SkipLogin());
@@ -49,6 +50,28 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 			} else {
 				SetLogin(account_name);
 			}
+		} else if (offWax) {
+			submitScores = false;
+			account_name = "Birdy";
+			//StartCoroutine(SkipLogin());
+			string birdsOwned = PlayerPrefs.GetString("666", "a");
+			BirdDetails.ownedBirds = new int[birdsOwned.Length];
+			int i = 0;
+			foreach (char c in birdsOwned) {
+				int birdid = 93834;
+				if (c == 'a') { birdid = 93834; } //Northern Mockingbird
+				else if (c == 'b') { birdid = 93847; } //Bachman's Sparrow
+				else if (c == 'c') { birdid = 118985; } //Little Woodstar
+				else if (c == 'd') { birdid = 93873; } //BlackRail
+				else if (c == 'e') { birdid = 104679; } //Bachman's Warbler
+				else if (c == 'f') { birdid = 104713; } //Guam Kingfisher
+				else if (c == 'g') { birdid = 104678; } //Marianne White-eye
+				BirdDetails.ownedBirds[i] = birdid;
+				i ++;
+			}
+			menu.MakeBirdMenu();
+			popup.Reset();
+			birdsLoaded = true;
 		}
 		LoadSettings();
 	}
@@ -82,7 +105,6 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 	
 	IEnumerator GetAssets() {
 		BirdDetails.ownedBirds = new int[0];
-		//Debug.Log($"Getting Assets for Account {account_name}");
 		UnityWebRequest www = UnityWebRequest.Get(request_owned_templates);
         yield return www.SendWebRequest();
         if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
