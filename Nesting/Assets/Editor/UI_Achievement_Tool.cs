@@ -233,6 +233,7 @@ public class UI_Achievement_Tool : EditorWindow {
 			Achievement a = JsonUtility.FromJson<Achievement>(item.Value);
 			string[] names = achievements.Select(o => o.mName).ToArray();
 			if (names.Contains(a.mName)) {
+				Debug.LogWarning(a.mName + " excluded");
 				continue;
 			} else {
 				achievements.Add(a);

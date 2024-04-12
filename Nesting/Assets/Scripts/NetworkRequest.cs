@@ -54,21 +54,7 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 			submitScores = false;
 			account_name = "Birdy";
 			//StartCoroutine(SkipLogin());
-			string birdsOwned = PlayerPrefs.GetString("666", "a");
-			BirdDetails.ownedBirds = new int[birdsOwned.Length];
-			int i = 0;
-			foreach (char c in birdsOwned) {
-				int birdid = 93834;
-				if (c == 'a') { birdid = 93834; } //Northern Mockingbird
-				else if (c == 'b') { birdid = 93847; } //Bachman's Sparrow
-				else if (c == 'c') { birdid = 118985; } //Little Woodstar
-				else if (c == 'd') { birdid = 93873; } //BlackRail
-				else if (c == 'e') { birdid = 104679; } //Bachman's Warbler
-				else if (c == 'f') { birdid = 104713; } //Guam Kingfisher
-				else if (c == 'g') { birdid = 104678; } //Marianne White-eye
-				BirdDetails.ownedBirds[i] = birdid;
-				i ++;
-			}
+			FetchBirdsPlayerPrefs();
 			menu.MakeBirdMenu();
 			popup.Reset();
 			birdsLoaded = true;
@@ -86,6 +72,24 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		QualitySettings.SetQualityLevel(quality[PlayerPrefs.GetInt("0", 1)], true);
 
 		//Debug.Log($"PPrefs Music: {Settings.musicOn} and sfx {Settings.sfxOn}");
+	}
+	
+	public void FetchBirdsPlayerPrefs() {
+		string birdsOwned = PlayerPrefs.GetString("666", "a");
+		BirdDetails.ownedBirds = new int[birdsOwned.Length];
+		int i = 0;
+		foreach (char c in birdsOwned) {
+			int birdid = 93834;
+			if (c == 'a') { birdid = 93834; } //Northern Mockingbird
+			else if (c == 'b') { birdid = 93847; } //Bachman's Sparrow
+			else if (c == 'c') { birdid = 118985; } //Little Woodstar
+			else if (c == 'd') { birdid = 93873; } //BlackRail
+			else if (c == 'e') { birdid = 104679; } //Bachman's Warbler
+			else if (c == 'f') { birdid = 104713; } //Guam Kingfisher
+			else if (c == 'g') { birdid = 104678; } //Marianne White-eye
+			BirdDetails.ownedBirds[i] = birdid;
+			i ++;
+		}
 	}
 	
 	// To be called from the outside js code.

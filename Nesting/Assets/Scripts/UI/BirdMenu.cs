@@ -14,6 +14,13 @@ public class BirdMenu : MonoBehaviour{
 	private Sprite[] birdAtlas;
 	private Sprite[] birdOAtlas;
 	
+	void OnEnable() {
+		if (compiled && BirdDetails.ownedBirds.Length < PlayerPrefs.GetString("666", "a").Length) {
+			RefreshBirdList();
+			Debug.Log("Reshreshing Birds");
+		}
+	}
+	
 	public void MakeBirdMenu() {
 		if (!compiled) {
 			int[] templates = BirdDetails.ownedBirds;
@@ -54,6 +61,20 @@ public class BirdMenu : MonoBehaviour{
 			}
 			compiled = true;
 		}
+	}
+	
+	public void RefreshBirdList() {
+		UIObjects.network.FetchBirdsPlayerPrefs();
+		bool skip = true;
+		foreach (Transform child in rectangle.transform) {
+			if (!skip) {
+				Destroy(child.gameObject);
+			} else {
+				skip = false;
+			}
+		}
+		compiled = false;
+		MakeBirdMenu();
 	}
 	
 	private void LoadSprites() {

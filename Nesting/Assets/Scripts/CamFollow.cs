@@ -15,6 +15,9 @@ public class CamFollow : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+		if (!target) {
+			return;
+		}
 		Vector3 target_vect;
 		Vector3 movePosition = transform.position;
 		Vector3 camPos = new Vector3(transform.position.x, 0, transform.position.z);

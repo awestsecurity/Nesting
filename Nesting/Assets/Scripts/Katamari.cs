@@ -49,13 +49,13 @@ public class Katamari : MonoBehaviour {
 			Debug.LogWarning("Testing Mode?: Scene Con not found.");
 		}
 		ConnectUI();
-		volumeCheck = trueVolume * percentPossible;
+		volumeCheck = VolumeCheck();
 		collide = gameObject.GetComponent<SphereCollider>();
 		ballController = gameObject.GetComponent<Ball>();
 		speaker = gameObject.GetComponent<AudioSource>();
 		rbody = gameObject.GetComponent<Rigidbody>();
 		displayVolume = 1;
-		trueVolume = 4888;
+		trueVolume = 1;
 		prevvolume = trueVolume;
 		StartCoroutine(GravityDelay());
 		BirdDetails.score = trueVolume;
@@ -63,7 +63,7 @@ public class Katamari : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		volumeCheck = trueVolume * percentPossible;
+		volumeCheck = VolumeCheck();
 		if (!fullscreen && Input.anyKeyDown) {
 		//	fullscreen = true;
 		//	Screen.fullScreen = true;
@@ -188,7 +188,12 @@ public class Katamari : MonoBehaviour {
 	
 	
 	bool SmallEnoughToGrab (Thingy t) {
-		return (t.GetVolume() < (trueVolume * percentPossible)) ? true : false ;
+		return (t.GetVolume() < VolumeCheck()) ? true : false ;
+	}
+	
+	//This is the number that tests what objects can be picked up. 
+	float VolumeCheck() {
+		return (4888 + trueVolume) * percentPossible;
 	}
 	
 	void AdjustCameraPosition () {

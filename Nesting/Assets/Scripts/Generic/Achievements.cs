@@ -3,7 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System.IO;
 using SimpleJSON;
+using System.Linq;
+
 
 
 //Goals
@@ -109,6 +112,9 @@ public class Achievements : GenericSingleton<Achievements> {
 	private void LoadMetricsAndAchievements() {
 		//Load Objects
 		string filePath = Application.dataPath+"/Resources/jsonAchievements.json";
+		if (!File.Exists(filePath)) {
+			Debug.LogWarning("Missing Achievements JSON File");
+		}
 		TextAsset jsonTextFile = Resources.Load<TextAsset>("jsonAchievements");
 		JSONObject json = (JSONObject)JSON.Parse(jsonTextFile.text);
 		foreach(var item in json["metrics"]) {
@@ -116,9 +122,8 @@ public class Achievements : GenericSingleton<Achievements> {
 			metrics.Add(tempMetric.mName, tempMetric);
 		}
 		foreach(var item in json["achievements"]) {
-			Achievement tempAchievement = JsonUtility.FromJson<Achievement>(item.Value);
-			MetricGoalPair m = JsonUtility.FromJson<MetricGoalPair>(inNeeds.Value);
-			incompleteAchievements.Add(tempAchievement);
+			Achievement a = JsonUtility.FromJson<Achievement>(item.Value);
+			incompleteAchievements.Add(a);
 		}
 		
 		//Load Status
@@ -157,20 +162,11 @@ public class Achievement {
 	public NameGoalPair[] inNeeds;
 	public MetricGoalPair[] mNeeds {get; private set;}
 	
-	public Achievement(string name, NameGoalPair[] needs, string description = "") {
-		mName = name;
-		mComplete = false;
-		inNeeds = needs;
-		mNeeds = new MetricGoalPair[inNeeds.Length];
-		mDescription = description;
-	}
-
 	public Achievement(string name, NameGoalPair[] needs, string description, String icon) {
 		mName = name;
 		mIcon = icon;
 		mComplete = false;
 		inNeeds = needs;
-		mNeeds = new MetricGoalPair[inNeeds.Length];
 		mDescription = description;
 	}
 	
@@ -179,7 +175,6 @@ public class Achievement {
 		mIcon = icon.name;
 		mComplete = false;
 		inNeeds = needs;
-		mNeeds = new MetricGoalPair[inNeeds.Length];
 		mDescription = description;
 	}
 	
@@ -210,6 +205,7 @@ public class Achievement {
 	}
 	
 	public void SetNeeds(Metric[] ms) {
+		mNeeds = new MetricGoalPair[inNeeds.Length];
 		for(int i = 0; i < inNeeds.Length; i++) {
 			int numGoal = inNeeds[i].goal;
 			try {
@@ -230,6 +226,7 @@ public class Achievement {
 		if (!birdsOwned.Contains(mUnlock)) {
 			birdsOwned = birdsOwned + mUnlock;
 			PlayerPrefs.SetString("666", birdsOwned);
+			Debug.Log("Unlocked a new bird!");
 		}
 	}
 	
@@ -308,4 +305,8 @@ public struct NameGoalPair {
 		metricName = m;
 		goal = g;
 	}	
+	
+	public override string ToString(){
+		return metricName + ":" + goal.ToString();
+	}
 }
