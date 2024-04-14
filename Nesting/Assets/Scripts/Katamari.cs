@@ -15,7 +15,7 @@ public class Katamari : MonoBehaviour {
 	private Vector3 tuckInObject = new Vector3(0.85f,0.85f,0.85f);
 	
 	public static float volumeCheck;
-	public string mostCommonChild { get {return GetMostCommonChild(); } private set{} }
+	public string mostCommonChild { get {return GetTopThings()[0]; } private set{} }
 	private string[] childrenByQuantity;
 
 	public float radius; // Where is the edge to attach things.
@@ -80,8 +80,8 @@ public class Katamari : MonoBehaviour {
 		//AdjustCameraPosition();
 		birdDisplay.text = BirdDetails.birdname;
 		sizeDisplay.text = "Mass: "+displayVolume;
-		if (displayVolume < trueVolume) displayVolume += Mathf.CeilToInt((trueVolume - displayVolume) / 30f);
-		if (trueVolume > BirdDetails.score && trueVolume < (BirdDetails.score*1.5f)) {
+		if (displayVolume < trueVolume) displayVolume += (int)((trueVolume - displayVolume) / 30f);
+		if (trueVolume > BirdDetails.score && trueVolume < (BirdDetails.score*30f)) {
 			BirdDetails.score = trueVolume;
 		}
 		
@@ -203,19 +203,6 @@ public class Katamari : MonoBehaviour {
 		camPos.LookAt(this.transform);
 	}
 	
-	string GetMostCommonChild() {
-		Dictionary<string, int> dict = ChildFrequencyDict();
-		string mostCommonValue = "whoops";
-		int highestCount = 0;
-		foreach (KeyValuePair<string, int> pair in dict) {
-		   if (pair.Value > highestCount) {
-			   mostCommonValue = pair.Key;
-			   highestCount = pair.Value;
-		   }
-		}
-		return mostCommonValue;
-	}
-	
 	Dictionary<string, int> ChildFrequencyDict() {
 		var cnt = new Dictionary<string, int>();
 		foreach (string value in collected) {
@@ -252,7 +239,12 @@ public class Katamari : MonoBehaviour {
 		   }
 
 		}		
-		UpdateCollectedStats("Flower", dict["Flower"]);
+		if (dict.ContainsKey("Flower")) {
+			UpdateCollectedStats("Flower", dict["Flower"]);
+		}
+		if (dict.ContainsKey("SnowHead")) {
+			UpdateCollectedStats("SnowHead", dict["SnowHead"]);
+		}
 		return rank;
 	}
 	
@@ -262,8 +254,11 @@ public class Katamari : MonoBehaviour {
 			UIObjects.achievements.UpdateMetric("MushroomsCollected", amount);
 		} else if (thingName == "Egg") {
 			UIObjects.achievements.UpdateMetric("EggFound", 1);
+		} else if (thingName == "Flower") { 
+			UIObjects.achievements.UpdateMetric("FlowersIn1Run", amount); 
+		} else if (thingName == "SnowHead") {
+			UIObjects.achievements.UpdateMetric("SnowmenIn1Run", amount); 		
 		}
-		//else if (thingName == "Flower") { UIObjects.achievements.UpdateMetric("FlowersIn1Run", amount); }
 	}
 	
 	bool SetKatamariInSceneControl() {

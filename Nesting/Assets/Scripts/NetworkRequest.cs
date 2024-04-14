@@ -80,13 +80,22 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		int i = 0;
 		foreach (char c in birdsOwned) {
 			int birdid = 93834;
-			if (c == 'a') { birdid = 93834; } //Northern Mockingbird
-			else if (c == 'b') { birdid = 93847; } //Bachman's Sparrow
-			else if (c == 'c') { birdid = 118985; } //Little Woodstar
-			else if (c == 'd') { birdid = 93873; } //BlackRail
-			else if (c == 'e') { birdid = 104679; } //Bachman's Warbler
-			else if (c == 'f') { birdid = 104713; } //Guam Kingfisher
-			else if (c == 'g') { birdid = 104678; } //Marianne White-eye
+			if (c == 'a') { birdid = 93834; } //Northern Mockingbird LC
+			else if (c == 'b') { birdid = 279598; } //Rock Pigeon LC
+			else if (c == 'c') { birdid = 109281; } //Sedge Wren LC
+			//
+			else if (c == 'd') { birdid = 93847; } //Bachman's Sparrow NT
+			else if (c == 'e') { birdid = 95058; } //Loggerhead Shrike NT
+			//
+			else if (c == 'f') { birdid = 118985; } //Little Woodstar VU
+			else if (c == 'g') { birdid = 109280; } //Saint Helena Plover VU
+			//
+			else if (c == 'h') { birdid = 93873; } //BlackRail EN
+			else if (c == 'i') { birdid = 104715; } //Javan Hawk-eagle EN
+			//
+			else if (c == 'j') { birdid = 104679; } //Bachman's Warbler CR
+			else if (c == 'k') { birdid = 104713; } //Guam Kingfisher EW
+			else if (c == 'l') { birdid = 104678; } //Marianne White-eye EX
 			BirdDetails.ownedBirds[i] = birdid;
 			i ++;
 		}
@@ -197,13 +206,12 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 		}
 	}
 	
-	public IEnumerator GetHighScores() {
-		int numScores = 10;
-		string url = "https://www.forthebirds.space/play/api/get.php";
-		string safename = BirdDetails.birdname.Replace("'",string.Empty);
-		string get_url = $"{url}?bird={safename}&amount={numScores}&level={Settings.levelSelected}";
-		
-		if (!airplaneMode) {
+	public IEnumerator GetHighScoresString() {
+		if (!offWax && !airplaneMode) {
+			int numScores = 10;
+			string url = "https://www.forthebirds.space/play/api/get.php";
+			string safename = BirdDetails.birdname.Replace("'",string.Empty);
+			string get_url = $"{url}?bird={safename}&amount={numScores}&level={Settings.levelSelected}";
 			UnityWebRequest www = UnityWebRequest.Get(get_url);
 			yield return www.SendWebRequest();
 			if(www.result == UnityWebRequest.Result.ProtocolError || www.result == UnityWebRequest.Result.ConnectionError) {
@@ -214,7 +222,8 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 				BirdDetails.highscores = response;
 			}
 		} else {
-			BirdDetails.highscores = "Airplane Mode - No Scores";
+			int i = PlayerPrefs.GetInt(BirdDetails.birdname, 0);
+			BirdDetails.highscores = "Your Best Score: "+i.ToString();
 		}
 	}
 

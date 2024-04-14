@@ -15,6 +15,7 @@ public class MakeNestSwirl : MonoBehaviour
 
 	private string mostlyThis;
 	private string[] mostlyThese;
+	private int score;
 	private List<Transform> ring = new List<Transform>();
 	private List<Transform> middleRing = new List<Transform>();
 	private List<Transform> outerRing = new List<Transform>();
@@ -52,8 +53,17 @@ public class MakeNestSwirl : MonoBehaviour
 				popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting!");
 				break;
 		}
-		popup.AddMessage(BirdDetails.highscores);
-		//popup.AddMessage($"Why not give it another go? Hit 'r' to restart or 'm' to choose a bird.");
+		int prevScore = PlayerPrefs.GetInt(BirdDetails.birdname, 0);
+		if (score > prevScore) {
+			PlayerPrefs.SetInt(BirdDetails.birdname, score);
+			popup.AddMessage("" + score.ToString()+ ", That's the best yet!");
+		} else {
+			string s = score.ToString()+ " units of the good stuff ain't bad!";
+			if (prevScore > 0) {
+				s = s+" Your best was "+prevScore.ToString();
+			}
+			popup.AddMessage(s);
+		}
 		popup.LaunchMessagePanel();
 		//Debug.Log($"Children: {katamari.transform.childCount} Ring:{ring.Count}");
     }
@@ -66,7 +76,7 @@ public class MakeNestSwirl : MonoBehaviour
 				ring[i].RotateAround(center, new Vector3(0,1,-0.2f), speeds[i]*Time.deltaTime);
 			}
 		}
-		/*if (Input.GetKeyDown("r") && !restarting) {
+		if (Input.GetKeyDown("r") && !restarting) {
 			bool b = UIObjects.sceneCon.StartLoad(1);
 			if (b) {
 				Destroy(katamari);
@@ -84,13 +94,14 @@ public class MakeNestSwirl : MonoBehaviour
 			} else {
 				Debug.Log("Not Restarting.");	
 			}
-		}*/
+		}
     }
 	
 	void RemoveKatamriControl() {
 		Katamari k = katamari.GetComponent<Katamari>();
 		mostlyThis = k.mostCommonChild;
 		mostlyThese = k.GetTopThings();
+		score = (int)BirdDetails.score;
 		Destroy (katamari.GetComponent<Rigidbody>());
 		Destroy (katamari.GetComponent<Ball>());
 		Destroy (katamari.GetComponent<BallUserControl>());

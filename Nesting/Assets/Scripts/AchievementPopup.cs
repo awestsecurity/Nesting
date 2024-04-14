@@ -15,7 +15,7 @@ public class AchievementPopup : MonoBehaviour {
 	private int heightGoal = 140;
 	
 	public void SetAchievement(Achievement a) {
-		title.text = a.mName;
+		title.text = a.mComplete ? "* " + a.mName + " *" : a.mName;
 		description.text = a.mDescription;
 	}
 	

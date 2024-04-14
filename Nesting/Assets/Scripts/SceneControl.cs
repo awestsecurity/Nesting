@@ -110,6 +110,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		else if (Settings.levelSelected == 3) {UIObjects.achievements.UpdateMetric("TimesPlayedWinter");}
 		else if (Settings.levelSelected == 4) {UIObjects.achievements.UpdateMetric("TimesPlayedMarsh");}
 		UIObjects.achievements.UpdateMetric("TotalMass", (int)BirdDetails.score);
+		UIObjects.achievements.UpdateMetric("HighestScore", (int)BirdDetails.score);
 		UIObjects.network.PostHighScore();
 		UIObjects.achievements.UpdateMetric("EggFound", 0);
 		StartLoad(2);
@@ -168,7 +169,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 			timerDisplay.SetActive(true); //enable timer
 			Cursor.lockState = CursorLockMode.Locked;
 			playing = true;
-			StartCoroutine(UIObjects.network.GetHighScores());
+			StartCoroutine(UIObjects.network.GetHighScoresString());
 		} else if (sceneindex == 0) {
 			//Title Scene
 			titleScreen.SetActive(true);

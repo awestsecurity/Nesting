@@ -20,7 +20,7 @@ public class UI_Achievement_Tool : EditorWindow {
 	string aname = "";
 	string adescription = "";
 	UnityEngine.Object aicon;
-	string aUnlock;
+	string aUnlock = "a";
 	List<int> mets = new List<int>();
 	List<int> goals = new List<int>();
 	List<Achievement> achievements = new List<Achievement>();
@@ -62,11 +62,11 @@ public class UI_Achievement_Tool : EditorWindow {
 		EditorGUIUtility.labelWidth = 60;
 		mname = EditorGUILayout.TextField("Name", mname,GUILayout.Width(200), GUILayout.ExpandWidth(true));
 		EditorGUIUtility.labelWidth = 110;
-		mreplace = EditorGUILayout.Toggle(" | Replace Value", mreplace,GUILayout.Width(120), GUILayout.ExpandWidth(false));
+		mreplace = EditorGUILayout.Toggle(" |- Replace Value", mreplace,GUILayout.Width(120), GUILayout.ExpandWidth(false));
 		EditorGUIUtility.labelWidth = 90;
-		mcompare = EditorGUILayout.IntSlider(" | Compare", mcompare , -1, 1, GUILayout.Width(200), GUILayout.ExpandWidth(true));		
+		mcompare = EditorGUILayout.IntSlider(" -|  Compare", mcompare , -1, 1, GUILayout.Width(200), GUILayout.ExpandWidth(true));		
 		EditorGUIUtility.labelWidth = 90;
-		if (GUILayout.Button("Create!", GUILayout.Width(80))) {
+		if (GUILayout.Button("Create Metric", GUILayout.Width(120))) {
 			CreateMetric(mname, mcompare, mreplace);
 		}
 		EditorGUILayout.EndHorizontal();
@@ -87,7 +87,7 @@ public class UI_Achievement_Tool : EditorWindow {
 		EditorGUIUtility.labelWidth = 60;
 		aname = EditorGUILayout.TextField("Name", aname,GUILayout.Width(200), GUILayout.ExpandWidth(true));
 		EditorGUIUtility.labelWidth = 90;
-		adescription = EditorGUILayout.TextField("| Description", adescription, GUILayout.Width(400), GUILayout.ExpandWidth(true));
+		adescription = EditorGUILayout.TextField("  |  Description", adescription, GUILayout.Width(400), GUILayout.ExpandWidth(true));
 		EditorGUILayout.EndHorizontal();
 		if (mets.Count == 0) {
 			mets.Add(0);
@@ -117,14 +117,14 @@ public class UI_Achievement_Tool : EditorWindow {
 		aUnlock = aUnlock.Length > 1 ? aUnlock.Substring(0,1) : aUnlock;
 		aUnlock = EditorGUILayout.TextField("Unlock", aUnlock, GUILayout.Width(120));
 		aicon = EditorGUILayout.ObjectField("| Icon", aicon, typeof(Sprite), false);
-		if (GUILayout.Button(" Create Achievement ", GUILayout.Width(150))) {
+		if (GUILayout.Button(" Create Achievement ", GUILayout.Width(200), GUILayout.Height(50))) {
 			CreateAchievement();
 		}
 		EditorGUILayout.EndHorizontal();
 
 			EditorGUILayout.BeginHorizontal();
 			GUILayout.FlexibleSpace();
-			EditorGUILayout.LabelField("~~~~~~~~~~~~~~~~~~~~~");
+			EditorGUILayout.LabelField("~~~~~~~~~v~*~^~*~v~~~~~~~~",  GUILayout.Width(300));
 			GUILayout.FlexibleSpace();
 			EditorGUILayout.EndHorizontal();
 		
@@ -139,7 +139,7 @@ public class UI_Achievement_Tool : EditorWindow {
 
 		for(int i = 0; i < metrics.Count; i++) {
 			EditorGUILayout.BeginHorizontal();
-			if (GUILayout.Button(" X ", GUILayout.Width(60))) {
+			if (GUILayout.Button(" X ", GUILayout.Width(35))) {
 				metrics.RemoveAt(i);
 				return;
 			}	
@@ -163,19 +163,17 @@ public class UI_Achievement_Tool : EditorWindow {
 		
 		for(int i = 0; i < achievements.Count; i++) {
 			EditorGUILayout.BeginHorizontal();
-			if (GUILayout.Button(" X ", GUILayout.Width(40))) {
+			if (GUILayout.Button(" X ", GUILayout.Width(35))) {
 				achievements.RemoveAt(i);
 				EditorGUILayout.EndHorizontal();
 				EditorGUILayout.EndScrollView();
 				return;
 			}	
-			EditorGUILayout.LabelField(achievements[i].mName);
+			EditorGUILayout.LabelField(achievements[i].mName, GUILayout.Width(130));
 			EditorGUILayout.LabelField(achievements[i].mUnlock, GUILayout.Width(20));
-			EditorGUILayout.LabelField("- "+achievements[i].mDescription, GUILayout.Width(280));
-			//EditorGUILayout.EndHorizontal();
-			//EditorGUILayout.BeginHorizontal();
+			EditorGUILayout.LabelField("- "+achievements[i].mDescription, GUILayout.Width(260));
 			foreach (NameGoalPair p in achievements[i].inNeeds) {
-				EditorGUILayout.LabelField(p.metricName+" - "+p.goal);
+				EditorGUILayout.LabelField(p.metricName+" - "+p.goal, GUILayout.Width(150));
 			}
 			EditorGUILayout.EndHorizontal();
 		}

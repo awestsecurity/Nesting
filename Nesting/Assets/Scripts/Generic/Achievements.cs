@@ -16,6 +16,8 @@ public class Achievements : GenericSingleton<Achievements> {
 	public int checkFrequency = 6;
 	//public string saveFile;
 	public GameObject uiTemplate;
+	public AudioClip congratsSound;
+	private AudioSource speaker;
 	
 	public Dictionary<string, Metric> metrics = new Dictionary<string, Metric>();
 	private List<Achievement> completedAchievements = new List<Achievement>();
@@ -23,45 +25,8 @@ public class Achievements : GenericSingleton<Achievements> {
 
     void Start() {
 		
-	/*	//Perpetual Metrics
-		metrics.Add("TimesPlayedSpring", new Metric("TimesPlayedSpring", 1, false));
-		metrics.Add("TimesPlayedWinter", new Metric("TimesPlayedWinter", 1, false));
-		metrics.Add("TimesPlayedMarsh", new Metric("TimesPlayedMarsh", 1, false));
-		metrics.Add("TotalMass", new Metric("TotalMass", 1, false));
-		metrics.Add("EggFound", new Metric("EggFound", 0));
-		metrics.Add("MushroomsCollected", new Metric("MushroomsCollected", 1, false));
-		//
-		//Challenge metrics
-		metrics.Add("FlowersIn1Run", new Metric("FlowersIn1Run", 1, true));
-		//
-		//Temporary metrics
-		metrics.Add("Level", new Metric("Level", 0, replace: true));
-		metrics.Add("BirdRarity", new Metric("BirdRarity", 0, replace: true));
-		//
-		
-		//ACHIEVEMENTS//
-		MetricGoalPair[] pair = new MetricGoalPair[] {new MetricGoalPair(metrics["EggFound"], 1), new MetricGoalPair(metrics["Level"], 1)};
-		incompleteAchievements.Add(new Achievement("Treasure Hunter 1", pair));
-		
-		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["TimesPlayedWinter"], 5)};
-		incompleteAchievements.Add(new Achievement("Polar Swim", pair, "Play winter wonderland 5 times"));
-		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["TimesPlayedSpring"], 8)};
-		incompleteAchievements.Add(new Achievement("Promenade", pair, "Play Spring Meadow 8 times"));
-		
-		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["FlowersIn1Run"], 50), new MetricGoalPair(metrics["Level"], 1)};
-		incompleteAchievements.Add(new Achievement("Gardener 1", pair, "Collect 50 flowers in a single Meadow run"));
-		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["BirdRarity"], 4), new MetricGoalPair(metrics["Level"], 3)};
-		incompleteAchievements.Add(new Achievement("Risky Operation", pair, "Take an endangered bird out in the winter"));
-
-		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 100)};
-		incompleteAchievements.Add(new Achievement("Forager I", pair, "Collect 100 Mushrooms"));
-		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 500)};
-		incompleteAchievements.Add(new Achievement("Forager II", pair, "Collect 500 Mushrooms"));
-		pair = new MetricGoalPair[] {new MetricGoalPair(metrics["MushroomsCollected"], 2000)};
-		incompleteAchievements.Add(new Achievement("Forager III", pair, "Collect 500 Mushrooms"));
-	*/
-		
 		LoadMetricsAndAchievements();
+		speaker = transform.GetComponent<AudioSource>();
 		//Loops
 		InvokeRepeating("CheckAchievements", 10, checkFrequency);
 		InvokeRepeating("SaveMetricsAndAchivements", 21, checkFrequency);
@@ -74,9 +39,13 @@ public class Achievements : GenericSingleton<Achievements> {
 				completedAchievements.Add(a);
 				PlayerPrefs.SetInt(a.mName, 1);
 				incompleteAchievements.Remove(a);
-				Debug.Log("Achievement Complete! "+a.mName);
+				//Debug.Log("Achievement Complete! "+a.mName);
+				speaker.PlayOneShot(congratsSound);
 				DisplayAchievement(a);
 			}
+		}
+		if (incompletes.Count == 0) {
+			UnlockBird("l"); // The Extinct Bird
 		}
 	}
 	
@@ -100,6 +69,19 @@ public class Achievements : GenericSingleton<Achievements> {
 	
 	public List<Achievement> GetCompletedAchievments(){
 		return completedAchievements;
+	}	
+	
+	public List<Achievement> GetIncompleteAchievments(){
+		return incompleteAchievements;
+	}
+	
+	public void UnlockBird(string b = "a"){
+		string birdsOwned = PlayerPrefs.GetString("666", "a");
+		if (!birdsOwned.Contains(b)) {
+			birdsOwned = birdsOwned + b;
+			PlayerPrefs.SetString("666", birdsOwned);
+			//Debug.Log("Unlocked a new bird!");
+		}
 	}
 	
 	private void SaveMetricsAndAchivements() {
@@ -148,6 +130,7 @@ public class Achievements : GenericSingleton<Achievements> {
 			}
 			a.SetNeeds(ms);
 		}
+		
 	}
 }
 
@@ -196,8 +179,9 @@ public class Achievement {
 			}
 			if (pass) {
 				mComplete = true;
+				//Debug.Log("Achievement Passed!");
 				if (mUnlock.Length == 1) {
-					UnlockBird();
+					UIObjects.achievements.UnlockBird(mUnlock);
 				}
 			}
 		}
@@ -219,15 +203,6 @@ public class Achievement {
 	public void SetBirdUnlock(string s) {
 		s = s.Substring(0,1);
 		mUnlock = s.ToLower();
-	}
-	
-	private void UnlockBird(){
-		string birdsOwned = PlayerPrefs.GetString("666", "a");
-		if (!birdsOwned.Contains(mUnlock)) {
-			birdsOwned = birdsOwned + mUnlock;
-			PlayerPrefs.SetString("666", birdsOwned);
-			Debug.Log("Unlocked a new bird!");
-		}
 	}
 	
 	public MetricGoalPair[] GetNeeds(){

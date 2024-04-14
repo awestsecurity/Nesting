@@ -54,7 +54,7 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 		if (on && !speaker.isPlaying && Application.isFocused) {
 			if (Settings.shuffle) {
 				nextSongIndex = GetRandSongI();
-				Debug.Log($"next song: {nextSongIndex}, of {songList.Length}");
+				//Debug.Log($"next song: {nextSongIndex}, of {songList.Length}");
 			}
 			SetSong(songList[nextSongIndex]);
 			nextSongIndex += 1;
