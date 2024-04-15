@@ -206,21 +206,21 @@ public class SceneControl : GenericSingleton<SceneControl>
 	private float GetPlaytime() {
 		switch(BirdDetails.birdstatus) {
 			case "LC":
-				return 220; //250
+				return 200; //250
 			case "NT":
-				return 330;
+				return 310;
 			case "VU":
-				return 440;
+				return 430;
 			case "EN":
-				return 590;
+				return 560;
 			case "CR":
-				return 750;
+				return 700;
 			case "EW":
-				return 900;
+				return 850;
 			case "EX":
 				return 9999;
 			case "DD":
-				return 5555;
+				return 60;
 			default:
 				return 60;
 		}

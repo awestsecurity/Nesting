@@ -9,9 +9,10 @@ using UnityStandardAssets.Vehicles.Ball;
 public class Katamari : MonoBehaviour {
 
 	public GameObject HUDPrefab;
-	private static float displayVolume; // How big we are / What we can pick up.
-	private float trueVolume; // Display Volume
-	private static float percentPossible = 0.57f;  // How big we are / What we can pick up.
+	private static float displayVolume; // What's Showing in the textbox.
+	private float trueVolume; // Everything added and used as the final score
+	private static float percentPossible = 0.33f;  // How big we are / What we can pick up.
+	private static float startingMass = 105;
 	private Vector3 tuckInObject = new Vector3(0.85f,0.85f,0.85f);
 	
 	public static float volumeCheck;
@@ -64,11 +65,6 @@ public class Katamari : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		volumeCheck = VolumeCheck();
-		if (!fullscreen && Input.anyKeyDown) {
-		//	fullscreen = true;
-		//	Screen.fullScreen = true;
-		//	Cursor.lockState = CursorLockMode.Locked;
-		}
 		if (Input.GetKeyDown(KeyCode.Escape)) {
 			Screen.fullScreen = false;
 			Cursor.lockState = CursorLockMode.None;
@@ -79,8 +75,9 @@ public class Katamari : MonoBehaviour {
 		
 		//AdjustCameraPosition();
 		birdDisplay.text = BirdDetails.birdname;
-		sizeDisplay.text = "Mass: "+displayVolume;
-		if (displayVolume < trueVolume) displayVolume += (int)((trueVolume - displayVolume) / 30f);
+		sizeDisplay.text = string.Format("Mass: {0:#.00}", displayVolume);
+		if (displayVolume < trueVolume) displayVolume += ((trueVolume - displayVolume) / 40f);
+		//Anti-Cheat added for huge increases in a single frame
 		if (trueVolume > BirdDetails.score && trueVolume < (BirdDetails.score*30f)) {
 			BirdDetails.score = trueVolume;
 		}
@@ -90,7 +87,7 @@ public class Katamari : MonoBehaviour {
 			PlaySFX(plodNoise, rbody.velocity.magnitude/17f);
 		}
 		
-		//Cheat Detection
+		//More Cheat Detection
 		if (trueVolume > prevvolume * 1.5f) BirdDetails.cheat = true;
 		prevvolume = trueVolume;
 		if ( trueVolume >= cheatVolume ) BirdDetails.cheat = true;
@@ -171,12 +168,12 @@ public class Katamari : MonoBehaviour {
 	}
 	
 	//Handle the expansion given the thingy volume and modifier
-	void AddVolumeToKatamari(float v, float m = 1) {
-		trueVolume += (v*m / 40f);
-		float adjust = v / 350000f;  //5000000 old number
+	void AddVolumeToKatamari(float vol, float mod = 1) {
+		trueVolume += (vol*mod / 8f);
+		float adjust = vol / 35000f;  //5000000 old number
 		collide.radius += adjust * 0.75f;
 		ballController.m_MovePower += adjust * 2;
-		camFollow.spacer += adjust * 2;
+		camFollow.spacer += adjust * 2.15f;
 	}
 	
 	//Remove the oldest attached object when we have too many
@@ -193,7 +190,7 @@ public class Katamari : MonoBehaviour {
 	
 	//This is the number that tests what objects can be picked up. 
 	float VolumeCheck() {
-		return (4888 + trueVolume) * percentPossible;
+		return (startingMass + trueVolume) * percentPossible;
 	}
 	
 	void AdjustCameraPosition () {
