@@ -25,7 +25,8 @@ public class ThingyGlow : Thingy {
 	}
 	
 	void KillLightComponent() {
-		Destroy(_light);
+		_light.enabled = false;
+		//Destroy(_light);
 	}
 	
 }

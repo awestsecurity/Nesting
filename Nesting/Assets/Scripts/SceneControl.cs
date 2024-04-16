@@ -33,6 +33,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 	public float timeremaining {get; private set;}
 	public Text timeDisplay;
 	private float lastTimeStamp = 0;
+	public string scoreTag {get; private set;}
 	private bool cheatDetected = false;
 
 	public GameObject firstUIElemOnPause;
@@ -113,6 +114,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		UIObjects.achievements.UpdateMetric("HighestScore", (int)BirdDetails.score);
 		UIObjects.network.PostHighScore();
 		UIObjects.achievements.UpdateMetric("EggFound", 0);
+		scoreTag = BirdDetails.birdname + SceneManager.GetActiveScene().buildIndex;
 		StartLoad(2);
 	}
 	

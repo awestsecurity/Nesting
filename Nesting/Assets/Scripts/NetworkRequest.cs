@@ -222,8 +222,10 @@ public class NetworkRequest : GenericSingleton<NetworkRequest>
 				BirdDetails.highscores = response;
 			}
 		} else {
-			int i = PlayerPrefs.GetInt(BirdDetails.birdname, 0);
-			BirdDetails.highscores = "Your Best Score: "+i.ToString();
+			int i = PlayerPrefs.GetInt(BirdDetails.birdname+"1", 0);
+			int j = PlayerPrefs.GetInt(BirdDetails.birdname+"3", 0);
+			int k = PlayerPrefs.GetInt(BirdDetails.birdname+"4", 0);
+			BirdDetails.highscores = $"Your Best \n Spring Meadow: {i.ToString()}\n Winter Wonder: {j.ToString()}\n Sleepy Marsh: {k.ToString()}\n ";
 		}
 	}
 

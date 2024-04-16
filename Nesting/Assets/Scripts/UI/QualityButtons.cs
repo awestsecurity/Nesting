@@ -8,6 +8,7 @@ public class QualityButtons : MonoBehaviour
 {
 
 	public int settingID = 0;
+	public bool defaultOn = true;
 	private Button b;
 	private Text t;
 	private string[] buttonOptions;
@@ -34,7 +35,8 @@ public class QualityButtons : MonoBehaviour
     }
 	
 	private void LoadPref() {
-		currentSetting = PlayerPrefs.GetInt($"{settingID}", 1);
+		int i = defaultOn ? 1 : 0;
+		currentSetting = PlayerPrefs.GetInt($"{settingID}", i);
 		//Debug.Log($"{settingID} == {currentSetting}");
 	}
 	
@@ -65,7 +67,7 @@ public class QualityButtons : MonoBehaviour
 				buttonName = "Shuffle";
 				changeFunction = new buttonDelegate(ToggleShuffleSongs);
 				break;
-			case 5: //Display info like FPS
+			case 5: //Debug - Display info like FPS
 				buttonOptions = booleanOptions;
 				buttonName = "Debug";
 				changeFunction = new buttonDelegate(ToggleShowLog);
@@ -82,8 +84,7 @@ public class QualityButtons : MonoBehaviour
 	
 	private void InitializeSetting() {
 		t.text = $"{buttonName}: {buttonOptions[currentSetting]}";	
-		//changeFunction(currentSetting);	
-		//Debug.Log($"{settingID} == {currentSetting} | {buttonName}: {buttonOptions[currentSetting]}");
+		PlayerPrefs.SetInt($"{settingID}", currentSetting);
 	}
 	
 	private void ChangeSetting(int moveNext = 1) {

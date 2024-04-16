@@ -135,8 +135,8 @@ public class Katamari : MonoBehaviour {
 			UpdateCollectedStats(thingy.thingyName);
 			RemoveOldChildrenAfterMax();
 			if (thingy is ThingyGlow) {
-				var l = thingy as ThingyGlow;
-				AbsorbLight(l);
+				ThingyGlow l = thingy as ThingyGlow;
+				StartCoroutine(AbsorbLight(l));
 			}
 			Destroy(thingy.GetComponent<Movement>());
 		} else if (collision.gameObject.name == "Water"){
@@ -145,7 +145,7 @@ public class Katamari : MonoBehaviour {
 	}
 	
 	//For spooky level. Katamari will accumilate light from glowing things.
-	IEnumerator AbsorbLight(ThingyGlow l){
+	IEnumerator AbsorbLight(ThingyGlow glowThingy){
 		if (!glow) {
 			glow = gameObject.AddComponent<Light>() as Light;
 			glow.intensity = 0.1f;
@@ -153,11 +153,12 @@ public class Katamari : MonoBehaviour {
 			glow.color = Color.green / 2f;
 			glow.type = LightType.Point;
 		}
-		l.StartLightFade();
-		int target = 1;
-		while (glow.intensity < target) {
+		glowThingy.StartLightFade();
+		glow.range = glow.range + 0.05f;
+		float targetIntesity = Mathf.Clamp(glow.intensity += 0.01f, 0.1f, 4f);
+		while (glow.intensity < targetIntesity) {
 			yield return new WaitForSeconds(0.1f);
-			glow.intensity += 0.1f;
+			glow.intensity += 0.01f;
 		}
 	}
 	

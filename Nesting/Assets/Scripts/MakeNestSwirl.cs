@@ -53,9 +53,9 @@ public class MakeNestSwirl : MonoBehaviour
 				popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting!");
 				break;
 		}
-		int prevScore = PlayerPrefs.GetInt(BirdDetails.birdname, 0);
+		int prevScore = PlayerPrefs.GetInt(UIObjects.sceneCon.scoreTag, 0);
 		if (score > prevScore) {
-			PlayerPrefs.SetInt(BirdDetails.birdname, score);
+			PlayerPrefs.SetInt(UIObjects.sceneCon.scoreTag, score);
 			popup.AddMessage("" + score.ToString()+ ", That's the best yet!");
 		} else {
 			string s = score.ToString()+ " units of the good stuff ain't bad!";
