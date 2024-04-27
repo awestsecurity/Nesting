@@ -22,7 +22,6 @@ public class DisplayStatsAndAchievements : MonoBehaviour
 		if (icons.Count <= 0) {
 			Initialize();
 		}
-		string list = "";
 		List<string> doneGoals = UIObjects.achievements.GetCompletedAchievments().Select(o => o.mName).ToList();
 		for (int i = 0; i < incompleteGoals.Count; i++) {
 			if (doneGoals.Contains(incompleteGoals[i].mName)) {

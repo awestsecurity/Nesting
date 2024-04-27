@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityStandardAssets.Vehicles.Ball;
+
 
 [RequireComponent(typeof(AudioSource))]
 public class Katamari : MonoBehaviour {
@@ -34,7 +36,6 @@ public class Katamari : MonoBehaviour {
 	private Ball ballController;
 	private Rigidbody rbody;
 	private Light glow;
-	private bool fullscreen = false;
 	
 	private int cheatVolume = 9999999;
 	private float prevvolume;
@@ -213,37 +214,24 @@ public class Katamari : MonoBehaviour {
 		return cnt;
 	}
 	
-	//switch to list and it all gets easier
-	public string[] GetTopThings(int amount = 3) {
+	//Return list of thing types by frequency
+	public string[] GetTopThings(int ranksReturned = 3) {
 		Dictionary<string, int> dict = ChildFrequencyDict();
-		string[] rank = new string[amount];
-		for(int i = 0; i < amount; i++) {
-		   rank[i] = "empty space";
+		var sorted = (from entry in dict orderby entry.Value descending select entry.Key).Take(ranksReturned);
+		List<string> rank = sorted.ToList();
+		if (rank.Count < ranksReturned) {
+			for (int i = rank.Count; i < ranksReturned; i++){
+				rank.Add("Empty Space");
+			}
 		}
-		int highest = 0;
-		foreach (KeyValuePair<string, int> pair in dict) {
-		   if (pair.Value > highest) {
-			   if (rank[0] == "empty space") {
-					rank[0] = pair.Key;
-			   } else if (rank[1] == "empty space") {
-					rank[1] = rank[0];
-					rank[0] = pair.Key;
-			   } else {
-					rank[2] = rank[1];
-					rank[1] = rank[0];
-					rank[0] = pair.Key;
-				}
-			   highest = pair.Value;
-		   }
-
-		}		
+				
 		if (dict.ContainsKey("Flower")) {
 			UpdateCollectedStats("Flower", dict["Flower"]);
 		}
 		if (dict.ContainsKey("SnowHead")) {
 			UpdateCollectedStats("SnowHead", dict["SnowHead"]);
 		}
-		return rank;
+		return rank.ToArray();
 	}
 	
 	//Add to collection stats for achievements
