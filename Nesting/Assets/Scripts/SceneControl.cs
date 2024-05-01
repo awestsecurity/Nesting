@@ -58,6 +58,9 @@ public class SceneControl : GenericSingleton<SceneControl>
 	}
 
 	void Update() {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+            Screen.fullScreen = !Screen.fullScreen;
+        }
 		//PLAY TIMER
 		if (playing) {
 			timeremaining = timeremaining - Time.deltaTime;

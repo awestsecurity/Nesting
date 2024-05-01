@@ -14,14 +14,15 @@ public class Katamari : MonoBehaviour {
 	private static float displayVolume; // What's Showing in the textbox.
 	private float trueVolume; // Everything added and used as the final score
 	private static float percentPossible = 0.33f;  // How big we are / What we can pick up.
-	private static float startingMass = 105;
+	private static float startingMass = 115;
 	private Vector3 tuckInObject = new Vector3(0.85f,0.85f,0.85f);
 	
-	public static float volumeCheck;
+	public static float volumeCheck; // The thingy size we can pick up
 	public string mostCommonChild { get {return GetTopThings()[0]; } private set{} }
 	private string[] childrenByQuantity;
 
 	public float radius; // Where is the edge to attach things.
+	private float maxRadius = 6.666f;
 	public Transform camPos;
 	public CamFollow camFollow;
 	public int maxChildren = 234;
@@ -39,6 +40,7 @@ public class Katamari : MonoBehaviour {
 	
 	private int cheatVolume = 9999999;
 	private float prevvolume;
+	private bool leveltesting = false; //avoid console errors when we skip UI creation
 	
 	private AudioSource speaker;
 	public AudioClip waterSplash;
@@ -72,7 +74,10 @@ public class Katamari : MonoBehaviour {
 		}
 		
 		//Fallen through ground somehow
-		if (transform.position.y < -15) SceneManager.LoadScene(SceneManager.GetActiveScene().name) ;
+		if (transform.position.y < -15) {
+			//SceneManager.LoadScene(SceneManager.GetActiveScene().name) ;
+			this.transform.position = new Vector3(68, 15, 74);
+		}
 		
 		//AdjustCameraPosition();
 		birdDisplay.text = BirdDetails.birdname;
@@ -103,9 +108,11 @@ public class Katamari : MonoBehaviour {
 	
 	//Get UI for displaying stats
 	//Create if there isn't one
+	//It doesn't really make sense that it's here
 	void ConnectUI() {
 		hud = GameObject.Find("HUD");
 		if (hud == null) {
+			leveltesting = true;
 			hud = Instantiate(HUDPrefab);
 			hud.transform.GetChild(2).GetChild(0).gameObject.SetActive(false); //Deactivate titlescreen
 			//hud.transform.GetChild(3).gameObject.SetActive(false); //Deactivate announcment
@@ -133,7 +140,9 @@ public class Katamari : MonoBehaviour {
 			AddVolumeToKatamari(volume, thingy.modifier);
 			lastAssimilated = thingy;
 			collected.Add(thingy.thingyName);
-			UpdateCollectedStats(thingy.thingyName);
+			if (!leveltesting) {
+				UpdateCollectedStats(thingy.thingyName);
+			}
 			RemoveOldChildrenAfterMax();
 			if (thingy is ThingyGlow) {
 				ThingyGlow l = thingy as ThingyGlow;
@@ -150,7 +159,7 @@ public class Katamari : MonoBehaviour {
 		if (!glow) {
 			glow = gameObject.AddComponent<Light>() as Light;
 			glow.intensity = 0.1f;
-			glow.range = 0.1f;
+			glow.range = 0.5f;
 			glow.color = Color.green / 2f;
 			glow.type = LightType.Point;
 		}
@@ -173,7 +182,13 @@ public class Katamari : MonoBehaviour {
 	void AddVolumeToKatamari(float vol, float mod = 1) {
 		trueVolume += (vol*mod / 8f);
 		float adjust = vol / 35000f;  //5000000 old number
-		collide.radius += adjust * 0.75f;
+		if (collide.radius < (maxRadius/2f) ) {
+			collide.radius += adjust * 0.75f;
+		} else if (collide.radius < maxRadius) {
+			collide.radius += adjust * 0.45f;
+		} else {
+			collide.radius += adjust * 0.1f;
+		}
 		ballController.m_MovePower += adjust * 2;
 		camFollow.spacer += adjust * 2.15f;
 	}

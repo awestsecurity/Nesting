@@ -28,7 +28,8 @@ public class DebugDisplay : MonoBehaviour
 			addingFrameRates += fps;
 			if (counting == interval) {
 				int avg = Mathf.RoundToInt(addingFrameRates / interval);
-				text.text = $"FPS: {avg}";
+				float pull = (UIObjects.sceneCon && UIObjects.sceneCon.katamari) ? Katamari.volumeCheck : 0f;
+				text.text = $"FPS: {avg} \nPull: {pull}";
 				counting = 0;
 				addingFrameRates = 0;
 			}
@@ -37,4 +38,5 @@ public class DebugDisplay : MonoBehaviour
 			text.text = "";
 		}
     }
+	
 }
