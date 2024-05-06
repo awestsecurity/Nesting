@@ -23,6 +23,8 @@ public class Katamari : MonoBehaviour {
 
 	public float radius; // Where is the edge to attach things.
 	private float maxRadius = 6.666f;
+	private float maxMovePower = 20f;
+	private float maxCamDistance = 81f;
 	public Transform camPos;
 	public CamFollow camFollow;
 	public int maxChildren = 234;
@@ -189,8 +191,12 @@ public class Katamari : MonoBehaviour {
 		} else {
 			collide.radius += adjust * 0.1f;
 		}
-		ballController.m_MovePower += adjust * 2;
-		camFollow.spacer += adjust * 2.15f;
+		if (ballController.m_MovePower < maxMovePower) {
+			ballController.m_MovePower += adjust * 2;
+		}
+		if (camFollow.spacer < maxCamDistance) {
+			camFollow.spacer += adjust * 2.15f;
+		}
 	}
 	
 	//Remove the oldest attached object when we have too many
