@@ -14,7 +14,7 @@ public class Katamari : MonoBehaviour {
 	private static float displayVolume; // What's Showing in the textbox.
 	private float trueVolume; // Everything added and used as the final score
 	private static float percentPossible = 0.33f;  // How big we are / What we can pick up.
-	private static float startingMass = 115;
+	private static float startingMass = 155;
 	private Vector3 tuckInObject = new Vector3(0.85f,0.85f,0.85f);
 	
 	public static float volumeCheck; // The thingy size we can pick up
