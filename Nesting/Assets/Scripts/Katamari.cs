@@ -152,7 +152,7 @@ public class Katamari : MonoBehaviour {
 			}
 			Destroy(thingy.GetComponent<Movement>());
 		} else if (collision.gameObject.name == "Water"){
-			PlaySFX(waterSplash);
+				PlaySFX(waterSplash);
 		}
 	}
 	

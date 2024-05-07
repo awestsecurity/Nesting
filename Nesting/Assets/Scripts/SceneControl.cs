@@ -149,7 +149,8 @@ public class SceneControl : GenericSingleton<SceneControl>
 		AsyncOperation loadingOperation = SceneManager.LoadSceneAsync(i);
 		isLoading = true;
 		background.SetActive(true);
-		string randfact = facts[Random.Range(0,facts.Length)];
+		var rand = new System.Random();
+		string randfact = facts[rand.Next(facts.Length)];
 		textbox.text = $"Did you know, {randfact}";
 		while (!loadingOperation.isDone)
         {
@@ -211,7 +212,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 	private float GetPlaytime() {
 		switch(BirdDetails.birdstatus) {
 			case "LC":
-				return 200; //250
+				return 225; //250 was the original web version time
 			case "NT":
 				return 310;
 			case "VU":
@@ -221,11 +222,11 @@ public class SceneControl : GenericSingleton<SceneControl>
 			case "CR":
 				return 700;
 			case "EW":
-				return 850;
+				return 850; //850 = 14m 10s
 			case "EX":
 				return 9999;
 			case "DD":
-				return 60;
+				return 666;
 			default:
 				return 60;
 		}

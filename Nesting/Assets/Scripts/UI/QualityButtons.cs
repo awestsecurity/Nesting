@@ -18,6 +18,7 @@ public class QualityButtons : MonoBehaviour
 	
 	private string[] shadowOptions = {" Best ", " Minimal ", " None "};
 	private string[] qualityOptions = {" Poor ", " Just OK ", " Great "};
+	private string[] PercentOptions = {" 0% ", " 25% ", " 50% ", " 75% ", "100%"};
 	private string[] viewDistanceOptions = {" Far ", "Middle", "Close"};
 	private string[] booleanOptions = {" OFF ", " ON "};
 

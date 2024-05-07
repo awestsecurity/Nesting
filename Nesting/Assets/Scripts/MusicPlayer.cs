@@ -34,8 +34,12 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 	}
 	
 	public void PrimeLevelSong(AudioClip s) {
-		int index = System.Array.IndexOf(songList, s);
-		nextSongIndex = index;
+		if (!Settings.shuffle) {
+			int index = System.Array.IndexOf(songList, s);
+			nextSongIndex = index;
+		} else {
+			nextSongIndex = GetRandSongI();
+		}
 	}
 	
 	IEnumerator PopSongCredits() {
@@ -52,10 +56,8 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 		}
 		
 		if (on && !speaker.isPlaying && Application.isFocused) {
-			if (Settings.shuffle) {
-				nextSongIndex = GetRandSongI();
-				//Debug.Log($"next song: {nextSongIndex}, of {songList.Length}");
-			}
+			nextSongIndex = GetRandSongI();
+			//Debug.Log($"next song: {nextSongIndex}, of {songList.Length}");
 			SetSong(songList[nextSongIndex]);
 			nextSongIndex += 1;
 			if (nextSongIndex >= songList.Length) {
@@ -80,11 +82,11 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 	
 	//return a random song index that is different than the current song.
 	int GetRandSongI() {
-		Random.InitState(Mathf.RoundToInt(Time.deltaTime));
-		int pre = nextSongIndex > 0 ? nextSongIndex-1 : songList.Length-1 ;
-		int next = Random.Range(0, songList.Length);
-		while (next == pre) {
-			next = Random.Range(0, songList.Length);
+		var rand = new System.Random();
+		int prev = nextSongIndex > 0 ? nextSongIndex-1 : songList.Length-1 ;
+		int next = rand.Next(songList.Length);
+		while (next == prev) {
+			next = rand.Next(songList.Length);
 		}
 		return next;
 	}
@@ -109,13 +111,14 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 			speaker.loop = false;
 			StartCoroutine(PopSongCredits());
 		}
+		//Removed the end play song for now
+		//Uncomment to have a specific song loop during the nest swirl
 		if ( index == 2 ) {
-			//End scene
-			SetSong(endSong);
-			speaker.loop = true;
-			if (on) {
-				speaker.Play();
-			}
+			//SetSong(endSong);
+			//speaker.loop = true;
+			//if (on) {
+			//	speaker.Play();
+			//}
 		}
     }
 	
