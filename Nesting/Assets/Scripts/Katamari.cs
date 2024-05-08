@@ -50,6 +50,7 @@ public class Katamari : MonoBehaviour {
 	public AudioClip[] basePickupSounds;
 	
 	void Start () {
+		maxChildren = Settings.collectedMax;
 		//revrse singleton
 		if (!SetKatamariInSceneControl()) {
 			Debug.LogWarning("Testing Mode?: Scene Con not found.");
@@ -201,7 +202,7 @@ public class Katamari : MonoBehaviour {
 	
 	//Remove the oldest attached object when we have too many
 	void RemoveOldChildrenAfterMax() {
-		if (this.transform.childCount > maxChildren) {
+		if (this.transform.childCount > Settings.collectedMax) {
 			Destroy(this.transform.GetChild(1).gameObject);
 		}		
 	}

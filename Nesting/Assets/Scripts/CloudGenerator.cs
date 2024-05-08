@@ -60,7 +60,7 @@ public class CloudGenerator : MonoBehaviour
     }
 	
 	private Vector3 NewPosition() {
-		return new Vector3(Random.Range(-10, limitx), 50, -10);
+		return new Vector3(Random.Range(-10, limitx), 50, -20);
 	}
 	
 	private GameObject MakeCloud(Vector3 position) {

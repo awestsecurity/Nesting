@@ -40,7 +40,7 @@ public class MakeNestSwirl : MonoBehaviour
 		popup = UIObjects.popup;
 		switch(Random.Range(0,4)) {
 			case 0:
-				popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting!");
+				popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting, I see that {mostlyThese[2]}!");
 				break;
 			case 1:
 				popup.AddMessage($"That is a lot of {mostlyThese[0]}. The {mostlyThese[1]} is a nice touch though. Excellent!");
@@ -49,7 +49,7 @@ public class MakeNestSwirl : MonoBehaviour
 				popup.AddMessage($"I love a {mostlyThese[0]}y nest. The {mostlyThese[1]} balances it nicely!");
 				break;
 			case 3:
-				popup.AddMessage($"{mostlyThese[0]}, {mostlyThese[1]}, and a little {mostlyThese[1]}. Interesting!");
+				popup.AddMessage($"{mostlyThese[0]}, {mostlyThese[1]}, and a little {mostlyThese[2]}. Interesting!");
 				break;
 			default:
 				popup.AddMessage($"It's quite {mostlyThese[0]}y with a hint of {mostlyThese[1]}. How exciting!");

@@ -11,13 +11,13 @@ public class SettingToggleCheck : MonoBehaviour
 	
     void Awake()
     {
-		if (settingID == 6) {
+		if (Settings.postProcessing) {
 			Volume v = this.gameObject.GetComponent<Volume>();
 			if (v) {
-				v.enabled = Settings.GetSettingByID(settingID);
-				Debug.Log("set render volume to " + Settings.GetSettingByID(settingID).ToString() );
+				v.enabled = Settings.postProcessing;
+				//Debug.Log("set render volume to " + Settings.GetSettingByID(settingID).ToString() );
 			} else {
-				Debug.LogWarning("failed to find volume component");
+				Debug.LogWarning("failed to find volume component - SettingToggleCheck.cs line 20");
 			}
 		}
     }

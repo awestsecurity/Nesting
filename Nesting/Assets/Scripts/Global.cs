@@ -84,23 +84,15 @@ public static class Settings {
 	public static bool sfxOn = true;
 	public static bool showLog = false;
 	public static bool postProcessing = true;
-	
-	public static bool GetSettingByID(int i) {
-		if (i == 0) {return shadows;}
-		else if (i == 1) {return skipText;}
-		else if (i == 2) {return musicOn;}
-		else if (i == 3) {return shuffle;}
-		else if (i == 4) {return sfxOn;}
-		else if (i == 5) {return showLog;}
-		else if (i == 6) {return postProcessing;}
-		else { return false; }
-	}
+	public static int collectedMax = 234; //How many objects should the katarami hold and render.
+
 	public static void LoadSettings() {
 		Settings.musicOn = (PlayerPrefs.GetInt("3", 1) == 1) ? true : false ;
 		Settings.sfxOn = (PlayerPrefs.GetInt("2", 1) == 1) ? true : false ;
 		Settings.shuffle = (PlayerPrefs.GetInt("4", 1) == 1) ? true : false ;
 		Settings.showLog = (PlayerPrefs.GetInt("5", 0) == 1) ? true : false ;
 		Settings.postProcessing = (PlayerPrefs.GetInt("6", 1) == 1) ? true : false ;
+		Settings.collectedMax = (PlayerPrefs.GetInt("7", 2)+2)*75;
 		int[] quality = new int[] {1,3,5};
 		QualitySettings.SetQualityLevel(quality[PlayerPrefs.GetInt("0", 1)], true);
 
@@ -108,7 +100,3 @@ public static class Settings {
 	}
 	
 }
-// QualitySettings.shadows = ShadowQuality.All;
-// QualitySettings.shadows = ShadowQuality.HardOnly;
-// QualitySettings.shadows = ShadowQuality.Disable; 
-

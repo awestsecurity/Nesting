@@ -18,7 +18,8 @@ public class QualityButtons : MonoBehaviour
 	
 	private string[] shadowOptions = {" Best ", " Minimal ", " None "};
 	private string[] qualityOptions = {" Poor ", " Just OK ", " Great "};
-	private string[] PercentOptions = {" 0% ", " 25% ", " 50% ", " 75% ", "100%"};
+	private string[] percentOptions = {" 0% ", " 25% ", " 50% ", " 75% ", "100%"};
+	private string[] amountOptions = {" Few ", " Some ", " Many ", " Tons "};
 	private string[] viewDistanceOptions = {" Far ", "Middle", "Close"};
 	private string[] booleanOptions = {" OFF ", " ON "};
 
@@ -77,6 +78,11 @@ public class QualityButtons : MonoBehaviour
 				buttonOptions = booleanOptions;
 				buttonName = "Render FX";
 				changeFunction = new buttonDelegate(TogglePostProcessing);
+				break;
+			case 7: //How much stuff to display on the katamari
+				buttonOptions = amountOptions;
+				buttonName = "Show Gathered";
+				changeFunction = new buttonDelegate(ChangeKatamariRender);
 				break;
 			default:
 				break;		
@@ -151,6 +157,25 @@ public class QualityButtons : MonoBehaviour
 			default:
 				break;
 		}
+	}
+	
+	void ChangeKatamariRender(int i){
+		switch (i) {
+			case 0:
+				Settings.collectedMax = 150;
+				break;
+			case 1:
+				Settings.collectedMax = 225;
+				break;
+			case 2:
+				Settings.collectedMax = 300;
+				break;
+			case 3:
+				Settings.collectedMax = 375;
+				break;
+			default:
+				break;
+		}	
 	}
 	
 	void ChangeViewDistance(int i){
