@@ -1,7 +1,6 @@
 .more levels
 .More music
 .more detailed Object List
-.Make own fence
 .make jukebox
 .skip text setting
 .Manual camera option
