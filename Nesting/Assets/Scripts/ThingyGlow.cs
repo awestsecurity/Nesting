@@ -6,6 +6,12 @@ using System.Collections;
 public class ThingyGlow : Thingy {
 
 	public Light _light;
+		
+	protected override void PrimeObject(){
+		#if UNITY_WEBGL
+			_light.enabled = false;
+		#endif
+	}
 	
 	public void StartLightFade(int sec = 9){
 		if (_light) {

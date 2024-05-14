@@ -50,6 +50,11 @@ public class Thingy : MonoBehaviour {
 		body = gameObject.GetComponent<Rigidbody>();
 		if (gameObject.GetComponent<CharacterController>() != null) ai = true;
 		StartCoroutine(Delay());
+		PrimeObject();
+	}
+	
+	protected virtual void PrimeObject(){
+		//used for platform specific code on inheriting classes.
 	}
 	
 	/// <summary>
