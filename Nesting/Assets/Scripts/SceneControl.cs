@@ -75,6 +75,9 @@ public class SceneControl : GenericSingleton<SceneControl>
 
 			if(Input.GetKeyDown("q") && Debug.isDebugBuild) {
 				timeremaining -= 100;
+			} else if (Input.GetKeyDown("e") && Debug.isDebugBuild) {
+				timeremaining += 100;
+				lastTimeStamp += 100;
 			}
 		}
 		if (playing && (timeremaining <= 0 || cheatDetected)) {

@@ -6,10 +6,11 @@ using System.Collections;
 public class ThingyGlow : Thingy {
 
 	public Light _light;
+	private Transform katamriLocation;
 		
 	protected override void PrimeObject(){
 		#if UNITY_WEBGL
-			_light.enabled = false;
+			//_light.enabled = false;
 		#endif
 	}
 	

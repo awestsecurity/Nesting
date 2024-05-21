@@ -19,6 +19,7 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 	private int prevSceneIndex = 0;
 	private int nextSongIndex = 0;
 	private bool playList;
+	private int levelSongIndex = 0;
 	
 	void Start() {
 		SceneManager.sceneLoaded += OnSceneLoaded;
@@ -34,9 +35,9 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 	}
 	
 	public void PrimeLevelSong(AudioClip s) {
+		levelSongIndex = System.Array.IndexOf(songList, s);
 		if (!Settings.shuffle) {
-			int index = System.Array.IndexOf(songList, s);
-			nextSongIndex = index;
+			nextSongIndex = levelSongIndex;
 		} else {
 			nextSongIndex = GetRandSongI();
 		}
@@ -56,15 +57,11 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 		}
 		
 		if (on && !speaker.isPlaying && Application.isFocused) {
-			nextSongIndex = GetRandSongI();
-			//Debug.Log($"next song: {nextSongIndex}, of {songList.Length}");
-			SetSong(songList[nextSongIndex]);
-			nextSongIndex += 1;
-			if (nextSongIndex >= songList.Length) {
-				nextSongIndex = 0; 
-			}
-			speaker.Play();
-			StartCoroutine(PopSongCredits());
+			PlayNextSong();
+		}
+		
+		if (Input.GetButtonDown("Skip")) {
+			PlayNextSong();
 		}
     }
 	
@@ -78,6 +75,20 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 	
 	void SetSong(AudioClip song) {
 		speaker.clip = song;
+	}
+	
+	void PlayNextSong() {
+		if (Settings.shuffle) {
+			nextSongIndex = GetRandSongI();
+		}
+		//Debug.Log($"next song: {nextSongIndex}, of {songList.Length}");
+		SetSong(songList[nextSongIndex]);
+		nextSongIndex += 1;
+		if (nextSongIndex >= songList.Length) {
+			nextSongIndex = 0; 
+		}
+		speaker.Play();
+		StartCoroutine(PopSongCredits());
 	}
 	
 	//return a random song index that is different than the current song.
@@ -98,7 +109,7 @@ public class MusicPlayer : GenericSingleton<MusicPlayer>
 		} else {
 			prevSceneIndex = index;
 		}
-        //Debug.Log("OnSceneLoaded: " + index);
+        //Debug.Log($"OnSceneLoaded: {index}");
 		if ( index == 0 ) {
 			SetSong(menuSong);
 			speaker.loop = true;
