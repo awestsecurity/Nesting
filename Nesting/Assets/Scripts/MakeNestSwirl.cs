@@ -21,6 +21,7 @@ public class MakeNestSwirl : MonoBehaviour
 	private float[] speeds;
 
 	public Vector3 center;
+	public Transform camToPosition;
 	public float swirlSpeed;
 	public float katamariWidth = 1;
 	public float height = 0.5f;
@@ -36,6 +37,7 @@ public class MakeNestSwirl : MonoBehaviour
 		katamari.transform.position = Vector3.zero;
 		katamari.transform.rotation = Quaternion.identity;
 		RemoveKatamriControl();
+		MoveCameraBack();
 		SplitKatamari();
 		popup = UIObjects.popup;
 		switch(Random.Range(0,4)) {
@@ -128,10 +130,17 @@ public class MakeNestSwirl : MonoBehaviour
 		}
 	}
 	
+	//Reload scene or go to main menu
 	public void PassOnLoadScene(int i) {
 		Destroy(katamari);
 		restarting = true;
 		UIObjects.sceneCon.ChangeScene(i);
+	}
+	
+	private void MoveCameraBack() {
+		int steps = (int)BirdDetails.score / 20000;
+		float newZ = camToPosition.position.z - 0.1f * steps;
+		camToPosition.position = new Vector3(camToPosition.position.x, camToPosition.position.y, newZ);
 	}
 	
 }
