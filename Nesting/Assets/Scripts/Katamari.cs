@@ -75,6 +75,9 @@ public class Katamari : MonoBehaviour {
 			Screen.fullScreen = false;
 			Cursor.lockState = CursorLockMode.None;
 		}
+		if (Debug.isDebugBuild && Input.GetKeyDown("w")) {
+			trueVolume += 100;
+		}
 		
 		//Fallen through ground somehow
 		if (transform.position.y < -15) {

@@ -137,9 +137,10 @@ public class MakeNestSwirl : MonoBehaviour
 		UIObjects.sceneCon.ChangeScene(i);
 	}
 	
+	//For bigger objects move the camera to better display the nest.
 	private void MoveCameraBack() {
-		int steps = (int)BirdDetails.score / 20000;
-		float newZ = camToPosition.position.z - 0.1f * steps;
+		int steps = (int)BirdDetails.score / 500;
+		float newZ = camToPosition.position.z - 0.01f * steps;
 		camToPosition.position = new Vector3(camToPosition.position.x, camToPosition.position.y, newZ);
 	}
 	
