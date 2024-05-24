@@ -1,4 +1,8 @@
-bug: skyscraper acheive not working
+make marsh lights fade based on proximity for webgl
+give music volume level
+reduce fog based on nest size -  RenderSettings.fogDensity -= 0.01f;
+change to linear fog? - RenderSettings.fogStartDistance
+Keep level selection persistent
 
 .more levels
 .More music

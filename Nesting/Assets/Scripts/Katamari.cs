@@ -18,6 +18,7 @@ public class Katamari : MonoBehaviour {
 	private Vector3 tuckInObject = new Vector3(0.85f,0.85f,0.85f);
 	
 	public static float volumeCheck; // The thingy size we can pick up
+	public static Transform trans;
 	public string mostCommonChild { get {return GetTopThings()[0]; } private set{} }
 	private string[] childrenByQuantity;
 
@@ -51,6 +52,7 @@ public class Katamari : MonoBehaviour {
 	
 	void Start () {
 		maxChildren = Settings.collectedMax;
+		trans = transform;
 		//revrse singleton
 		if (!SetKatamariInSceneControl()) {
 			Debug.LogWarning("Testing Mode?: Scene Con not found.");
@@ -76,7 +78,7 @@ public class Katamari : MonoBehaviour {
 			Cursor.lockState = CursorLockMode.None;
 		}
 		if (Debug.isDebugBuild && Input.GetKeyDown("w")) {
-			trueVolume += 100;
+			trueVolume = trueVolume * 1.5f;
 		}
 		
 		//Fallen through ground somehow

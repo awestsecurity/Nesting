@@ -22,10 +22,10 @@ public class Thingy : MonoBehaviour {
 	Transform t;
 	
 	public bool assimilated {get;set;}
-	private bool primed = false;
-	private bool delay = false;
-	private float actualVolume;
-	private bool ai;
+	protected bool primed = false;
+	protected bool delay = false;
+	protected float actualVolume;
+	protected bool ai;
 
 	// Use this for initialization
 	void Start () {
@@ -65,7 +65,7 @@ public class Thingy : MonoBehaviour {
 		delay = true;
 	}
 	
-	void Update () {
+	protected virtual void Update () {
 		if (delay && !primed && actualVolume < (Katamari.volumeCheck)) {
 			PrimeForKatamari();
 		} else if (delay && !assimilated && testForGravity) {
@@ -85,7 +85,7 @@ public class Thingy : MonoBehaviour {
 	/// <summary>
 	/// Sets neccessary settings so object will be recognized and picked up by birdamari.
 	/// </summary>
-	private void PrimeForKatamari() {
+	protected void PrimeForKatamari() {
 		primed = true;
 		body.isKinematic = true;
 		if (!GetComponent<CharacterController>()) {
@@ -96,7 +96,7 @@ public class Thingy : MonoBehaviour {
 	/// <summary>
 	/// Returns gravity effects until object hits something or is picked up.
 	/// </summary>
-	private IEnumerator TemporaryGravity() {
+	protected IEnumerator TemporaryGravity() {
 		yield return new WaitForSeconds(0.5f);
 		delay = false;
 		bool k = body.isKinematic;

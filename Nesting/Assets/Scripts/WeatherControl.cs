@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CloudGenerator : MonoBehaviour
+public class WeatherControl : MonoBehaviour
 {
 	
 	public GameObject[] cloudPrefabs;
@@ -20,6 +20,8 @@ public class CloudGenerator : MonoBehaviour
 	
 	private float counter;
 	private int delay;
+	
+	public float fogMaxDensity = 0.05f;
 	
     // Start is called before the first frame update
     void Start()
@@ -55,6 +57,11 @@ public class CloudGenerator : MonoBehaviour
 			} else {
 				c.Translate(windDirection * Time.deltaTime * windSpeed, Space.World);
 			}
+		}
+		
+		if (Katamari.volumeCheck > 0) {
+			float fogDensity = fogMaxDensity - Katamari.volumeCheck / 10000 * 0.003f;
+			RenderSettings.fogDensity = fogDensity;
 		}
 		
     }
