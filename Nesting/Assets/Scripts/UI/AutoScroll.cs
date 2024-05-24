@@ -29,9 +29,10 @@ public class AutoScroll : MonoBehaviour {
         //m_horizontallPosition  = 1f - ((float)m_index / (m_buttons.Length - 1));
     }
 	
-	void OnEnabled() {
+	public void Refresh() {
         m_buttons = GetComponentsInChildren<Button>();
 		m_index = m_buttons.Length - 1;
+		//Debug.Log("I'm triggered - AutoScroll enabled");
 	}
 
     public void Update()

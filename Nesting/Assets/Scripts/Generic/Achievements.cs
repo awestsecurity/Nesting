@@ -40,7 +40,9 @@ public class Achievements : GenericSingleton<Achievements> {
 				PlayerPrefs.SetInt(a.mName, 1);
 				incompleteAchievements.Remove(a);
 				//Debug.Log("Achievement Complete! "+a.mName);
-				speaker.PlayOneShot(congratsSound);
+				if (Settings.sfxOn) {
+					speaker.PlayOneShot(congratsSound);
+				}
 				DisplayAchievement(a);
 			}
 		}

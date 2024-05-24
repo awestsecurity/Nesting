@@ -148,6 +148,7 @@ public class Katamari : MonoBehaviour {
 			collected.Add(thingy.thingyName);
 			if (!leveltesting) {
 				UpdateCollectedStats(thingy.thingyName);
+				UIObjects.achievements.UpdateMetric("LargestThing", (int)volume);
 			}
 			RemoveOldChildrenAfterMax();
 			if (thingy is ThingyGlow) {

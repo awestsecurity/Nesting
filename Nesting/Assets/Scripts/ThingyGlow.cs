@@ -7,10 +7,12 @@ public class ThingyGlow : Thingy {
 
 	public Light _light;
 	private Transform katamriLocation;
+	private bool selfManage = false;
 		
 	protected override void PrimeObject(){
 		#if UNITY_WEBGL
 			//_light.enabled = false;
+			selfManage = true;
 		#endif
 	}
 	
