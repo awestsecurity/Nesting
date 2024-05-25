@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class OnMenuEnable : MonoBehaviour
 {
 	public GameObject startSelected;
+	public bool overrideStart = false;
 	
 	private bool defaultSet = false;
 	private EventSystem eventSystem;
@@ -16,7 +17,9 @@ public class OnMenuEnable : MonoBehaviour
 		if (startSelected == null ) {
 			SearchForFirstButton(transform);
 		}
-		eventSystem.SetSelectedGameObject(startSelected);
+		if (!overrideStart) {
+			eventSystem.SetSelectedGameObject(startSelected);
+		}
 	}
 	
 	private void SearchForFirstButton(Transform t) {

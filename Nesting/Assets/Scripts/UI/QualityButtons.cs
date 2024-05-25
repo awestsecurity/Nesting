@@ -18,7 +18,7 @@ public class QualityButtons : MonoBehaviour
 	
 	private string[] shadowOptions = {" Best ", " Minimal ", " None "};
 	private string[] qualityOptions = {" Poor ", " Just OK ", " Great "};
-	private string[] percentOptions = {" 0% ", " 25% ", " 50% ", " 75% ", "100%"};
+	private string[] percentOptions = {" 0% ", " 20% ", " 40% ", " 60% ", " 80% ", " 100% "};
 	private string[] amountOptions = {" Few ", " Some ", " Many ", " Tons "};
 	private string[] viewDistanceOptions = {" Far ", "Middle", "Close"};
 	private string[] booleanOptions = {" OFF ", " ON "};
@@ -83,6 +83,11 @@ public class QualityButtons : MonoBehaviour
 				buttonOptions = amountOptions;
 				buttonName = "Show Gathered";
 				changeFunction = new buttonDelegate(ChangeKatamariRender);
+				break;
+			case 8:
+				buttonOptions = percentOptions;
+				buttonName = "Volume";
+				changeFunction = new buttonDelegate(ChangeMasterVolume);
 				break;
 			default:
 				break;		
@@ -176,6 +181,10 @@ public class QualityButtons : MonoBehaviour
 			default:
 				break;
 		}	
+	}
+	
+	void ChangeMasterVolume(int i){
+		Settings.masterVolume = 0.2f*i;
 	}
 	
 	void ChangeViewDistance(int i){

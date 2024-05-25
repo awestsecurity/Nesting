@@ -77,26 +77,28 @@ public static class UIObjects {
 public static class Settings {
 	
 	public static int levelSelected = 1;
-	public static bool shadows = true;
-	public static bool skipText = false;	
+	public static bool shadows = true; //Not used
+	public static bool skipText = false; //Not Used
 	public static bool musicOn = true;
 	public static bool shuffle = true;
 	public static bool sfxOn = true;
+	public static float masterVolume = 0.60f;
 	public static bool showLog = false;
 	public static bool postProcessing = true;
 	public static int collectedMax = 234; //How many objects should the katarami hold and render.
 
 	public static void LoadSettings() {
+		Settings.levelSelected = PlayerPrefs.GetInt("levelSelected", 1); //Spring Meadow is Default
 		Settings.musicOn = (PlayerPrefs.GetInt("3", 1) == 1) ? true : false ;
 		Settings.sfxOn = (PlayerPrefs.GetInt("2", 1) == 1) ? true : false ;
 		Settings.shuffle = (PlayerPrefs.GetInt("4", 1) == 1) ? true : false ;
 		Settings.showLog = (PlayerPrefs.GetInt("5", 0) == 1) ? true : false ;
 		Settings.postProcessing = (PlayerPrefs.GetInt("6", 1) == 1) ? true : false ;
 		Settings.collectedMax = (PlayerPrefs.GetInt("7", 2)+2)*75;
+		Settings.masterVolume = PlayerPrefs.GetInt("8", 3)*0.2f;
+		
 		int[] quality = new int[] {1,3,5};
 		QualitySettings.SetQualityLevel(quality[PlayerPrefs.GetInt("0", 1)], true);
-
-		//Debug.Log($"PPrefs Music: {Settings.musicOn} and sfx {Settings.sfxOn}");
 	}
 	
 }
