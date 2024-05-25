@@ -7,10 +7,11 @@ using UnityEngine.EventSystems;
 public class LevelSelectButton : MonoBehaviour
 {
 	///BUG: Event trigger crashes WebGL so....
-	private Text levelNameDisplay;
-	private string levelName;
+	public Text levelNameDisplay;
+	public string levelName;
 	public int levelID = 0;
-	public bool firstSelected = false;
+	//public bool firstSelected = false;
+	public Sprite icon;
 	public Color defaultColor;
 	public Color selectedColor;
 		
@@ -18,11 +19,13 @@ public class LevelSelectButton : MonoBehaviour
     void Start()
     {
         levelNameDisplay = gameObject.GetComponentsInChildren<Text>()[0];
-		levelName = levelNameDisplay.text;
-		if (!firstSelected) {
-			ExitButton(); //defualt display at start
-		} else {
+		if (!levelNameDisplay) {
+			Debug.LogError("Failed to fetch level button text");
+		}
+		if (Settings.levelSelected == levelID) {
 			IsSelected();
+		} else {
+			ExitButton(); //defualt display at start
 		}
 	}
 
@@ -44,6 +47,7 @@ public class LevelSelectButton : MonoBehaviour
 			Debug.LogError($"Level ID is invalid for {levelName}");
 		}
 		Settings.levelSelected = levelID;
+		PlayerPrefs.SetInt("levelSelected", levelID);
 	}
 	
 }

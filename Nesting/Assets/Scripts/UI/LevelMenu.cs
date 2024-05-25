@@ -11,32 +11,32 @@ public class LevelMenu : MonoBehaviour
 	private EventSystem eventSystem;
 	public Text selectedLevelText;
 	public Image icon;
-	public Sprite[] levelIcons;
+	LevelSelectButton[] buttons;
 	public LevelData[] levels;
 
-	void Start() {
-		SetupLevels();
-		UpdateDisplay();
-	}
-
 	void OnEnable() {
-		eventSystem = EventSystem.current;
-		lastSelected = eventSystem.currentSelectedGameObject;
 		UpdateDisplay();
+		eventSystem = EventSystem.current;
+		eventSystem.SetSelectedGameObject(GetStartSelection().gameObject);
+		lastSelected = eventSystem.currentSelectedGameObject;
 	}
 	
+	//
 	void SetupLevels() {
-		levels = new LevelData[3];
-		levels[0] = new LevelData("Spring Meadow", 1, 0);
-		levels[1] = new LevelData("Winter Wonder", 3, 1);
-		levels[2] = new LevelData("Sleepy Marsh", 4, 2);
+		buttons = GetComponentsInChildren<LevelSelectButton>(); 
+		levels = new LevelData[buttons.Length];
+		for(int i = 0; i < buttons.Length; i++) {
+			LevelData l = new LevelData(buttons[i].levelName, buttons[i].levelID, buttons[i].icon);
+			levels[i] = l;
+		}
 	}
 
     // Update is called once per frame
 	// Occasionally check if WebGL will support event triggers to avoid this whole mess.
 	// As of Jan 2022, an event trigger will crash the game
     void Update()   {
-		if ( eventSystem.currentSelectedGameObject != lastSelected) {
+		if (eventSystem.currentSelectedGameObject != lastSelected) {
+			//UpdateDisplay();
 			GameObject newSelected = eventSystem.currentSelectedGameObject;
 			if (lastSelected.tag == "LevelButton") {
 				LevelSelectButton button = lastSelected.GetComponent<LevelSelectButton>();
@@ -52,17 +52,22 @@ public class LevelMenu : MonoBehaviour
     }
 	
 	public void UpdateDisplay() {
-		if (levels == null) {
-			Debug.LogWarning("Levels setup after Start()");
+		if (buttons == null) {
 			SetupLevels();
 		}
-		foreach(LevelData l in levels) {
-			if (l.levelSceneID == Settings.levelSelected) {
-				selectedLevelText.text = l.levelName;
-				icon.sprite = levelIcons[l.levelIconID];
-				break;
+		LevelSelectButton bSelected = GetStartSelection();
+		selectedLevelText.text = bSelected.levelName;
+		icon.sprite = bSelected.icon;
+		bSelected.IsSelected();
+	}
+	
+	private LevelSelectButton GetStartSelection() {
+		foreach(LevelSelectButton b in buttons) {
+			if (b.levelID == Settings.levelSelected) {
+				return b;
 			}
 		}
+		return buttons[0];
 	}
 }
 
@@ -70,13 +75,12 @@ public struct LevelData
 {
 	public int levelSceneID;
 	public string levelName;
-	public int levelIconID;
+	public Sprite levelIcon;
 	
-	public LevelData(string name, int id, int icon) {
+	public LevelData(string name, int id, Sprite icon) {
 		this.levelName = name;
 		this.levelSceneID = id;
-		this.levelIconID = icon;
+		this.levelIcon = icon;
 	}
-	
 }
 
