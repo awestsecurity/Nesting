@@ -173,11 +173,11 @@ public class Katamari : MonoBehaviour {
 			glow.type = LightType.Point;
 		}
 		glowThingy.StartLightFade();
-		glow.range = glow.range + 0.05f;
-		float targetIntesity = Mathf.Clamp(glow.intensity += 0.01f, 0.1f, 4f);
+		glow.range = glow.range + 0.075f;
+		float targetIntesity = Mathf.Clamp(glow.intensity += 0.015f, 0.1f, 4f);
 		while (glow.intensity < targetIntesity) {
 			yield return new WaitForSeconds(0.1f);
-			glow.intensity += 0.01f;
+			glow.intensity += 0.005f;
 		}
 	}
 	
