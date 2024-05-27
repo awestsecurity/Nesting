@@ -10,7 +10,6 @@ public class PlaceObjects : MonoBehaviour {
 		public GameObject prefab;
 	}	
 	private float min = 1f;
-	private RaycastHit hit;
 	
 	public List<LevelObject> PlaceSetting = new List<LevelObject>(1);
 
@@ -23,6 +22,7 @@ public class PlaceObjects : MonoBehaviour {
 			for (int i = 0; i < thing.amount; i++) {
 				Vector3 pos = new Vector3(Random.Range(xmin, xmax),3f,Random.Range(min,ymax));
 				if (thing.ground) {
+					RaycastHit hit;
 					if (Physics.Raycast(pos, -Vector3.up, out hit, 10, 1 << 8)) {
 						pos = new Vector3(hit.point.x, hit.point.y, hit.point.z);
 					} else {

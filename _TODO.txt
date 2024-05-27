@@ -1,11 +1,10 @@
 change to linear fog? - RenderSettings.fogStartDistance
-Keep level selection persistent
 Change Settings to JSON instead of individual playerPrefs
+Tree achievement - lumberjack
 
 .more levels
 .More music
 .more detailed Object List
-.make jukebox
 .skip text setting
 .Manual camera option
 .Thingy rotating display

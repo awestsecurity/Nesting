@@ -10,7 +10,7 @@ public class WeatherControl : MonoBehaviour
 	[Range(5,20)]
 	public int maxClouds;
 	[Range(0.1f,2f)]
-	public float windSpeed;
+	public float windSpeed = 0.1f; //Cloud movement speed
 	
 	private List<Transform> clouds = new List<Transform>();
 	
@@ -43,7 +43,7 @@ public class WeatherControl : MonoBehaviour
     void Update()
     {
         counter += Time.deltaTime;
-		if ( clouds.Count <= maxClouds && counter >= delay ) {
+		if ( clouds.Count < maxClouds && counter >= delay ) {
 			counter = 0;
 			Vector3 position = NewPosition();
 			GameObject cld = MakeCloud(position);

@@ -6,6 +6,7 @@ using System.Collections;
 public class Thingy : MonoBehaviour {
 
 	public string thingyName;
+	public string thingyType;
 	
 	public float volume = 300; //cm3 can use blender to get measurement
 	[Range(0.5f, 10.0f)]
@@ -22,6 +23,7 @@ public class Thingy : MonoBehaviour {
 	Transform t;
 	
 	public bool assimilated {get;set;}
+	private bool checkThroughGround = true;
 	protected bool primed = false;
 	protected bool delay = false;
 	protected float actualVolume;
@@ -50,6 +52,7 @@ public class Thingy : MonoBehaviour {
 		body = gameObject.GetComponent<Rigidbody>();
 		if (gameObject.GetComponent<CharacterController>() != null) ai = true;
 		StartCoroutine(Delay());
+		if (checkThroughGround) {StartCoroutine(GroundCheck());}
 		PrimeObject();
 	}
 	
@@ -63,6 +66,22 @@ public class Thingy : MonoBehaviour {
 	IEnumerator Delay() {
 		yield return new WaitForSeconds(2);
 		delay = true;
+	}
+	
+	IEnumerator GroundCheck() {
+		yield return new WaitForSeconds(3.5f);
+		if (transform.position.y < -8) {
+			///// The raycast is never hitting for some reason even though it's the same code from the conform to ground script that works
+			//RaycastHit hit;
+			//transform.rotation = Quaternion.identity;
+			//if (Physics.Raycast(transform.position, Vector3.up, out hit, 60, 1 << 8)) {
+			//	Vector3 pos = new Vector3(hit.point.x, hit.point.y+0.1f, hit.point.z);
+			//	Debug.LogWarning($"{thingyName} fell through and got back.");
+			//} else {
+				Debug.LogWarning($"{thingyName} fell through and can't get back.");
+			//}
+		}
+		checkThroughGround = false;
 	}
 	
 	protected virtual void Update () {

@@ -40,6 +40,9 @@ public class Katamari : MonoBehaviour {
 	private Ball ballController;
 	private Rigidbody rbody;
 	private Light glow;
+
+	private int flowersCollected = 0;
+	private int snowmenSmashed = 0;
 	
 	private int cheatVolume = 9999999;
 	private float prevvolume;
@@ -149,7 +152,7 @@ public class Katamari : MonoBehaviour {
 			lastAssimilated = thingy;
 			collected.Add(thingy.thingyName);
 			if (!leveltesting) {
-				UpdateCollectedStats(thingy.thingyName);
+				UpdateCollectedStats(thingy.thingyType);
 				UIObjects.achievements.UpdateMetric("LargestThing", (int)volume);
 			}
 			RemoveOldChildrenAfterMax();
@@ -252,26 +255,21 @@ public class Katamari : MonoBehaviour {
 				rank.Add("Empty Space");
 			}
 		}
-				
-		if (dict.ContainsKey("Flower")) {
-			UpdateCollectedStats("Flower", dict["Flower"]);
-		}
-		if (dict.ContainsKey("SnowHead")) {
-			UpdateCollectedStats("SnowHead", dict["SnowHead"]);
-		}
 		return rank.ToArray();
 	}
 	
 	//Add to collection stats for achievements
-	private void UpdateCollectedStats(string thingName, int amount = 1) {
-		if (thingName == "Mushroom") {
+	private void UpdateCollectedStats(string thingType, int amount = 1) {
+		if (thingType == "Mushroom") {
 			UIObjects.achievements.UpdateMetric("MushroomsCollected", amount);
-		} else if (thingName == "Egg") {
+		} else if (thingType == "Egg") {
 			UIObjects.achievements.UpdateMetric("EggFound", 1);
-		} else if (thingName == "Flower") { 
-			UIObjects.achievements.UpdateMetric("FlowersIn1Run", amount); 
-		} else if (thingName == "SnowHead") {
-			UIObjects.achievements.UpdateMetric("SnowmenIn1Run", amount); 		
+		} else if (thingType == "Flower") { 
+			flowersCollected += 1;
+			UIObjects.achievements.UpdateMetric("FlowersIn1Run", flowersCollected); 
+		} else if (thingType == "SnowHead") {
+			snowmenSmashed += 1;
+			UIObjects.achievements.UpdateMetric("SnowmenIn1Run", snowmenSmashed); 		
 		}
 	}
 	
