@@ -78,7 +78,9 @@ public class Thingy : MonoBehaviour {
 			//	Vector3 pos = new Vector3(hit.point.x, hit.point.y+0.1f, hit.point.z);
 			//	Debug.LogWarning($"{thingyName} fell through and got back.");
 			//} else {
+			#if (UNITY_EDITOR)
 				Debug.LogWarning($"{thingyName} fell through and can't get back.");
+			#endif
 			//}
 		}
 		checkThroughGround = false;
