@@ -17,6 +17,7 @@ public class Thingy : MonoBehaviour {
 	public bool testForGravity = false; //Will the object be floating at any point and need to enable gravity
 	public float minScale = 0.8f;
 	public float maxScale = 1.2f;
+	public bool keyItem = false;
 
 	Collider collide;
 	Rigidbody body;

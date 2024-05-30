@@ -26,8 +26,9 @@ public class Katamari : MonoBehaviour {
 	private float maxRadius = 6.666f;
 	private float maxMovePower = 20f;
 	private float maxCamDistance = 81f;
-	public Transform camPos;
-	public CamFollow camFollow;
+	public GameObject kataCam;
+	private Transform camPos;
+	private CamFollow camFollow;
 	public int maxChildren = 234;
 	
 	private GameObject hud;
@@ -66,6 +67,8 @@ public class Katamari : MonoBehaviour {
 		ballController = gameObject.GetComponent<Ball>();
 		speaker = gameObject.GetComponent<AudioSource>();
 		rbody = gameObject.GetComponent<Rigidbody>();
+		camPos = kataCam.GetComponent<Transform>();
+		camFollow = kataCam.GetComponent<CamFollow>();
 		displayVolume = 1;
 		trueVolume = 1;
 		prevvolume = trueVolume;
@@ -161,6 +164,9 @@ public class Katamari : MonoBehaviour {
 				StartCoroutine(AbsorbLight(l));
 			}
 			Destroy(thingy.GetComponent<Movement>());
+			if (thingy.keyItem) {
+				kataCam.GetComponent<ThingyShowcase>().SwitchThing(thingy.gameObject);
+			}
 		} else if (collision.gameObject.name == "Water"){
 				PlaySFX(waterSplash);
 		}
