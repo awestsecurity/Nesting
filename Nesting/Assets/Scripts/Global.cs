@@ -95,7 +95,7 @@ public static class Settings {
 		Settings.showLog = (PlayerPrefs.GetInt("5", 0) == 1) ? true : false ;
 		Settings.postProcessing = (PlayerPrefs.GetInt("6", 1) == 1) ? true : false ;
 		Settings.collectedMax = (PlayerPrefs.GetInt("7", 2)+2)*75;
-		Settings.masterVolume = PlayerPrefs.GetInt("8", 3)*0.2f;
+		Settings.masterVolume = PlayerPrefs.GetInt("8", 1)*0.2f;
 		
 		int[] quality = new int[] {1,3,5};
 		QualitySettings.SetQualityLevel(quality[PlayerPrefs.GetInt("0", 1)], true);

@@ -45,6 +45,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		facts = file.text.Split('\n');
 		events = EventSystem.current;
 		titleButtons = titleScreen.transform.GetChild(0).gameObject;
+		Screen.fullScreen = true;
 	}
 
 	public bool StartLoad(int sceneindex) {
@@ -60,6 +61,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 	void Update() {
 		if (Input.GetKeyDown(KeyCode.Escape)) {
             Screen.fullScreen = !Screen.fullScreen;
+			Cursor.visible = Screen.fullScreen;
         }
 		//PLAY TIMER
 		if (playing) {
