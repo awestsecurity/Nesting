@@ -38,7 +38,16 @@ public class ThingyShowcase : MonoBehaviour
     }
 	
 	public void SwitchThing(GameObject newThing) {
-		Mesh newMesh = newThing.GetComponent<MeshFilter>().sharedMesh;
+		Mesh newMesh;
+		//If the object doesn't have a meshfilter then 
+		if (newThing.TryGetComponent<MeshFilter>(out MeshFilter m)) {
+			newMesh = m.sharedMesh;
+		} else if (newThing.transform.GetChild(0).TryGetComponent<MeshFilter>(out MeshFilter m2)) {
+			newMesh = m2.sharedMesh;
+		} else {
+			Debug.LogWarning($"KeyItem {newThing.name} - no meshFilter found.");
+			return; 
+		}
 		baseObjectMesh.sharedMesh = newMesh;
 		baseObjectRender.materials = newThing.GetComponent<MeshRenderer>().materials;
 		ScaleToBounds();

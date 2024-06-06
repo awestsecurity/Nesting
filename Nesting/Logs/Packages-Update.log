@@ -80,3 +80,12 @@ The following packages were updated:
   com.unity.render-pipelines.universal from version 10.6.0 to 12.1.13
   com.unity.test-framework from version 1.1.27 to 1.1.33
   com.unity.toolchain.win-x86_64-linux-x86_64 from version 0.1.21-preview to 2.0.4
+
+=== Thu Jun  6 08:32:58 2024
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.postprocessing from version 3.2.2 to 3.4.0
+  com.unity.render-pipelines.universal from version 12.1.13 to 12.1.15

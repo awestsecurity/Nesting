@@ -2,8 +2,8 @@
   "dependencies": {
     "com.unity.2d.pixel-perfect": "5.0.3",
     "com.unity.2d.sprite": "1.0.0",
-    "com.unity.postprocessing": "3.2.2",
-    "com.unity.render-pipelines.universal": "12.1.13",
+    "com.unity.postprocessing": "3.4.0",
+    "com.unity.render-pipelines.universal": "12.1.15",
     "com.unity.test-framework": "1.1.33",
     "com.unity.toolchain.win-x86_64-linux-x86_64": "2.0.4",
     "com.unity.ugui": "1.0.0",
