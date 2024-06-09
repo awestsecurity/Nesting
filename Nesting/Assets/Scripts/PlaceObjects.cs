@@ -20,7 +20,7 @@ public class PlaceObjects : MonoBehaviour {
 		int ymax = BirdDetails.mapy * 2 - 1;
 		foreach (LevelObject thing in PlaceSetting) {
 			for (int i = 0; i < thing.amount; i++) {
-				Vector3 pos = new Vector3(Random.Range(xmin, xmax),3f,Random.Range(min,ymax));
+				Vector3 pos = new Vector3(Random.Range(xmin, xmax),2f,Random.Range(min,ymax));
 				if (thing.ground) {
 					RaycastHit hit;
 					if (Physics.Raycast(pos, -Vector3.up, out hit, 10, 1 << 8)) {
