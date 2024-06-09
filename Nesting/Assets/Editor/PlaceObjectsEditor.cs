@@ -24,10 +24,13 @@ public class PlaceObjectsEditor : Editor {
         GetTarget.Update();
 		
 		EditorGUILayout.BeginHorizontal();
-		GUILayout.FlexibleSpace();
-		EditorGUILayout.LabelField("~~ Things for the level ~~");
-		GUILayout.FlexibleSpace();
+		//GUILayout.FlexibleSpace();
+		EditorGUILayout.LabelField("~~ Level Things ~~");
+		SerializedProperty structuralObjects = GetTarget.FindProperty("structuralObjects");
+		structuralObjects.boolValue = EditorGUILayout.ToggleLeft("Architecture",structuralObjects.boolValue,GUILayout.Width(100), GUILayout.ExpandWidth(false));
+		//GUILayout.FlexibleSpace();
 		EditorGUILayout.EndHorizontal();
+
 			
 		float originalLabelWidth = EditorGUIUtility.labelWidth;
 	

@@ -19,6 +19,7 @@ public class TerrainShaping : MonoBehaviour
 	private MeshRenderer meshrenderer;
 	private MeshCollider meshcollider;
 	private Mesh mesh;
+	private GameObject ground;
 	private GameObject offsetGround;
 	
     // Start is called before the first frame update
@@ -33,10 +34,11 @@ public class TerrainShaping : MonoBehaviour
 		xScale = BirdDetails.mapx + BirdDetails.hexBuffer;
 		yScale = BirdDetails.mapy;
 		height = BirdDetails.mapz;
-		GameObject ground = new GameObject();
+		ground = new GameObject();
 		ground.name = "Ground";
 		ground.transform.parent = this.transform;
 		ground.layer = 8;
+		
 		meshfilter = ground.AddComponent<MeshFilter>();
 		meshrenderer = ground.AddComponent<MeshRenderer>();
 		//meshcollider = ground.AddComponent<MeshCollider>();
