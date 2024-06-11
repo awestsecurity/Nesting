@@ -111,6 +111,10 @@ public class Thingy : MonoBehaviour {
 		primed = true;
 		body.isKinematic = true;
 		if (!GetComponent<CharacterController>()) {
+			MeshCollider c = gameObject.GetComponent<MeshCollider>();
+			if ( c != null && c.convex == false) {
+				c.convex = true;
+			}
 			collide.isTrigger = true;
 		}
 	}

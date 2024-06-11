@@ -20,7 +20,14 @@ public class PlaceObjects : MonoBehaviour {
 	void Start () {
 		if (structuralObjects) {
 			margin = 5;
+			InstantiateEverything();
+		} else {
+			StartCoroutine(SecondRound());
 		}
+
+	}	
+	
+	void InstantiateEverything() {
 		int xmin = -BirdDetails.hexBuffer + margin;
 		int xmax = BirdDetails.mapx * 2 + BirdDetails.hexBuffer -margin;
 		int ymax = BirdDetails.mapy * 2 - margin;
@@ -40,7 +47,13 @@ public class PlaceObjects : MonoBehaviour {
 				o.transform.parent = gameObject.transform;
 			}
 		}
-	}	
+	}
+	
+	//Used to make sure giant things get placed first.
+	IEnumerator SecondRound() {
+		yield return new WaitForEndOfFrame();
+		InstantiateEverything();
+	}
 	
 	void AddNew(){
         PlaceSetting.Add(new LevelObject());
