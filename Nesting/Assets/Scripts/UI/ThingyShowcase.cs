@@ -10,11 +10,13 @@ public class ThingyShowcase : MonoBehaviour
 	public float timeDisplayed = 5;
 	public GameObject baseObject;
 	public GameObject backdrop;
+	
 	private Transform baseObjectTrans;
 	private MeshFilter baseObjectMesh;
 	private MeshRenderer baseObjectRender;
 	private Vector3 scaleTo;
 	private Vector3 originalScale;
+	private bool switchedDuringDisplay;
 	
     // Start is called before the first frame update
     void Start()
@@ -51,13 +53,29 @@ public class ThingyShowcase : MonoBehaviour
 		baseObjectMesh.sharedMesh = newMesh;
 		baseObjectRender.materials = newThing.GetComponent<MeshRenderer>().materials;
 		ScaleToBounds();
-		StartCoroutine(Display());
+		CenterMesh();
+		if (baseObjectRender.enabled == true) {
+			switchedDuringDisplay = true;
+		} else {
+			StartCoroutine(Display());
+		}
+	}
+	
+	private void CenterMesh() {
+		baseObjectTrans.position = Vector3.zero;
+		Vector3 center = baseObjectRender.localBounds.center * baseObjectTrans.localScale.x;
+		baseObjectTrans.localPosition = (Vector3.zero - center);
+		Debug.Log($"position now: {baseObjectTrans.position} | center: {center}");
 	}
 	
 	private IEnumerator Display() {
 		baseObjectRender.enabled = true;
 		backdrop.SetActive(true);
 		yield return new WaitForSeconds(timeDisplayed);
+		while (switchedDuringDisplay) {
+			switchedDuringDisplay = false;
+			yield return new WaitForSeconds(timeDisplayed/2);
+		}
 		baseObjectRender.enabled = false;
 		backdrop.SetActive(false);
 	}
