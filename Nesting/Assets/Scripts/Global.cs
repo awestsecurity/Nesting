@@ -94,7 +94,8 @@ public static class Settings {
 		Settings.shuffle = (PlayerPrefs.GetInt("4", 1) == 1) ? true : false ;
 		Settings.showLog = (PlayerPrefs.GetInt("5", 0) == 1) ? true : false ;
 		Settings.postProcessing = (PlayerPrefs.GetInt("6", 1) == 1) ? true : false ;
-		Settings.collectedMax = (PlayerPrefs.GetInt("7", 2)+2)*75;
+		Settings.collectedMax = PlayerPrefs.GetInt("7", 2);
+		PlayerPrefs.SetInt("7", Settings.collectedMax);
 		Settings.masterVolume = PlayerPrefs.GetInt("8", 1)*0.2f;
 		
 		int[] quality = new int[] {1,3,5};

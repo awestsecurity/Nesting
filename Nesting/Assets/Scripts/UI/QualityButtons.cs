@@ -84,7 +84,7 @@ public class QualityButtons : MonoBehaviour
 				buttonName = "Show Gathered";
 				changeFunction = new buttonDelegate(ChangeKatamariRender);
 				break;
-			case 8:
+			case 8: //Master Volume Setting
 				buttonOptions = percentOptions;
 				buttonName = "Volume";
 				changeFunction = new buttonDelegate(ChangeMasterVolume);
@@ -165,22 +165,7 @@ public class QualityButtons : MonoBehaviour
 	}
 	
 	void ChangeKatamariRender(int i){
-		switch (i) {
-			case 0:
-				Settings.collectedMax = 150;
-				break;
-			case 1:
-				Settings.collectedMax = 225;
-				break;
-			case 2:
-				Settings.collectedMax = 300;
-				break;
-			case 3:
-				Settings.collectedMax = 375;
-				break;
-			default:
-				break;
-		}	
+		Settings.collectedMax = i;
 	}
 	
 	void ChangeMasterVolume(int i){

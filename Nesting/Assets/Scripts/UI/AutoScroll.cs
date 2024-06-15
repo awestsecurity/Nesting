@@ -53,13 +53,10 @@ public class AutoScroll : MonoBehaviour {
 		m_index = System.Array.IndexOf(m_buttons,button.GetComponent<Button>());
 		float f = (float)m_index;
 		// to offset for the smaller close and random buttons
-		if (m_index > 0 && m_index <= 2) { 
-			f -= 0.70f;
-		} else if (m_index > 2 && m_index <= 4) { 
-			f -= 0.46f;
-		} else if (m_index > 4 && m_index <= 5) { 
-			f -= 0.25f;
-		}
+		if (m_index > 0 && m_index <= 5) { 
+			f -= 1f - (m_index*0.15f);
+		} 
+		//position 0-1f
         m_horizontallPosition = f / (m_buttons.Length - 1);
 
 		

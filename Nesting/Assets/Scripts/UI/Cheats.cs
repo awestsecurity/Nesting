@@ -38,6 +38,12 @@ public class Cheats : MonoBehaviour
 			PlayerPrefs.SetString("666", "abcdefghijklmnopqrstuvwxyz");
 		} else if (cheat == "notme") {
 			BirdDetails.cheat = false;
+		} else if (cheat == "achieve") {
+			UIObjects.achievements.UpdateMetric("TimesPlayedSpring",10);
+			UIObjects.achievements.UpdateMetric("TimesPlayedWinter",10);
+			UIObjects.achievements.UpdateMetric("TimesPlayedMarsh",10);
+		} else if (cheat == "scoreup") {
+			GameObject.Find("Katamari").GetComponent<Katamari>().Cheat();
 		}
 		Debug.Log($"Enter Cheat: {s}");
 		cheat = "";

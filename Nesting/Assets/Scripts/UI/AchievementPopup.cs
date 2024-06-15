@@ -27,14 +27,14 @@ public class AchievementPopup : MonoBehaviour {
 	
 	IEnumerator MoveHoldFade() {
 		while(t.position.y < heightGoal) {
-			Vector3 updatedPos = new Vector3(t.position.x, t.position.y+3, t.position.z);
+			Vector3 updatedPos = new Vector3(t.position.x, t.position.y+2f, t.position.z);
 			t.position = updatedPos;
 			yield return new WaitForEndOfFrame();
 		}
 		yield return new WaitForSeconds(secondsVisible);
 		float a = image.alpha;
 		while(a > 0) {
-			a -= 0.05f;
+			a -= 0.03f;
 			image.alpha = a;
 			yield return new WaitForEndOfFrame();
 		}

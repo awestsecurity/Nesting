@@ -217,7 +217,8 @@ public class Katamari : MonoBehaviour {
 	
 	//Remove the oldest attached object when we have too many
 	void RemoveOldChildrenAfterMax() {
-		if (this.transform.childCount > Settings.collectedMax) {
+		int max = (Settings.collectedMax+2)*75;
+		if (this.transform.childCount > max) {
 			Destroy(this.transform.GetChild(1).gameObject);
 		}		
 	}
@@ -286,6 +287,12 @@ public class Katamari : MonoBehaviour {
 		} else {
 			return false;
 		}
+	}
+	
+	public void Cheat() {
+		BirdDetails.cheat = true;
+		percentPossible = 1f;
+		AddVolumeToKatamari(10000);
 	}
 	
 }
