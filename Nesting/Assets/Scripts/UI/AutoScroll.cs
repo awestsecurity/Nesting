@@ -8,14 +8,14 @@ using UnityStandardAssets.CrossPlatformInput;
 [RequireComponent(typeof(ScrollRect))]
 public class AutoScroll : MonoBehaviour {
 	
-    private ScrollRect          m_scrollRect;
+    private ScrollRect         m_scrollRect;
     public Button[]            m_buttons;
     public int                 m_index;
-    private float               m_horizontallPosition;
-    private bool                m_right;
-    private bool                m_left;
+    private float              m_horizontallPosition;
+    private bool               m_right;
+    private bool               m_left;
 	private GameObject			m_lastButton;
-	
+
 	public Text nameDisplay;
 	public Text statusDisplay;
 	public Text flavorDisplay;
@@ -51,7 +51,17 @@ public class AutoScroll : MonoBehaviour {
 	
 	void Scroll(GameObject button) {
 		m_index = System.Array.IndexOf(m_buttons,button.GetComponent<Button>());
-        m_horizontallPosition = ((float)m_index / (m_buttons.Length - 1));
+		float f = (float)m_index;
+		// to offset for the smaller close and random buttons
+		if (m_index > 0 && m_index <= 2) { 
+			f -= 0.70f;
+		} else if (m_index > 2 && m_index <= 4) { 
+			f -= 0.46f;
+		} else if (m_index > 4 && m_index <= 5) { 
+			f -= 0.25f;
+		}
+        m_horizontallPosition = f / (m_buttons.Length - 1);
+
 		
  /*       m_right  = CrossPlatformInputManager.GetAxis("Horizontal") > 0.1f;
         m_left  = CrossPlatformInputManager.GetAxis("Horizontal") < -0.1f;
