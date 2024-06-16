@@ -15,6 +15,7 @@ public class AutoScroll : MonoBehaviour {
     private bool               m_right;
     private bool               m_left;
 	private GameObject			m_lastButton;
+	private int 	m_default = 2;
 
 	public Text nameDisplay;
 	public Text statusDisplay;
@@ -28,6 +29,13 @@ public class AutoScroll : MonoBehaviour {
 		m_index = m_buttons.Length - 1;
         //m_horizontallPosition  = 1f - ((float)m_index / (m_buttons.Length - 1));
     }
+	
+	//Start with the first birds selected - skipping the close and random buttons
+	public void OnEnable() {
+		GameObject startSelected = transform.GetChild(0).GetChild(0).GetChild(m_default).gameObject;
+		EventSystem.current.SetSelectedGameObject(startSelected);
+		
+	}
 	
 	public void Refresh() {
         m_buttons = GetComponentsInChildren<Button>();

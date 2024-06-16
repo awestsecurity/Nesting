@@ -1,11 +1,10 @@
 change to linear fog? - RenderSettings.fogStartDistance
 Change Settings to JSON instead of individual playerPrefs
 Tree achievement - lumberjack
-bird menu starting default should be a bird, not the X
 
 .more levels
 .More music
 .more detailed Object List
 .skip text setting
 .Manual camera option
-.Thingy rotating display
+.Thingy rotating display allow animations

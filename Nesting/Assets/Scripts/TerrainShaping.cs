@@ -14,7 +14,7 @@ public class TerrainShaping : MonoBehaviour
 	[Range(-0.2f,0.2f)]
 	public float colliderOffset;
 	
-	private int chunkDivisions = 2;
+	//private int chunkDivisions = 2;
 	private MeshFilter meshfilter;
 	private MeshRenderer meshrenderer;
 	private MeshCollider meshcollider;
