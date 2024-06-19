@@ -134,7 +134,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 		timeremaining = 555;
 		UIObjects.achievements.UpdateMetric("EggFound", 0);
 		StartLoad(0);
-		Destroy(katamari);
+		//Destroy(katamari); //katamari gets destroyed in the scene loading operation
 	}
 
 	IEnumerator PreLoadScene(int sceneindex, float delay = 1.25f) {
@@ -187,7 +187,7 @@ public class SceneControl : GenericSingleton<SceneControl>
 			titleButtons.SetActive(true);
 			Random.InitState(Mathf.RoundToInt(Time.deltaTime));
 			if (katamari) {
-				Debug.Log($"katamari destroyed? {katamari.name}");
+				//Debug.Log($"katamari destroyed? {katamari.name}");
 				Destroy(katamari);
 			}
 		}

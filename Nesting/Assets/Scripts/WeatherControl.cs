@@ -22,6 +22,7 @@ public class WeatherControl : MonoBehaviour
 	private int delay;
 	
 	public float fogMaxDensity = 0.05f;
+	public float fogMinDensity = 0.01f;
 	
     // Start is called before the first frame update
     void Start()
@@ -60,8 +61,10 @@ public class WeatherControl : MonoBehaviour
 		}
 		
 		if (Katamari.volumeCheck > 0) {
-			float fogDensity = fogMaxDensity - Katamari.volumeCheck / 10000 * 0.003f;
-			RenderSettings.fogDensity = fogDensity;
+			if (RenderSettings.fogDensity > fogMinDensity) {
+				float fogDensity = fogMaxDensity - Katamari.volumeCheck / 10000 * 0.003f;
+				RenderSettings.fogDensity = fogDensity;
+			}
 		}
 		
     }

@@ -104,7 +104,7 @@ public class Katamari : MonoBehaviour {
 		
 		//Debug.Log (rbody.velocity.magnitude);
 		if (!speaker.isPlaying && ballController.grounded) {
-			PlaySFX(plodNoise, rbody.velocity.magnitude/17f);
+			PlaySFX(plodNoise, false, rbody.velocity.magnitude/17f);
 		}
 		
 		//More Cheat Detection
@@ -144,7 +144,7 @@ public class Katamari : MonoBehaviour {
 		Thingy thingy = collision.gameObject.GetComponent<Thingy>();
 		if (thingy != null && SmallEnoughToGrab(thingy)) {
 			//Debug.Log($"Picking up: {thingy.thingyName} with {thingy.GetVolume()}g");
-			PlaySFX(basePickupSounds[Random.Range(0,basePickupSounds.Length)]);
+			PlaySFX(basePickupSounds[Random.Range(0,basePickupSounds.Length)], false);
 			thingy.DisableCollider();
 			thingy.assimilated = true;
 			Transform tt = thingy.gameObject.transform;
@@ -168,7 +168,7 @@ public class Katamari : MonoBehaviour {
 				kataCam.GetComponent<ThingyShowcase>().SwitchThing(thingy.gameObject);
 			}
 		} else if (collision.gameObject.name == "Water"){
-				PlaySFX(waterSplash);
+				PlaySFX(waterSplash, true);
 		}
 	}
 	
@@ -190,9 +190,12 @@ public class Katamari : MonoBehaviour {
 		}
 	}
 	
-	void PlaySFX(AudioClip sfx, float loudness = 0.666f) {
+	void PlaySFX(AudioClip sfx, bool playOver, float loudness = 0.666f) {
 		if (Settings.sfxOn) {
-			speaker.PlayOneShot(sfx, loudness);
+			if(playOver || !speaker.isPlaying) {
+				speaker.Stop();
+				speaker.PlayOneShot(sfx, loudness);
+			}
 		}
 	}
 	
@@ -215,11 +218,19 @@ public class Katamari : MonoBehaviour {
 		}
 	}
 	
-	//Remove the oldest attached object when we have too many
-	void RemoveOldChildrenAfterMax() {
+	//Remove the a number of the smallest attached objects when we have too many
+	void RemoveOldChildrenAfterMax(int removeBuffer = 10) {
 		int max = (Settings.collectedMax+2)*75;
 		if (this.transform.childCount > max) {
-			Destroy(this.transform.GetChild(1).gameObject);
+			//sort by size
+			List<Thingy> stuff = transform.GetComponentsInChildren<Thingy>().ToList();
+			stuff.Sort((x, y) => x.volume.CompareTo(y.volume));
+			for (int i = 0; i < removeBuffer; i++) {
+				//Debug.Log($"Removed {stuff[i].name}");
+				stuff[i].transform.parent = null;
+				stuff[i].transform.localPosition = new Vector3(999,999,999);
+				//Destroy(this.transform.GetChild(1).gameObject);
+			}
 		}		
 	}
 	

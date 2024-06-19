@@ -1,4 +1,3 @@
-change to linear fog? - RenderSettings.fogStartDistance
 Change Settings to JSON instead of individual playerPrefs
 Tree achievement - lumberjack
 
